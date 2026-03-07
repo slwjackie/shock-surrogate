@@ -1,0 +1,23 @@
+# python
+__pycache__/
+*.pyc
+
+# datasets
+data/
+
+# outputs
+outputs*
+
+#checkpoints
+ckpt*
+
+# model weights
+*.pt
+*.pth
+*.ckpt
+
+# env
+.env
+
+# mac
+.DS_Store
