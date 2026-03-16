@@ -21,6 +21,7 @@ Outputs (same as original + extra):
 import os, sys, math, time, json, argparse
 import numpy as np
 import pandas as pd
+from collections import defaultdict, Counter
 
 # Robust import: allow running from sim/ or repo root
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -347,40 +348,186 @@ def _nearest_bucket(key: str, th_buckets: dict) -> str:
 # -----------------------------
 # Pool generation (label-aware, condition-aware)
 # -----------------------------
+# def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
+#                        ood_profile=False, ood_mismatch=False,
+#                        max_tries_factor=80.0, log_every=200):
+#     """
+#     Similar to original, but regime label uses thresholds_by_coeff based on (nu,k,E) bucket.
+#     """
+#     det_min_frac = {
+#         "train": _get(dc, "det_min_frac_train", 0.10),
+#         "val": _get(dc, "det_min_frac_val", 0.10),
+#         "test_profile_ood": _get(dc, "det_min_frac_test_profile_ood", 0.10),
+#         "test_mismatch_ood": _get(dc, "det_min_frac_test_mismatch_ood", 0.10),
+#     }.get(split, 0.10)
+
+#     req_det = int(math.ceil(det_min_frac * n_target))
+#     req_other_each = int(_get(dc, "min_other_each", 1))
+#     if split == "test_mismatch_ood":
+#         # keep as originally relaxed, but now labels should not collapse
+#         req_other_each = int(_get(dc, "min_other_each_mismatch", 0))
+
+#     pool = {lab: [] for lab in LABELS}
+#     attempts = 0
+#     max_attempts = int(max(1, math.ceil(n_target * max_tries_factor)))
+#     t_start = time.time()
+
+#     def counts():
+#         return {lab: len(pool[lab]) for lab in LABELS}
+
+#     # Load edges for bucketization
+#     nu_edges = np.asarray(th_all["meta"]["nu_edges"], dtype=float)
+#     k_edges  = np.asarray(th_all["meta"]["k_edges"], dtype=float)
+#     E_edges  = np.asarray(th_all["meta"]["E_edges"], dtype=float)
+#     th_buckets = th_all["buckets"]
+
+#     # coeff ranges for mismatch sampling (generalized)
+#     nu_ood_lo = float(_get(dc, "nu_ood_min", _get(dc, "nu_ood", sc.nu)))
+#     nu_ood_hi = float(_get(dc, "nu_ood_max", _get(dc, "nu_ood", sc.nu)))
+#     k_ood_lo  = float(_get(dc, "k_ood_min",  _get(dc, "k_ood",  sc.k)))
+#     k_ood_hi  = float(_get(dc, "k_ood_max",  _get(dc, "k_ood",  sc.k)))
+#     E_ood_lo  = float(_get(dc, "E_ood_min",  _get(dc, "E_ood",  sc.E)))
+#     E_ood_hi  = float(_get(dc, "E_ood_max",  _get(dc, "E_ood",  sc.E)))
+
+#     nu_smin = float(_get(dc, "nu_scale_min", 1.0))
+#     nu_smax = float(_get(dc, "nu_scale_max", 1.0))
+#     te_smin = float(_get(dc, "t_end_scale_min", 1.0))
+#     te_smax = float(_get(dc, "t_end_scale_max", 1.0))
+
+#     while attempts < max_attempts:
+#         c = counts()
+#         total = sum(c.values())
+#         if (c["detonation_like"] >= req_det and
+#             c["no_detonation"] >= req_other_each and
+#             c["deflagration_like"] >= req_other_each and
+#             total >= n_target):
+#             break
+
+#         attempts += 1
+
+#         # Decide what label we most need right now
+#         need = []
+#         if c["detonation_like"] < req_det:
+#             need.append("detonation_like")
+#         if c["no_detonation"] < req_other_each:
+#             need.append("no_detonation")
+#         if c["deflagration_like"] < req_other_each:
+#             need.append("deflagration_like")
+#         target_label = rng.choice(need) if need else rng.choice(LABELS)
+
+#         dTdx = sample_dTdx_guided(rng, dc, target_label)
+
+#         b = 0.0
+#         if ood_profile:
+#             b = float(rng.uniform(dc.b_ood_min, dc.b_ood_max))
+
+#         # Sample coefficients
+#         if ood_mismatch:
+#             # generalized mismatch: sample within provided ranges (or point-mass if min=max)
+#             nu = float(rng.uniform(nu_ood_lo, nu_ood_hi)) if nu_ood_hi > nu_ood_lo else float(nu_ood_lo)
+#             k  = float(rng.uniform(k_ood_lo,  k_ood_hi))  if k_ood_hi  > k_ood_lo  else float(k_ood_lo)
+#             E  = float(rng.uniform(E_ood_lo,  E_ood_hi))  if E_ood_hi  > E_ood_lo  else float(E_ood_lo)
+#         else:
+#             nu = float(sc.nu) * float(rng.uniform(nu_smin, nu_smax))
+#             k  = float(sc.k)
+#             E  = float(sc.E)
+
+#         t_end_case = float(sc.t_end) * float(rng.uniform(te_smin, te_smax))
+
+#         x, t_norm, U, ic = simulate_case(
+#             L_mm=sc.L, Nx=sc.Nx, t_end=t_end_case, Nt_save=sc.Nt_save, CFL=sc.CFL,
+#             nu=nu, k=k, E=E, dTdx=dTdx, b_quad=b,
+#             seed=1000 + attempts + (12345 if split.startswith("test") else 0)
+#         )
+
+#         diag = compute_diagnostics(U, x, t_norm, sc, t_end_actual=t_end_case)
+
+#         key = _coeff_key(nu, k, E, nu_edges, k_edges, E_edges)
+#         key_use = _nearest_bucket(key, th_buckets)
+#         regime, ratios = assign_regime_by_coeff(diag, th_buckets[key_use])
+
+#         meta = {
+#             "dTdx": dTdx,
+#             "b_quad": b,
+#             "nu": float(nu),
+#             "k": float(k),
+#             "E": float(E),
+#             "L_mm": float(sc.L),
+#             "Nx": int(sc.Nx),
+#             "Nt": int(sc.Nt_save),
+#             "peak_u": float(diag["peak_u"]),
+#             "runup_time_s": float(diag["runup_time_u_s"]) if not np.isnan(diag["runup_time_u_s"]) else np.nan,
+#             "runup_time_g_s": float(diag["runup_time_g_s"]) if not np.isnan(diag["runup_time_g_s"]) else np.nan,
+#             "g_peak": float(diag["g_peak"]),
+#             "front_speed": float(diag["front_speed"]) if not np.isnan(diag["front_speed"]) else np.nan,
+#             "front_speed_abs": float(diag["front_speed_abs"]),
+#             "coeff_bucket": key_use,
+#             "regime": regime,
+#             "regime_id": LABEL2ID[regime],
+#             "t_end": float(t_end_case),
+#             "dt": float(t_end_case) / max(int(sc.Nt_save) - 1, 1),
+#         }
+#         meta.update(ic)
+#         pool[regime].append((U, meta))
+
+#         if (attempts % log_every) == 0:
+#             c = counts()
+#             elapsed = time.time() - t_start
+#             print(f"[{split}] attempts={attempts}/{max_attempts} counts={c} elapsed={elapsed:.1f}s", flush=True)
+
+#     final_counts = counts()
+#     total = sum(final_counts.values())
+#     ok = (final_counts["detonation_like"] >= req_det and
+#           final_counts["no_detonation"] >= req_other_each and
+#           final_counts["deflagration_like"] >= req_other_each and
+#           total >= n_target)
+
+#     return pool, req_det, req_other_each, attempts, max_attempts, ok, final_counts
+
 def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
                        ood_profile=False, ood_mismatch=False,
-                       max_tries_factor=80.0, log_every=200):
+                       max_tries_factor=100.0, log_every=200,
+                       stall_patience=500):
     """
-    Similar to original, but regime label uses thresholds_by_coeff based on (nu,k,E) bucket.
+    Policy B:
+      - target_counts를 목표로 생성 시도
+      - 못 채우면 warning 후 가능한 만큼 사용
+      - 너무 오래 정체되면 종료
+      - 마지막에는 soft-balanced sampling 수행
     """
-    det_min_frac = {
-        "train": _get(dc, "det_min_frac_train", 0.10),
-        "val": _get(dc, "det_min_frac_val", 0.10),
-        "test_profile_ood": _get(dc, "det_min_frac_test_profile_ood", 0.10),
-        "test_mismatch_ood": _get(dc, "det_min_frac_test_mismatch_ood", 0.10),
-    }.get(split, 0.10)
+    # split별 목표 비율
+    target_frac_map = {
+        "train": {"no_detonation": 0.30, "deflagration_like": 0.40, "detonation_like": 0.30},
+        "val": {"no_detonation": 0.30, "deflagration_like": 0.40, "detonation_like": 0.30},
+        "test_profile_ood": {"no_detonation": 0.30, "deflagration_like": 0.40, "detonation_like": 0.30},
+        "test_mismatch_ood": {"no_detonation": 0.30, "deflagration_like": 0.40, "detonation_like": 0.30},
+    }
+    if split not in target_frac_map:
+        raise ValueError(f"Unknown split: {split}")
 
-    req_det = int(math.ceil(det_min_frac * n_target))
-    req_other_each = int(_get(dc, "min_other_each", 1))
-    if split == "test_mismatch_ood":
-        # keep as originally relaxed, but now labels should not collapse
-        req_other_each = int(_get(dc, "min_other_each_mismatch", 0))
+    frac = target_frac_map[split]
+    target_counts = {k: int(round(v * n_target)) for k, v in frac.items()}
+    # rounding 보정
+    target_counts["deflagration_like"] += n_target - sum(target_counts.values())
 
     pool = {lab: [] for lab in LABELS}
     attempts = 0
     max_attempts = int(max(1, math.ceil(n_target * max_tries_factor)))
     t_start = time.time()
 
+    stalled_steps = 0
+    best_total = 0
+
     def counts():
         return {lab: len(pool[lab]) for lab in LABELS}
 
-    # Load edges for bucketization
+    # coeff bucket edges
     nu_edges = np.asarray(th_all["meta"]["nu_edges"], dtype=float)
     k_edges  = np.asarray(th_all["meta"]["k_edges"], dtype=float)
     E_edges  = np.asarray(th_all["meta"]["E_edges"], dtype=float)
     th_buckets = th_all["buckets"]
 
-    # coeff ranges for mismatch sampling (generalized)
+    # coeff ranges
     nu_ood_lo = float(_get(dc, "nu_ood_min", _get(dc, "nu_ood", sc.nu)))
     nu_ood_hi = float(_get(dc, "nu_ood_max", _get(dc, "nu_ood", sc.nu)))
     k_ood_lo  = float(_get(dc, "k_ood_min",  _get(dc, "k_ood",  sc.k)))
@@ -394,35 +541,22 @@ def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
     te_smax = float(_get(dc, "t_end_scale_max", 1.0))
 
     while attempts < max_attempts:
-        c = counts()
-        total = sum(c.values())
-        if (c["detonation_like"] >= req_det and
-            c["no_detonation"] >= req_other_each and
-            c["deflagration_like"] >= req_other_each and
-            total >= n_target):
-            break
-
         attempts += 1
+        c = counts()
 
-        # Decide what label we most need right now
-        need = []
-        if c["detonation_like"] < req_det:
-            need.append("detonation_like")
-        if c["no_detonation"] < req_other_each:
-            need.append("no_detonation")
-        if c["deflagration_like"] < req_other_each:
-            need.append("deflagration_like")
+        # 아직 목표 개수를 못 채운 클래스들
+        need = [lab for lab in LABELS if c[lab] < target_counts[lab]]
         target_label = rng.choice(need) if need else rng.choice(LABELS)
 
+        # dTdx는 부족한 class를 더 잘 만들도록 guided sampling
         dTdx = sample_dTdx_guided(rng, dc, target_label)
 
         b = 0.0
         if ood_profile:
             b = float(rng.uniform(dc.b_ood_min, dc.b_ood_max))
 
-        # Sample coefficients
+        # coefficient sampling
         if ood_mismatch:
-            # generalized mismatch: sample within provided ranges (or point-mass if min=max)
             nu = float(rng.uniform(nu_ood_lo, nu_ood_hi)) if nu_ood_hi > nu_ood_lo else float(nu_ood_lo)
             k  = float(rng.uniform(k_ood_lo,  k_ood_hi))  if k_ood_hi  > k_ood_lo  else float(k_ood_lo)
             E  = float(rng.uniform(E_ood_lo,  E_ood_hi))  if E_ood_hi  > E_ood_lo  else float(E_ood_lo)
@@ -436,7 +570,8 @@ def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
         x, t_norm, U, ic = simulate_case(
             L_mm=sc.L, Nx=sc.Nx, t_end=t_end_case, Nt_save=sc.Nt_save, CFL=sc.CFL,
             nu=nu, k=k, E=E, dTdx=dTdx, b_quad=b,
-            seed=1000 + attempts + (12345 if split.startswith("test") else 0)
+            seed=1000 + attempts + (12345 if split.startswith("test") else 0),
+            target_label=target_label
         )
 
         diag = compute_diagnostics(U, x, t_norm, sc, t_end_actual=t_end_case)
@@ -467,54 +602,121 @@ def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
             "dt": float(t_end_case) / max(int(sc.Nt_save) - 1, 1),
         }
         meta.update(ic)
+
         pool[regime].append((U, meta))
 
+        # 진행도 추적
+        c = counts()
+        current_total = sum(min(c[k], target_counts[k]) for k in LABELS)
+
+        if current_total > best_total:
+            best_total = current_total
+            stalled_steps = 0
+        else:
+            stalled_steps += 1
+
+        # 목표를 다 채웠으면 종료
+        if all(c[k] >= target_counts[k] for k in LABELS):
+            break
+
+        # 너무 오래 정체되면 종료
+        if stalled_steps >= stall_patience:
+            print(f"[warn] gen_pool_for_split(split={split}): stalled for {stall_patience} attempts, stopping early")
+            break
+
         if (attempts % log_every) == 0:
-            c = counts()
             elapsed = time.time() - t_start
-            print(f"[{split}] attempts={attempts}/{max_attempts} counts={c} elapsed={elapsed:.1f}s", flush=True)
+            print(f"[{split}] attempts={attempts}/{max_attempts} counts={c} target={target_counts} elapsed={elapsed:.1f}s", flush=True)
 
     final_counts = counts()
-    total = sum(final_counts.values())
-    ok = (final_counts["detonation_like"] >= req_det and
-          final_counts["no_detonation"] >= req_other_each and
-          final_counts["deflagration_like"] >= req_other_each and
-          total >= n_target)
+    ok = all(final_counts[k] >= target_counts[k] for k in LABELS)
 
-    return pool, req_det, req_other_each, attempts, max_attempts, ok, final_counts
+    if not ok:
+        print(f"[warn] split={split}: could not meet target counts")
+        print(f"       target={target_counts}")
+        print(f"       got={final_counts}")
 
-def sample_from_pool(rng, pool, n_target, req_det, req_other_each):
+    return pool, target_counts, attempts, max_attempts, ok, final_counts
+
+
+# def sample_from_pool(rng, pool, n_target, req_det, req_other_each):
+#     chosen = []
+
+#     def take(label, k):
+#         items = pool[label]
+#         if k <= 0:
+#             return
+#         if len(items) < k:
+#             raise RuntimeError(f"Not enough '{label}' samples in pool: have {len(items)}, need {k}")
+#         idx = rng.choice(len(items), size=k, replace=False)
+#         idx = sorted(idx, reverse=True)
+#         for i in idx:
+#             chosen.append(items.pop(i))
+
+#     take("detonation_like", req_det)
+#     take("no_detonation", req_other_each)
+#     take("deflagration_like", req_other_each)
+
+#     remaining = n_target - len(chosen)
+#     rest = []
+#     for lab in LABELS:
+#         rest.extend(pool[lab])
+
+#     if remaining > len(rest):
+#         raise RuntimeError(f"Pool too small after mandatory picks: need {remaining}, have {len(rest)}")
+
+#     idx = rng.choice(len(rest), size=remaining, replace=False)
+#     for i in idx:
+#         chosen.append(rest[i])
+
+#     rng.shuffle(chosen)
+#     return chosen
+def sample_from_pool(rng, pool, target_counts, n_target):
+    """
+    Soft target policy:
+      1) 각 class에서 가능한 만큼 target_counts까지 우선 확보
+      2) 부족한 수는 남은 전체 pool에서 채워서 총 n_target 맞춤
+      3) target을 못 채우면 warning만 띄우고 계속 진행
+    """
     chosen = []
 
-    def take(label, k):
-        items = pool[label]
-        if k <= 0:
-            return
-        if len(items) < k:
-            raise RuntimeError(f"Not enough '{label}' samples in pool: have {len(items)}, need {k}")
-        idx = rng.choice(len(items), size=k, replace=False)
-        idx = sorted(idx, reverse=True)
-        for i in idx:
-            chosen.append(items.pop(i))
+    # 1) class-balanced as much as possible
+    for label in LABELS:
+        available = len(pool[label])
+        want = int(target_counts.get(label, 0))
+        take = min(want, available)
 
-    take("detonation_like", req_det)
-    take("no_detonation", req_other_each)
-    take("deflagration_like", req_other_each)
+        if take < want:
+            print(f"[warn] sample_from_pool: label={label} target={want}, available={available}")
 
-    remaining = n_target - len(chosen)
-    rest = []
-    for lab in LABELS:
-        rest.extend(pool[lab])
+        if take > 0:
+            idx = rng.choice(available, size=take, replace=False)
+            idx = sorted(idx, reverse=True)
+            for i in idx:
+                chosen.append(pool[label].pop(i))
 
-    if remaining > len(rest):
-        raise RuntimeError(f"Pool too small after mandatory picks: need {remaining}, have {len(rest)}")
+    # 2) fill shortage from all remaining samples
+    shortage = n_target - len(chosen)
+    if shortage > 0:
+        remaining = []
+        for label in LABELS:
+            remaining.extend(pool[label])
 
-    idx = rng.choice(len(rest), size=remaining, replace=False)
-    for i in idx:
-        chosen.append(rest[i])
+        if len(remaining) < shortage:
+            print(f"[warn] sample_from_pool: shortage={shortage}, but only {len(remaining)} extra samples remain")
+            shortage = len(remaining)
+
+        if shortage > 0:
+            idx = rng.choice(len(remaining), size=shortage, replace=False)
+            for i in idx:
+                chosen.append(remaining[i])
 
     rng.shuffle(chosen)
-    return chosen
+
+    if len(chosen) < n_target:
+        print(f"[warn] sample_from_pool: requested {n_target}, got {len(chosen)}")
+
+    return chosen[:n_target]
 
 # -----------------------------
 # Main
@@ -567,8 +769,34 @@ def main():
     max_tries_factor = float(_get(dc, "det_max_tries_factor", 80.0))
     log_every = int(_get(dc, "det_log_every", 200))
 
+    # for split, n_target, ood_profile, ood_mismatch in splits:
+    #     pool, req_det, req_other_each, attempts, max_attempts, ok, counts = gen_pool_for_split(
+    #         sc, dc, rng, split, n_target, th_all,
+    #         ood_profile=ood_profile, ood_mismatch=ood_mismatch,
+    #         max_tries_factor=max_tries_factor,
+    #         log_every=log_every
+    #     )
+
+    #     if not ok:
+    #         print(f"[WARN] Could not fully satisfy constraints for split={split}. counts={counts}, "
+    #               f"req_det={req_det}, req_other_each={req_other_each}. Proceeding best-effort.",
+    #               flush=True)
+
+    #     req_det_eff = req_det if counts["detonation_like"] >= req_det else max(0, counts["detonation_like"])
+    #     chosen = sample_from_pool(rng, pool, n_target, req_det_eff, req_other_each)
+
+    #     U_list = []
+    #     for i, (U, meta) in enumerate(chosen):
+    #         case_id = len(U_list)
+    #         meta_row = {"case_id": case_id, "split": split}
+    #         meta_row.update(meta)
+    #         rows.append(meta_row)
+    #         U_list.append(U.astype(np.float32))
+
+    #     blobs[split] = np.stack(U_list, axis=0)  # (Ncases, Nt, Nx)
+
     for split, n_target, ood_profile, ood_mismatch in splits:
-        pool, req_det, req_other_each, attempts, max_attempts, ok, counts = gen_pool_for_split(
+        pool, target_counts, attempts, max_attempts, ok, counts = gen_pool_for_split(
             sc, dc, rng, split, n_target, th_all,
             ood_profile=ood_profile, ood_mismatch=ood_mismatch,
             max_tries_factor=max_tries_factor,
@@ -576,12 +804,11 @@ def main():
         )
 
         if not ok:
-            print(f"[WARN] Could not fully satisfy constraints for split={split}. counts={counts}, "
-                  f"req_det={req_det}, req_other_each={req_other_each}. Proceeding best-effort.",
+            print(f"[WARN] Could not fully satisfy targets for split={split}. "
+                  f"target={target_counts}, got={counts}. Proceeding best-effort.",
                   flush=True)
 
-        req_det_eff = req_det if counts["detonation_like"] >= req_det else max(0, counts["detonation_like"])
-        chosen = sample_from_pool(rng, pool, n_target, req_det_eff, req_other_each)
+        chosen = sample_from_pool(rng, pool, target_counts, n_target)
 
         U_list = []
         for i, (U, meta) in enumerate(chosen):
@@ -591,8 +818,10 @@ def main():
             rows.append(meta_row)
             U_list.append(U.astype(np.float32))
 
-        blobs[split] = np.stack(U_list, axis=0)  # (Ncases, Nt, Nx)
+        if len(U_list) == 0:
+            raise RuntimeError(f"No samples selected for split={split}")
 
+        blobs[split] = np.stack(U_list, axis=0)  # (Ncases, Nt, Nx)
     # write files
     meta = pd.DataFrame(rows)
     meta.to_csv("data/meta.csv", index=False)

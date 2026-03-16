@@ -1,4 +1,4 @@
-# Hybrid: WENO solver (data) + Causal PINN + Transformer (model)
+<!-- # Hybrid: WENO solver (data) + Causal PINN + Transformer (model)
 
 Fixes the sketch code:
 
@@ -59,4 +59,298 @@ It mixes information from nearby points (local receptive field), often strong fo
 ## Strong OOD update
 
 This variant increases OOD strength so profile/mismatch splits differ measurably.
-After dataset generation, run: `python verify_ood.py`.
+After dataset generation, run: `python verify_ood.py`. -->
+
+# Physics-Informed Transformer Surrogate for the Burgers Equation with a Reaction Source Term
+
+This project builds a **physics-informed surrogate model** for a
+simplified detonation-like system using a **1D viscous Burgers equation
+with a reaction source term**.
+
+The workflow combines:
+
+- **High-resolution numerical solver** (WENO5 + SSP-RK3) to generate
+  training data\
+- **Transformer-based surrogate model** for predicting future states\
+- **Physics-informed training (PINN loss)** using PDE residuals\
+- **Regime classification** (no detonation / deflagration-like /
+  detonation-like)\
+- **Out-of-distribution (OOD) evaluation**
+
+The goal is to study whether **physics-informed sequence models can
+generalize better than purely data-driven models for
+shock/detonation-like dynamics.**
+
+---
+
+# Method Overview
+
+## Governing Equation
+
+Training data is generated from a simplified PDE model:
+
+u_t + u u_x = ν u_xx + R(u,T)
+
+where
+
+- u(x,t) : state variable\
+- ν : viscosity coefficient\
+- R(u,T) : simplified reaction source term
+
+This equation acts as a **detonation analogue model**, capturing
+nonlinear shock formation and reaction-driven amplification without
+modeling full chemical kinetics.
+
+---
+
+## Numerical Solver
+
+The dataset is generated using a high-resolution finite-volume solver.
+
+Numerical method:
+
+- **WENO5 reconstruction** for the convection term\
+- **Rusanov flux**\
+- **SSP-RK3 time integration**
+
+Each simulation produces a trajectory:
+
+U(t, x)
+
+These trajectories are then converted into supervised learning samples.
+
+---
+
+# Learning Task
+
+The surrogate model learns **temporal evolution of spatial fields**.
+
+Each training sample is constructed from a short time window of
+simulation data.
+
+### Input
+
+spatial grid x\
+history window u_hist (H past timesteps)
+
+### Output
+
+next field u_next
+
+The model therefore learns a spatiotemporal mapping:
+
+u(t + Δt, x) = F(u(t-H:t, x))
+
+where the model predicts the **next spatial field** given a short
+history of previous states.
+
+---
+
+# Hybrid Training Objective
+
+The model is trained with several complementary loss components.
+
+## Data Loss
+
+Regression loss between the predicted field and the solver output.
+
+MSE(u_pred, u_next)
+
+## Physics Loss (PINN)
+
+A physics residual is computed from the Burgers + reaction equation
+using automatic differentiation.
+
+This physics-informed loss encourages predictions to remain consistent
+with the governing PDE.
+
+## Total Variation (TV) Loss
+
+A spatial smoothness penalty that discourages unphysical oscillations in
+the predicted solution.
+
+## Regime Classification Loss
+
+In addition to predicting the next field, the model also predicts the
+**combustion regime**.
+
+The classification labels are:
+
+- no_detonation
+- deflagration_like
+- detonation_like
+
+These labels are derived from solver diagnostics such as shock strength
+and gradient magnitude.
+
+---
+
+# Dataset Generation
+
+Before training, a dataset must be generated from the numerical solver.
+
+## Step 1 --- Calibrate coefficient-aware thresholds
+
+Run:
+
+python build_dataset.py --calibrate_by_coeff
+
+This computes regime classification thresholds for each coefficient
+combination:
+
+(ν, k, E)
+
+The thresholds are saved to:
+
+data/thresholds_by_coeff.json
+
+This calibration step ensures regime labels remain meaningful even when
+the PDE coefficients change.
+
+## Step 2 --- Generate dataset
+
+Run:
+
+python build_dataset.py
+
+This generates the dataset:
+
+data/ ├── meta.csv ├── grid.npz ├── u_train.npz ├── u_val.npz ├──
+u_test_profile_ood.npz ├── u_test_mismatch_ood.npz └──
+thresholds_by_coeff.json
+
+---
+
+# Training
+
+Train the hybrid Transformer model using:
+
+python train_transformer_hybrid.py --mode full
+
+Available training modes:
+
+mode description
+
+---
+
+full data + physics + TV + classification
+no_causal same as full but without causal model setting
+no_phys data + TV + classification (no physics loss)
+data_only data + classification only
+
+The best checkpoint (based on validation MSE) is saved automatically.
+
+---
+
+# Evaluation
+
+Evaluate a trained model using:
+
+python eval_transformer_hybrid.py --mode full
+
+Evaluation metrics include:
+
+- Mean Squared Error (MSE)
+- Root Mean Squared Error (RMSE)
+- Classification accuracy
+- Classification loss
+
+Evaluation is performed on three datasets:
+
+val\
+test_profile_ood\
+test_mismatch_ood
+
+---
+
+# OOD Settings
+
+Two types of distribution shift are included.
+
+## Profile OOD
+
+The temperature profile curvature parameter (b_quad) differs from the
+training distribution.
+
+This tests robustness to **changes in input field structure**.
+
+## Solver Mismatch OOD
+
+Test cases use different PDE coefficients:
+
+ν, k, E
+
+This tests whether the surrogate model generalizes to **different
+physical regimes**.
+
+Coefficient-aware threshold calibration ensures regime labels remain
+consistent.
+
+In practice, the two OOD types behave differently:
+Profile OOD mainly changes the **input field shape**, while solver-mismatch OOD changes the **governing coefficients** and induces measurable differences in **shock-strength diagnostics**, even when field-level differences remain moderate.
+
+The verify_ood.py script can be used to inspect these differences using trajectory diagnostics such as peak gradient and final-time error.
+
+---
+
+# Experiment Runner
+
+Multiple experiments (training modes and random seeds) can be run
+automatically using:
+
+python run_experiments_hybrid.py --modes full no_causal no_phys
+data_only --seeds 0 1 2 3 4
+
+This script:
+
+1.  runs training\
+2.  runs evaluation\
+3.  aggregates metrics
+
+and writes a summary file.
+
+---
+
+# Installation
+
+Install the required Python packages:
+
+pip install numpy pandas torch matplotlib
+
+---
+
+# Typical Workflow
+
+# 1. calibrate regime thresholds
+
+python build_dataset.py --calibrate_by_coeff
+
+# 2. generate dataset
+
+python build_dataset.py
+
+# 3. train model
+
+python train_transformer_hybrid.py --mode full
+
+# 4. evaluate model
+
+python eval_transformer_hybrid.py --mode full
+
+---
+
+# Research Motivation
+
+Detonation simulations using full CFD are computationally expensive.
+
+This project explores whether a **physics-informed machine learning
+surrogate** can:
+
+- predict shock evolution
+- classify combustion regimes
+- generalize to unseen physical parameters
+
+while maintaining consistency with the governing PDE.
+
+The Burgers + reaction system serves as a **simplified detonation
+analogue model** that captures essential nonlinear shock dynamics.

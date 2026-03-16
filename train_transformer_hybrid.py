@@ -53,8 +53,8 @@ def main():
     ap.add_argument("--u_val", default="u_val.npz")
     ap.add_argument("--stride", type=int, default=1)
     ap.add_argument("--save_dir", default="ckpt")
-    ap.add_argument("--cls_tail_frac", type=float, default=0.3,
-                help="Use classification loss only on the last frac of windows. 0.3 means last 30%.")
+    # ap.add_argument("--cls_tail_frac", type=float, default=0.3,
+    #             help="Use classification loss only on the last frac of windows. 0.3 means last 30%.")
     args = ap.parse_args()
 
     set_seed(args.seed)
@@ -87,10 +87,10 @@ def main():
 
     def run_epoch(train: bool):
         model.train(train)
-        total = {"loss":0.0,"data":0.0,"phys":0.0,"tv":0.0,"cls":0.0,"mse":0.0,"acc":0.0,"acc_tail":0.0,"n":0,"n_tail":0}
+        total = {"loss":0.0,"data":0.0,"phys":0.0,"tv":0.0,"cls":0.0,"mse":0.0,"acc":0.0,"acc_tail":0.0,"n":0}
         loader = dl_train if train else dl_val
         for batch in loader:
-            x, u_hist, u_next, u_last, regime_id, params, t0 = batch
+            x, u_hist, u_next, u_last, regime_id, params, _ = batch
             # x: (B,Nx), u_hist: (B,Nx,H), u_next: (B,Nx)
             x = x.to(device)
             u_hist = u_hist.to(device)
@@ -110,25 +110,25 @@ def main():
             # if logits is not None:
             #     cls_loss = ce(logits, y_cls)
             #     acc = (logits.argmax(dim=1) == y_cls).float().mean()
-            cls_loss = torch.tensor(0.0, device=device)
-            acc = torch.tensor(0.0, device=device)
-            acc_tail = torch.tensor(0.0, device=device)
+            # cls_loss = torch.tensor(0.0, device=device)
+            # acc = torch.tensor(0.0, device=device)
+            # acc_tail = torch.tensor(0.0, device=device)
 
-            if logits is not None:
-                # overall accuracy (전체 샘플 기준, 모니터링용)
-                acc = (logits.argmax(dim=1) == y_cls).float().mean()
+            # if logits is not None:
+            #     # overall accuracy (전체 샘플 기준, 모니터링용)
+            #     acc = (logits.argmax(dim=1) == y_cls).float().mean()
 
-                # t0 기반으로 후반 window만 classification loss 적용
-                t0 = t0.to(device)
-                tail_frac = float(args.cls_tail_frac)
-                tail_frac = min(max(tail_frac, 0.0), 1.0)
+            #     # t0 기반으로 후반 window만 classification loss 적용
+            #     t0 = t0.to(device)
+            #     tail_frac = float(args.cls_tail_frac)
+            #     tail_frac = min(max(tail_frac, 0.0), 1.0)
 
                 # Nt-H 개의 가능한 시작점 중 마지막 tail_frac 부분만 사용
                 #n_t0_total = max(ds_train.Nt - args.H, 1)
-                n_t0_total = max(loader.dataset.Nt - args.H, 1)
-                t_cut = int((1.0 - tail_frac) * n_t0_total)
+                # n_t0_total = max(loader.dataset.Nt - args.H, 1)
+                # t_cut = int((1.0 - tail_frac) * n_t0_total)
 
-                mask = t0 >= t_cut  # 후반 window만 True
+                # mask = t0 >= t_cut  # 후반 window만 True
 
                 # if mask.any():
                 #     cls_loss = ce(logits[mask], y_cls[mask])
@@ -136,14 +136,22 @@ def main():
                 # else:
                 #     cls_loss = torch.tensor(0.0, device=device)
                 #     acc_tail = torch.tensor(0.0, device=device)
-                n_tail_batch = 0
-                if mask.any():
-                    cls_loss = ce(logits[mask], y_cls[mask])
-                    acc_tail = (logits[mask].argmax(dim=1) == y_cls[mask]).float().mean()
-                    n_tail_batch = int(mask.sum().item())
-                else:
-                    cls_loss = torch.tensor(0.0, device=device)
-                    acc_tail = torch.tensor(0.0, device=device)
+                # n_tail_batch = 0
+                # if mask.any():
+                #     cls_loss = ce(logits[mask], y_cls[mask])
+                #     acc_tail = (logits[mask].argmax(dim=1) == y_cls[mask]).float().mean()
+                #     n_tail_batch = int(mask.sum().item())
+                # else:
+                #     cls_loss = torch.tensor(0.0, device=device)
+                #     acc_tail = torch.tensor(0.0, device=device)
+            cls_loss = torch.tensor(0.0, device=device)
+            acc = torch.tensor(0.0, device=device)
+
+            if logits is not None:
+                cls_loss = ce(logits, y_cls)
+                acc = (logits.argmax(dim=1) == y_cls).float().mean()
+                                
+                    
             tv_loss = tv_1d(u_pred)
 
             phys_loss = torch.tensor(0.0, device=device)
@@ -173,24 +181,27 @@ def main():
             total["cls"]  += cls_loss.item()*bs
             total["mse"]  += data_loss.item()*bs
             total["acc"]  += acc.item()*bs
-            if n_tail_batch > 0:
-                total["acc_tail"] += acc_tail.item() * n_tail_batch
-                total["n_tail"] += n_tail_batch
+            # if n_tail_batch > 0:
+            #     total["acc_tail"] += acc_tail.item() * n_tail_batch
+            #     total["n_tail"] += n_tail_batch
             total["n"]    += bs
+        # for k in ["loss","data","phys","tv","cls","mse","acc"]:
+        #     total[k] /= max(total["n"],1)
+
+        # if total["n_tail"] > 0:
+        #     total["acc_tail"] /= total["n_tail"]
+        # else:
+        #     total["acc_tail"] = 0.0
+        # return total
         for k in ["loss","data","phys","tv","cls","mse","acc"]:
             total[k] /= max(total["n"],1)
-
-        if total["n_tail"] > 0:
-            total["acc_tail"] /= total["n_tail"]
-        else:
-            total["acc_tail"] = 0.0
         return total
 
     for ep in range(1, args.epochs+1):
         tr = run_epoch(train=True)
         va = run_epoch(train=False)
         print(f"[{args.arch}/{args.mode}] ep {ep:4d} | train loss {tr['loss']:.3e} (data {tr['data']:.2e} phys {tr['phys']:.2e} tv {tr['tv']:.2e} cls {tr['cls']:.2e}) | "
-              f"val mse {va['mse']:.3e} acc {va['acc']:.2f} tail_acc {va['acc_tail']:.2f}")
+              f"val mse {va['mse']:.3e} acc {va['acc']:.2f}")
 
         if va["mse"] < best_val:
             best_val = va["mse"]

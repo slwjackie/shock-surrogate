@@ -63,8 +63,8 @@ def main():
     ap.add_argument("--lr", type=float, default=2e-4)
     ap.add_argument("--stride", type=int, default=1)
     ap.add_argument("--num_workers", type=int, default=0)
-    ap.add_argument("--cls_tail_frac", type=float, default=0.3,
-                help="Use classification loss only on the last frac of windows.")
+    # ap.add_argument("--cls_tail_frac", type=float, default=0.3,
+    #             help="Use classification loss only on the last frac of windows.")
 
     ap.add_argument("--data_dir", default="data")
     ap.add_argument("--ckpt_dir", default="ckpt")
@@ -111,7 +111,7 @@ def main():
                 "--lr", str(args.lr),
                 "--stride", str(args.stride),
                 "--num_workers", str(args.num_workers),
-                "--cls_tail_frac", str(args.cls_tail_frac),
+                # "--cls_tail_frac", str(args.cls_tail_frac),
                 "--meta_csv", meta_csv,
                 "--u_train", u_train,
                 "--u_val", u_val,
@@ -126,7 +126,7 @@ def main():
                 "--H", str(args.H),
                 "--batch_size", "32",
                 "--num_workers", str(args.num_workers),
-                "--cls_tail_frac", str(args.cls_tail_frac),
+                # "--cls_tail_frac", str(args.cls_tail_frac),
                 "--meta_csv", meta_csv,
                 "--u_val", u_val,
                 "--u_test_profile", u_prof,

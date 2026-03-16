@@ -72,48 +72,140 @@ def rhs_weno(u, dx, nu, Tfield, k, E, ng=3):
     dudt[ng:ng+nx] += k * (1.0 - up[ng:ng+nx]) * np.exp(-E/np.maximum(Tin, 1e-6))
     return dudt
 
+# def simulate_case(L_mm=20.0, Nx=256, t_end=1.0, Nt_save=100, CFL=0.45,
+#                   nu=0.002, k=1.5, E=5.0, dTdx=0.0, b_quad=0.0, seed=0):
+#     '''
+#     Returns:
+#       x (normalized 0..1): (Nx,)
+#       t (0..1): (Nt_save,)
+#       U: (Nt_save, Nx) solution snapshots
+#     '''
+#     rng = np.random.default_rng(seed)
+#     L = L_mm
+#     x = np.linspace(0, L, Nx)
+#     dx = x[1]-x[0]
+#     xn = x / L
+#     # temperature proxy (nondim): 1 + a*x + b*x^2
+#     Tfield = 1.0 + 0.35*dTdx*(xn) + 0.40*b_quad*(xn*xn)
+
+#     # # initial condition: kernel near left + stratification imprint
+#     # u0 = 0.5*np.ones(Nx)
+#     # u0 += 1.2*np.exp(-((x-0.8)/(0.4))**2)
+#     # # imprint temperature stratification into initial state (amplifies OOD differences)
+#     # u0 += 0.6*(Tfield - 1.0)
+#     # u0 = np.clip(u0, 0.0, 2.0)
+
+#     # initial condition: randomized kernel + stratification imprint
+#     u0 = 0.5*np.ones(Nx)
+
+#     # 랜덤 커널 파라미터 (seed에 의해 재현됨)
+#     x0 = rng.uniform(0.2, 1.6)      # 커널 중심 위치 (원하면 범위 조절)
+#     w  = rng.uniform(0.15, 0.8)     # 폭
+#     A  = rng.uniform(0.6, 2.0)      # 진폭
+
+#     u0 += A*np.exp(-((x-x0)/(w))**2)
+
+#     # imprint temperature stratification into initial state (amplifies OOD differences)
+#     u0 += 0.6*(Tfield - 1.0)
+
+#     # clip 완화(추천): 상한을 조금 올려서 포화 줄이기
+#     u0 = np.clip(u0, 0.0, 3.0)
+
+#     ng = 3
+#     u = np.zeros(Nx+2*ng)
+#     u[ng:ng+Nx] = u0
+
+#     ts = np.linspace(0, t_end, Nt_save)
+#     U = np.zeros((Nt_save, Nx), dtype=np.float32)
+#     t = 0.0
+#     ksave = 0
+
+#     steps = 0
+#     while t < t_end - 1e-12:
+#         steps += 1
+#         umax = np.max(np.abs(u[ng:ng+Nx])) + 1e-6
+#         dt = CFL * dx / umax
+#         if ksave < Nt_save:
+#             dt = min(dt, ts[ksave]-t + 1e-12)
+#         dt = max(dt, 1e-6)
+
+#         def F(uvec):
+#             return rhs_weno(uvec, dx, nu, Tfield, k, E, ng=ng)
+
+#         # SSP-RK3
+#         k1 = F(u); u1 = u + dt*k1
+#         k2 = F(u1); u2 = 0.75*u + 0.25*(u1 + dt*k2)
+#         k3 = F(u2); u  = (1/3)*u + (2/3)*(u2 + dt*k3)
+
+#         t += dt
+#         while ksave < Nt_save and t >= ts[ksave] - 1e-12:
+#             U[ksave,:] = u[ng:ng+Nx]
+#             ksave += 1
+#             if ksave >= Nt_save:
+#                 break
+
+#         if steps > 200000:
+#             break
+
+#     # return xn.astype(np.float32), (ts/t_end).astype(np.float32), U
+#     meta_ic = {"x0": float(x0), "w": float(w), "A": float(A)}
+#     return xn.astype(np.float32), (ts/t_end).astype(np.float32), U, meta_ic
 def simulate_case(L_mm=20.0, Nx=256, t_end=1.0, Nt_save=100, CFL=0.45,
-                  nu=0.002, k=1.5, E=5.0, dTdx=0.0, b_quad=0.0, seed=0):
-    '''
+                  nu=0.002, k=1.5, E=5.0, dTdx=0.0, b_quad=0.0,
+                  seed=0, target_label=None):
+    """
     Returns:
       x (normalized 0..1): (Nx,)
       t (0..1): (Nt_save,)
       U: (Nt_save, Nx) solution snapshots
-    '''
-    rng = np.random.default_rng(seed)
+      meta_ic: dict with x0, w, A
+
+    target_label:
+      - "detonation_like"
+      - "deflagration_like"
+      - "no_detonation"
+      - None
+    """
+    rng = np.random.default_rng(seed) 
     L = L_mm
     x = np.linspace(0, L, Nx)
-    dx = x[1]-x[0]
+    dx = x[1] - x[0]
     xn = x / L
-    # temperature proxy (nondim): 1 + a*x + b*x^2
-    Tfield = 1.0 + 0.35*dTdx*(xn) + 0.40*b_quad*(xn*xn)
 
-    # # initial condition: kernel near left + stratification imprint
-    # u0 = 0.5*np.ones(Nx)
-    # u0 += 1.2*np.exp(-((x-0.8)/(0.4))**2)
-    # # imprint temperature stratification into initial state (amplifies OOD differences)
-    # u0 += 0.6*(Tfield - 1.0)
-    # u0 = np.clip(u0, 0.0, 2.0)
+    # temperature proxy (nondim): 1 + a*x + b*x^2
+    Tfield = 1.0 + 0.35 * dTdx * xn + 0.40 * b_quad * (xn * xn)
 
     # initial condition: randomized kernel + stratification imprint
-    u0 = 0.5*np.ones(Nx)
+    u0 = 0.5 * np.ones(Nx)
 
-    # 랜덤 커널 파라미터 (seed에 의해 재현됨)
-    x0 = rng.uniform(0.2, 1.6)      # 커널 중심 위치 (원하면 범위 조절)
-    w  = rng.uniform(0.15, 0.8)     # 폭
-    A  = rng.uniform(0.6, 2.0)      # 진폭
+    # target_label-aware kernel sampling
+    if target_label == "detonation_like":
+        # stronger / sharper / earlier kernel
+        x0 = rng.uniform(0.2, 0.9)
+        w  = rng.uniform(0.12, 0.35)
+        A  = rng.uniform(1.4, 2.4)
+    elif target_label == "no_detonation":
+        # weaker / broader / later kernel
+        x0 = rng.uniform(0.8, 1.6)
+        w  = rng.uniform(0.45, 1.0)
+        A  = rng.uniform(0.4, 1.0)
+    else:
+        # default / middle regime
+        x0 = rng.uniform(0.3, 1.4)
+        w  = rng.uniform(0.18, 0.70)
+        A  = rng.uniform(0.8, 1.8)
 
-    u0 += A*np.exp(-((x-x0)/(w))**2)
+    u0 += A * np.exp(-((x - x0) / w) ** 2)
 
-    # imprint temperature stratification into initial state (amplifies OOD differences)
-    u0 += 0.6*(Tfield - 1.0)
+    # imprint temperature stratification into initial state
+    u0 += 0.6 * (Tfield - 1.0)
 
-    # clip 완화(추천): 상한을 조금 올려서 포화 줄이기
+    # keep some headroom
     u0 = np.clip(u0, 0.0, 3.0)
 
     ng = 3
-    u = np.zeros(Nx+2*ng)
-    u[ng:ng+Nx] = u0
+    u = np.zeros(Nx + 2 * ng)
+    u[ng:ng + Nx] = u0
 
     ts = np.linspace(0, t_end, Nt_save)
     U = np.zeros((Nt_save, Nx), dtype=np.float32)
@@ -123,23 +215,23 @@ def simulate_case(L_mm=20.0, Nx=256, t_end=1.0, Nt_save=100, CFL=0.45,
     steps = 0
     while t < t_end - 1e-12:
         steps += 1
-        umax = np.max(np.abs(u[ng:ng+Nx])) + 1e-6
+        umax = np.max(np.abs(u[ng:ng + Nx])) + 1e-6
         dt = CFL * dx / umax
         if ksave < Nt_save:
-            dt = min(dt, ts[ksave]-t + 1e-12)
+            dt = min(dt, ts[ksave] - t + 1e-12)
         dt = max(dt, 1e-6)
 
         def F(uvec):
             return rhs_weno(uvec, dx, nu, Tfield, k, E, ng=ng)
 
         # SSP-RK3
-        k1 = F(u); u1 = u + dt*k1
-        k2 = F(u1); u2 = 0.75*u + 0.25*(u1 + dt*k2)
-        k3 = F(u2); u  = (1/3)*u + (2/3)*(u2 + dt*k3)
+        k1 = F(u);  u1 = u + dt * k1
+        k2 = F(u1); u2 = 0.75 * u + 0.25 * (u1 + dt * k2)
+        k3 = F(u2); u  = (1.0 / 3.0) * u + (2.0 / 3.0) * (u2 + dt * k3)
 
         t += dt
         while ksave < Nt_save and t >= ts[ksave] - 1e-12:
-            U[ksave,:] = u[ng:ng+Nx]
+            U[ksave, :] = u[ng:ng + Nx]
             ksave += 1
             if ksave >= Nt_save:
                 break
@@ -147,6 +239,5 @@ def simulate_case(L_mm=20.0, Nx=256, t_end=1.0, Nt_save=100, CFL=0.45,
         if steps > 200000:
             break
 
-    # return xn.astype(np.float32), (ts/t_end).astype(np.float32), U
     meta_ic = {"x0": float(x0), "w": float(w), "A": float(A)}
-    return xn.astype(np.float32), (ts/t_end).astype(np.float32), U, meta_ic
+    return xn.astype(np.float32), (ts / t_end).astype(np.float32), U, meta_ic
