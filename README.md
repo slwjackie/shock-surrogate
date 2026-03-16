@@ -215,6 +215,7 @@ python build_dataset.py
 
 This generates the dataset:
 
+```
 data/
 ├── meta.csv
 ├── grid.npz
@@ -223,6 +224,7 @@ data/
 ├── u_test_profile_ood.npz
 ├── u_test_mismatch_ood.npz
 └── thresholds_by_coeff.json
+```
 
 ---
 
