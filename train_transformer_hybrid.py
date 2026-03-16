@@ -23,6 +23,7 @@ import random
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from hybrid_temporal_dataset import HybridTemporalDataset
@@ -37,6 +38,34 @@ def set_seed(seed: int):
 def tv_1d(u: torch.Tensor):
     # u: (B, Nx)
     return (u[:, 1:] - u[:, :-1]).abs().mean()
+
+
+class FocalLoss(nn.Module):
+    def __init__(self, alpha=None, gamma=2.0, reduction="mean"):
+        super().__init__()
+        if alpha is not None:
+            self.alpha = torch.tensor(alpha, dtype=torch.float32)
+        else:
+            self.alpha = None
+        self.gamma = gamma
+        self.reduction = reduction
+
+    def forward(self, logits, target):
+        ce = F.cross_entropy(logits, target, reduction="none")
+        pt = torch.exp(-ce)  # prob of true class
+
+        focal = (1.0 - pt) ** self.gamma * ce
+
+        if self.alpha is not None:
+            alpha = self.alpha.to(logits.device)
+            focal = alpha[target] * focal
+
+        if self.reduction == "mean":
+            return focal.mean()
+        elif self.reduction == "sum":
+            return focal.sum()
+        else:
+            return focal
 
 def main():
     ap = argparse.ArgumentParser()
@@ -77,9 +106,12 @@ def main():
     n_classes = 3
     model = make_model(args.arch, n_classes=n_classes, causal=causal).to(device)
 
+    # opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
+    # mse = nn.MSELoss()
+    # ce  = nn.CrossEntropyLoss()
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
     mse = nn.MSELoss()
-    ce  = nn.CrossEntropyLoss()
+    ce  = FocalLoss(alpha=[1.0, 1.0, 1.2], gamma=2.0, reduction="mean")
 
     save_dir = Path(args.save_dir); save_dir.mkdir(exist_ok=True)
     best_path = save_dir / f"best_{args.arch}_{args.mode}_seed{args.seed}_H{args.H}.pt"
@@ -87,7 +119,7 @@ def main():
 
     def run_epoch(train: bool):
         model.train(train)
-        total = {"loss":0.0,"data":0.0,"phys":0.0,"tv":0.0,"cls":0.0,"mse":0.0,"acc":0.0,"acc_tail":0.0,"n":0}
+        total = {"loss":0.0,"data":0.0,"phys":0.0,"tv":0.0,"cls":0.0,"mse":0.0,"acc":0.0,"n":0}
         loader = dl_train if train else dl_val
         for batch in loader:
             x, u_hist, u_next, u_last, regime_id, params, _ = batch
