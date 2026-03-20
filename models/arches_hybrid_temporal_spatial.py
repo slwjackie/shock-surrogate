@@ -32,7 +32,6 @@ class HybridTransformerCfg:
     n_classes: int = 3
 
 def _causal_mask(L: int, device):
-    # True = masked in PyTorch boolean attn_mask for TransformerEncoderLayer in newer versions
     return torch.triu(torch.ones(L, L, device=device, dtype=torch.bool), diagonal=1)
 
 class TemporalEncoder(nn.Module):
@@ -61,79 +60,6 @@ class TemporalEncoder(nn.Module):
         mask = _causal_mask(h.shape[1], h.device) if causal else None
         h = self.enc(h, mask=mask)
         return self.ln(h)
-
-# class HybridTemporalSpatialTransformer(nn.Module):
-#     def __init__(self, cfg: HybridTransformerCfg):
-#         super().__init__()
-#         self.cfg = cfg
-#         self.temporal = TemporalEncoder(cfg)
-#         # head predicts scalar u_next per x
-#         self.head = nn.Sequential(
-#             nn.Linear(cfg.d_model + 1, cfg.mlp_hidden),
-#             nn.GELU(),
-#             nn.Linear(cfg.mlp_hidden, cfg.mlp_hidden),
-#             nn.GELU(),
-#             nn.Linear(cfg.mlp_hidden, 1),
-#         )
-#         # optional classifier
-#         # self.cls_head = nn.Sequential(
-#         #     nn.Linear(cfg.d_model, cfg.mlp_hidden),
-#         #     nn.GELU(),
-#         #     nn.Linear(cfg.mlp_hidden, cfg.n_classes),
-#         # )
-#         # optional classifier (uses pooled hidden + simple physics features from u_next)
-#         self.cls_head = nn.Sequential(
-#             nn.Linear(cfg.d_model + 3, cfg.mlp_hidden),  # +3: g_peak, u_max, tv
-#             nn.GELU(),
-#             nn.Linear(cfg.mlp_hidden, cfg.n_classes),
-#         ) if cfg.n_classes and cfg.n_classes > 0 else None
-        
-        
-
-#     def forward(self, x: torch.Tensor, u_hist: torch.Tensor):
-#         """
-#         x: (B, Nx) continuous coordinates (requires_grad can be True)
-#         u_hist: (B, Nx, H) history snapshots for each x
-
-#         returns:
-#           u_next: (B, Nx)
-#           logits: (B, n_classes) or None
-#         """
-#         B, Nx, H = u_hist.shape
-#         # temporal encoding per spatial point
-#         u_seq = u_hist.reshape(B*Nx, H, 1)
-#         h = self.temporal(u_seq, causal=self.cfg.causal)         # (B*Nx, H, d_model)
-#         h_last = h[:, -1, :]                                     # (B*Nx, d_model)
-
-#         # head uses x coordinate
-#         x_flat = x.reshape(B*Nx, 1)
-#         feat = torch.cat([h_last, x_flat], dim=-1)
-#         u_next = self.head(feat).reshape(B, Nx)
-
-#         # logits = None
-#         # if self.cls_head is not None:
-#         #     # pool h_last over space to get case-level representation
-#         #     pooled = h_last.reshape(B, Nx, -1).mean(dim=1)       # (B, d_model)
-#         #     logits = self.cls_head(pooled)
-#         logits = None
-#         if self.cls_head is not None:
-#             # 1) pooled hidden (case-level)
-#             pooled = h_last.reshape(B, Nx, -1).mean(dim=1)  # (B, d_model)
-
-#             # 2) physics-inspired features from predicted field u_next (aka u_pred)
-#             # u_next: (B, Nx)
-#             du = (u_next[:, 1:] - u_next[:, :-1]).abs()     # (B, Nx-1)
-#             g_peak = du.max(dim=1).values                   # (B,)  ~ max|du/dx| proxy (dx constant)
-#             tv = du.mean(dim=1)                             # (B,)  ~ TV proxy
-#             u_max = u_next.max(dim=1).values                # (B,)
-
-#             feat = torch.stack([g_peak, u_max, tv], dim=1)  # (B, 3)
-
-#             # 3) concat and classify
-#             pooled_plus = torch.cat([pooled, feat], dim=1)  # (B, d_model+3)
-#             logits = self.cls_head(pooled_plus)
-#         return u_next, logits
-
 
 
 class HybridTemporalSpatialTransformer(nn.Module):

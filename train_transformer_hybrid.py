@@ -82,8 +82,6 @@ def main():
     ap.add_argument("--u_val", default="u_val.npz")
     ap.add_argument("--stride", type=int, default=1)
     ap.add_argument("--save_dir", default="ckpt")
-    # ap.add_argument("--cls_tail_frac", type=float, default=0.3,
-    #             help="Use classification loss only on the last frac of windows. 0.3 means last 30%.")
     args = ap.parse_args()
 
     set_seed(args.seed)
@@ -106,9 +104,6 @@ def main():
     n_classes = 3
     model = make_model(args.arch, n_classes=n_classes, causal=causal).to(device)
 
-    # opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
-    # mse = nn.MSELoss()
-    # ce  = nn.CrossEntropyLoss()
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr)
     mse = nn.MSELoss()
     ce  = FocalLoss(alpha=[1.0, 1.0, 1.2], gamma=2.0, reduction="mean")
@@ -137,45 +132,6 @@ def main():
 
             data_loss = mse(u_pred, u_next)
 
-            # cls_loss = torch.tensor(0.0, device=device)
-            # acc = torch.tensor(0.0, device=device)
-            # if logits is not None:
-            #     cls_loss = ce(logits, y_cls)
-            #     acc = (logits.argmax(dim=1) == y_cls).float().mean()
-            # cls_loss = torch.tensor(0.0, device=device)
-            # acc = torch.tensor(0.0, device=device)
-            # acc_tail = torch.tensor(0.0, device=device)
-
-            # if logits is not None:
-            #     # overall accuracy (전체 샘플 기준, 모니터링용)
-            #     acc = (logits.argmax(dim=1) == y_cls).float().mean()
-
-            #     # t0 기반으로 후반 window만 classification loss 적용
-            #     t0 = t0.to(device)
-            #     tail_frac = float(args.cls_tail_frac)
-            #     tail_frac = min(max(tail_frac, 0.0), 1.0)
-
-                # Nt-H 개의 가능한 시작점 중 마지막 tail_frac 부분만 사용
-                #n_t0_total = max(ds_train.Nt - args.H, 1)
-                # n_t0_total = max(loader.dataset.Nt - args.H, 1)
-                # t_cut = int((1.0 - tail_frac) * n_t0_total)
-
-                # mask = t0 >= t_cut  # 후반 window만 True
-
-                # if mask.any():
-                #     cls_loss = ce(logits[mask], y_cls[mask])
-                #     acc_tail = (logits[mask].argmax(dim=1) == y_cls[mask]).float().mean()
-                # else:
-                #     cls_loss = torch.tensor(0.0, device=device)
-                #     acc_tail = torch.tensor(0.0, device=device)
-                # n_tail_batch = 0
-                # if mask.any():
-                #     cls_loss = ce(logits[mask], y_cls[mask])
-                #     acc_tail = (logits[mask].argmax(dim=1) == y_cls[mask]).float().mean()
-                #     n_tail_batch = int(mask.sum().item())
-                # else:
-                #     cls_loss = torch.tensor(0.0, device=device)
-                #     acc_tail = torch.tensor(0.0, device=device)
             cls_loss = torch.tensor(0.0, device=device)
             acc = torch.tensor(0.0, device=device)
 
@@ -213,18 +169,8 @@ def main():
             total["cls"]  += cls_loss.item()*bs
             total["mse"]  += data_loss.item()*bs
             total["acc"]  += acc.item()*bs
-            # if n_tail_batch > 0:
-            #     total["acc_tail"] += acc_tail.item() * n_tail_batch
-            #     total["n_tail"] += n_tail_batch
             total["n"]    += bs
-        # for k in ["loss","data","phys","tv","cls","mse","acc"]:
-        #     total[k] /= max(total["n"],1)
-
-        # if total["n_tail"] > 0:
-        #     total["acc_tail"] /= total["n_tail"]
-        # else:
-        #     total["acc_tail"] = 0.0
-        # return total
+    
         for k in ["loss","data","phys","tv","cls","mse","acc"]:
             total[k] /= max(total["n"],1)
         return total

@@ -35,9 +35,6 @@ from sim.solver_burgers_weno import simulate_case
 LABELS = ["no_detonation", "deflagration_like", "detonation_like"]
 LABEL2ID = {k: i for i, k in enumerate(LABELS)}
 
-# -----------------------------
-# Utilities
-# -----------------------------
 def _get(obj, name, default):
     return getattr(obj, name) if hasattr(obj, name) else default
 
@@ -70,9 +67,6 @@ def _coeff_key(nu: float, k: float, E: float, nu_edges, k_edges, E_edges) -> str
 def _ensure_dir(p: str):
     os.makedirs(p, exist_ok=True)
 
-# -----------------------------
-# Metrics (diagnostics + label)
-# -----------------------------
 def compute_diagnostics(U, x, t_norm, sc: SimCfg, t_end_actual: float):
     """
     Return diagnostics that are *independent of regime thresholds*.
@@ -116,19 +110,6 @@ def compute_diagnostics(U, x, t_norm, sc: SimCfg, t_end_actual: float):
             if float(np.max(U[i])) >= float(u_runup_thr):
                 runup_u = float(tn * t_end_actual)
                 break
-
-    # gradient run-up time (optional diagnostic)
-    # grad_runup_thr = getattr(sc, "grad_runup_threshold", None)
-    # if grad_runup_thr is None:
-    #     grad_runup_thr = 0.25 * g_peak if g_peak > 0 else 0.0
-    # runup_g = np.nan
-    # for i, tn in enumerate(t_norm):
-    #     if float(gmax_t[i]) >= float(grad_runup_thr):
-    #         runup_g = float(tn * t_end_actual)
-    #         break
-
-    # gradient run-up time (optional diagnostic)
-    # NEW: relative-to-initial growth rule (more physically consistent across conditions)
     grad_runup_mult = getattr(sc, "grad_runup_mult", 2.0)  # e.g., 2x growth from initial gradient
     g0 = float(gmax_t[0])
     g0 = max(g0, 1e-8)  # safety floor
@@ -169,12 +150,8 @@ def assign_regime_by_coeff(d, th_bucket):
     else:
         regime = "deflagration_like"
 
-    # g_ratio/v_ratio는 더 이상 의미 없으니 그냥 참고용으로만 반환
     return regime, dict(g_ratio=np.nan, v_ratio=np.nan)
 
-# -----------------------------
-# Guided sampling for dTdx (keep)
-# -----------------------------
 def sample_dTdx_guided(rng, dc, target_label: str):
     lo, hi = float(dc.dTdx_min), float(dc.dTdx_max)
     sign = 1.0
@@ -201,9 +178,6 @@ def sample_dTdx_guided(rng, dc, target_label: str):
         a, b = lo + 0.55 * span, hi
     return float(rng.uniform(a, b))
 
-# -----------------------------
-# Calibration (condition-aware)
-# -----------------------------
 def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Generator,
                                   n_samples: int = 4000,
                                   nu_bins: int = 3, k_bins: int = 2, E_bins: int = 2,
@@ -217,7 +191,7 @@ def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Genera
     # Define coefficient ranges
     nu_nom_lo = float(sc.nu) * float(_get(dc, "nu_scale_min", 1.0))
     nu_nom_hi = float(sc.nu) * float(_get(dc, "nu_scale_max", 1.0))
-    # Allow optional mismatch ranges; fallback to point-mass at nu_ood/k_ood/E_ood
+  
     nu_ood_lo = float(_get(dc, "nu_ood_min", _get(dc, "nu_ood", sc.nu)))
     nu_ood_hi = float(_get(dc, "nu_ood_max", _get(dc, "nu_ood", sc.nu)))
     k_ood_lo  = float(_get(dc, "k_ood_min",  _get(dc, "k_ood",  sc.k)))
@@ -225,8 +199,6 @@ def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Genera
     E_ood_lo  = float(_get(dc, "E_ood_min",  _get(dc, "E_ood",  sc.E)))
     E_ood_hi  = float(_get(dc, "E_ood_max",  _get(dc, "E_ood",  sc.E)))
 
-    # We'll calibrate over the union of nominal and mismatch ranges for nu,
-    # and over union for k,E (nominal are fixed sc.k/sc.E unless user provides ranges).
     k_nom_lo = float(_get(dc, "k_nom_min", sc.k))
     k_nom_hi = float(_get(dc, "k_nom_max", sc.k))
     E_nom_lo = float(_get(dc, "E_nom_min", sc.E))
@@ -239,13 +211,11 @@ def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Genera
     E_lo = min(E_nom_lo, E_ood_lo)
     E_hi = max(E_nom_hi, E_ood_hi)
 
-    # Bin edges: nu on log scale (positive), k/E on linear scale
     nu_edges = _log_edges(nu_lo, nu_hi, nu_bins)
     k_edges  = _lin_edges(k_lo, k_hi,  k_bins)
     E_edges  = _lin_edges(E_lo, E_hi,  E_bins)
 
-    # Collect diagnostics per bucket
-    buckets = {}  # key -> {"gs": [...], "vs":[...], "n":int}
+    buckets = {} 
     t0 = time.time()
     print(f"[calibration_by_coeff] n_samples={n_samples} bins: nu={nu_bins},k={k_bins},E={E_bins}", flush=True)
 
@@ -253,7 +223,6 @@ def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Genera
     te_smax = float(_get(dc, "t_end_scale_max", 1.0))
 
     for i in range(int(n_samples)):
-        # Sample coefficients across union range (this is what makes it "generalized")
         nu = float(np.exp(rng.uniform(np.log(max(nu_lo,1e-12)), np.log(max(nu_hi, nu_lo*1.000001)))))
         k  = float(rng.uniform(k_lo, k_hi)) if k_hi > k_lo else float(k_lo)
         E  = float(rng.uniform(E_lo, E_hi)) if E_hi > E_lo else float(E_lo)
@@ -299,10 +268,7 @@ def calibrate_thresholds_by_coeff(sc: SimCfg, dc: DataCfg, rng: np.random.Genera
         gs = np.asarray(b["gs"], dtype=float)
         vs = np.asarray(b["vs"], dtype=float)
 
-        # 기존 유지(원하면 v_ref는 진짜 안 써도 됨)
         v_ref = float(np.quantile(vs, 0.90)) if vs.size else 1e-12
-
-        # NEW: g-based refs
         g_no_ref  = float(np.quantile(gs, 0.20)) if gs.size else 1e-12
         g_det_ref = float(np.quantile(gs, 0.90)) if gs.size else 1e-12
 
@@ -333,7 +299,6 @@ def load_thresholds_by_coeff():
 
 def _nearest_bucket(key: str, th_buckets: dict) -> str:
     # Simple fallback: if exact key missing, choose bucket with max n
-    # (You can refine later by param-space distance.)
     if key in th_buckets:
         return key
     best = None
@@ -345,144 +310,6 @@ def _nearest_bucket(key: str, th_buckets: dict) -> str:
             best = k
     return best if best is not None else list(th_buckets.keys())[0]
 
-# -----------------------------
-# Pool generation (label-aware, condition-aware)
-# -----------------------------
-# def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
-#                        ood_profile=False, ood_mismatch=False,
-#                        max_tries_factor=80.0, log_every=200):
-#     """
-#     Similar to original, but regime label uses thresholds_by_coeff based on (nu,k,E) bucket.
-#     """
-#     det_min_frac = {
-#         "train": _get(dc, "det_min_frac_train", 0.10),
-#         "val": _get(dc, "det_min_frac_val", 0.10),
-#         "test_profile_ood": _get(dc, "det_min_frac_test_profile_ood", 0.10),
-#         "test_mismatch_ood": _get(dc, "det_min_frac_test_mismatch_ood", 0.10),
-#     }.get(split, 0.10)
-
-#     req_det = int(math.ceil(det_min_frac * n_target))
-#     req_other_each = int(_get(dc, "min_other_each", 1))
-#     if split == "test_mismatch_ood":
-#         # keep as originally relaxed, but now labels should not collapse
-#         req_other_each = int(_get(dc, "min_other_each_mismatch", 0))
-
-#     pool = {lab: [] for lab in LABELS}
-#     attempts = 0
-#     max_attempts = int(max(1, math.ceil(n_target * max_tries_factor)))
-#     t_start = time.time()
-
-#     def counts():
-#         return {lab: len(pool[lab]) for lab in LABELS}
-
-#     # Load edges for bucketization
-#     nu_edges = np.asarray(th_all["meta"]["nu_edges"], dtype=float)
-#     k_edges  = np.asarray(th_all["meta"]["k_edges"], dtype=float)
-#     E_edges  = np.asarray(th_all["meta"]["E_edges"], dtype=float)
-#     th_buckets = th_all["buckets"]
-
-#     # coeff ranges for mismatch sampling (generalized)
-#     nu_ood_lo = float(_get(dc, "nu_ood_min", _get(dc, "nu_ood", sc.nu)))
-#     nu_ood_hi = float(_get(dc, "nu_ood_max", _get(dc, "nu_ood", sc.nu)))
-#     k_ood_lo  = float(_get(dc, "k_ood_min",  _get(dc, "k_ood",  sc.k)))
-#     k_ood_hi  = float(_get(dc, "k_ood_max",  _get(dc, "k_ood",  sc.k)))
-#     E_ood_lo  = float(_get(dc, "E_ood_min",  _get(dc, "E_ood",  sc.E)))
-#     E_ood_hi  = float(_get(dc, "E_ood_max",  _get(dc, "E_ood",  sc.E)))
-
-#     nu_smin = float(_get(dc, "nu_scale_min", 1.0))
-#     nu_smax = float(_get(dc, "nu_scale_max", 1.0))
-#     te_smin = float(_get(dc, "t_end_scale_min", 1.0))
-#     te_smax = float(_get(dc, "t_end_scale_max", 1.0))
-
-#     while attempts < max_attempts:
-#         c = counts()
-#         total = sum(c.values())
-#         if (c["detonation_like"] >= req_det and
-#             c["no_detonation"] >= req_other_each and
-#             c["deflagration_like"] >= req_other_each and
-#             total >= n_target):
-#             break
-
-#         attempts += 1
-
-#         # Decide what label we most need right now
-#         need = []
-#         if c["detonation_like"] < req_det:
-#             need.append("detonation_like")
-#         if c["no_detonation"] < req_other_each:
-#             need.append("no_detonation")
-#         if c["deflagration_like"] < req_other_each:
-#             need.append("deflagration_like")
-#         target_label = rng.choice(need) if need else rng.choice(LABELS)
-
-#         dTdx = sample_dTdx_guided(rng, dc, target_label)
-
-#         b = 0.0
-#         if ood_profile:
-#             b = float(rng.uniform(dc.b_ood_min, dc.b_ood_max))
-
-#         # Sample coefficients
-#         if ood_mismatch:
-#             # generalized mismatch: sample within provided ranges (or point-mass if min=max)
-#             nu = float(rng.uniform(nu_ood_lo, nu_ood_hi)) if nu_ood_hi > nu_ood_lo else float(nu_ood_lo)
-#             k  = float(rng.uniform(k_ood_lo,  k_ood_hi))  if k_ood_hi  > k_ood_lo  else float(k_ood_lo)
-#             E  = float(rng.uniform(E_ood_lo,  E_ood_hi))  if E_ood_hi  > E_ood_lo  else float(E_ood_lo)
-#         else:
-#             nu = float(sc.nu) * float(rng.uniform(nu_smin, nu_smax))
-#             k  = float(sc.k)
-#             E  = float(sc.E)
-
-#         t_end_case = float(sc.t_end) * float(rng.uniform(te_smin, te_smax))
-
-#         x, t_norm, U, ic = simulate_case(
-#             L_mm=sc.L, Nx=sc.Nx, t_end=t_end_case, Nt_save=sc.Nt_save, CFL=sc.CFL,
-#             nu=nu, k=k, E=E, dTdx=dTdx, b_quad=b,
-#             seed=1000 + attempts + (12345 if split.startswith("test") else 0)
-#         )
-
-#         diag = compute_diagnostics(U, x, t_norm, sc, t_end_actual=t_end_case)
-
-#         key = _coeff_key(nu, k, E, nu_edges, k_edges, E_edges)
-#         key_use = _nearest_bucket(key, th_buckets)
-#         regime, ratios = assign_regime_by_coeff(diag, th_buckets[key_use])
-
-#         meta = {
-#             "dTdx": dTdx,
-#             "b_quad": b,
-#             "nu": float(nu),
-#             "k": float(k),
-#             "E": float(E),
-#             "L_mm": float(sc.L),
-#             "Nx": int(sc.Nx),
-#             "Nt": int(sc.Nt_save),
-#             "peak_u": float(diag["peak_u"]),
-#             "runup_time_s": float(diag["runup_time_u_s"]) if not np.isnan(diag["runup_time_u_s"]) else np.nan,
-#             "runup_time_g_s": float(diag["runup_time_g_s"]) if not np.isnan(diag["runup_time_g_s"]) else np.nan,
-#             "g_peak": float(diag["g_peak"]),
-#             "front_speed": float(diag["front_speed"]) if not np.isnan(diag["front_speed"]) else np.nan,
-#             "front_speed_abs": float(diag["front_speed_abs"]),
-#             "coeff_bucket": key_use,
-#             "regime": regime,
-#             "regime_id": LABEL2ID[regime],
-#             "t_end": float(t_end_case),
-#             "dt": float(t_end_case) / max(int(sc.Nt_save) - 1, 1),
-#         }
-#         meta.update(ic)
-#         pool[regime].append((U, meta))
-
-#         if (attempts % log_every) == 0:
-#             c = counts()
-#             elapsed = time.time() - t_start
-#             print(f"[{split}] attempts={attempts}/{max_attempts} counts={c} elapsed={elapsed:.1f}s", flush=True)
-
-#     final_counts = counts()
-#     total = sum(final_counts.values())
-#     ok = (final_counts["detonation_like"] >= req_det and
-#           final_counts["no_detonation"] >= req_other_each and
-#           final_counts["deflagration_like"] >= req_other_each and
-#           total >= n_target)
-
-#     return pool, req_det, req_other_each, attempts, max_attempts, ok, final_counts
 
 def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
                        ood_profile=False, ood_mismatch=False,
@@ -638,39 +465,6 @@ def gen_pool_for_split(sc, dc, rng, split, n_target, th_all,
 
     return pool, target_counts, attempts, max_attempts, ok, final_counts
 
-
-# def sample_from_pool(rng, pool, n_target, req_det, req_other_each):
-#     chosen = []
-
-#     def take(label, k):
-#         items = pool[label]
-#         if k <= 0:
-#             return
-#         if len(items) < k:
-#             raise RuntimeError(f"Not enough '{label}' samples in pool: have {len(items)}, need {k}")
-#         idx = rng.choice(len(items), size=k, replace=False)
-#         idx = sorted(idx, reverse=True)
-#         for i in idx:
-#             chosen.append(items.pop(i))
-
-#     take("detonation_like", req_det)
-#     take("no_detonation", req_other_each)
-#     take("deflagration_like", req_other_each)
-
-#     remaining = n_target - len(chosen)
-#     rest = []
-#     for lab in LABELS:
-#         rest.extend(pool[lab])
-
-#     if remaining > len(rest):
-#         raise RuntimeError(f"Pool too small after mandatory picks: need {remaining}, have {len(rest)}")
-
-#     idx = rng.choice(len(rest), size=remaining, replace=False)
-#     for i in idx:
-#         chosen.append(rest[i])
-
-#     rng.shuffle(chosen)
-#     return chosen
 def sample_from_pool(rng, pool, target_counts, n_target):
     """
     Soft target policy:
@@ -718,9 +512,6 @@ def sample_from_pool(rng, pool, target_counts, n_target):
 
     return chosen[:n_target]
 
-# -----------------------------
-# Main
-# -----------------------------
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--calibrate_by_coeff", action="store_true",
@@ -768,32 +559,6 @@ def main():
 
     max_tries_factor = float(_get(dc, "det_max_tries_factor", 80.0))
     log_every = int(_get(dc, "det_log_every", 200))
-
-    # for split, n_target, ood_profile, ood_mismatch in splits:
-    #     pool, req_det, req_other_each, attempts, max_attempts, ok, counts = gen_pool_for_split(
-    #         sc, dc, rng, split, n_target, th_all,
-    #         ood_profile=ood_profile, ood_mismatch=ood_mismatch,
-    #         max_tries_factor=max_tries_factor,
-    #         log_every=log_every
-    #     )
-
-    #     if not ok:
-    #         print(f"[WARN] Could not fully satisfy constraints for split={split}. counts={counts}, "
-    #               f"req_det={req_det}, req_other_each={req_other_each}. Proceeding best-effort.",
-    #               flush=True)
-
-    #     req_det_eff = req_det if counts["detonation_like"] >= req_det else max(0, counts["detonation_like"])
-    #     chosen = sample_from_pool(rng, pool, n_target, req_det_eff, req_other_each)
-
-    #     U_list = []
-    #     for i, (U, meta) in enumerate(chosen):
-    #         case_id = len(U_list)
-    #         meta_row = {"case_id": case_id, "split": split}
-    #         meta_row.update(meta)
-    #         rows.append(meta_row)
-    #         U_list.append(U.astype(np.float32))
-
-    #     blobs[split] = np.stack(U_list, axis=0)  # (Ncases, Nt, Nx)
 
     for split, n_target, ood_profile, ood_mismatch in splits:
         pool, target_counts, attempts, max_attempts, ok, counts = gen_pool_for_split(

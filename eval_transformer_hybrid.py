@@ -22,61 +22,6 @@ def mse_rmse(pred, y):
     rmse = mse**0.5
     return mse, rmse
 
-# @torch.no_grad()
-# def eval_split(model, dl, device):
-#     ce = nn.CrossEntropyLoss()
-#     total = {"mse":0.0,"rmse":0.0,"acc":0.0,"acc_tail":0.0,"cls_loss":0.0,"n":0, "n_tail": 0}
-#     for batch in dl:
-#         x, u_hist, u_next, u_last, regime_id, params, t0 = batch
-#         x = x.to(device)
-#         u_hist = u_hist.to(device)
-#         u_next = u_next.to(device)
-#         y_cls = regime_id.to(device)
-
-#         u_pred, logits = model(x, u_hist)
-#         mse_v, rmse_v = mse_rmse(u_pred, u_next)
-
-#         # acc = 0.0
-#         # cls_loss = 0.0
-#         # if logits is not None:
-#         #     cls_loss = ce(logits, y_cls).item()
-#         #     acc = (logits.argmax(dim=1) == y_cls).float().mean().item()
-#         cls_loss = 0.0
-#         acc = 0.0
-#         acc_tail = 0.0
-#         n_tail_batch = 0
-
-#         if logits is not None:
-#             pred_cls = logits.argmax(dim=1)
-
-#             # 전체 accuracy
-#             cls_loss = ce(logits, y_cls).item()
-#             acc = (pred_cls == y_cls).float().mean().item()
-
-#             # tail accuracy
-#             t0 = t0.to(device)
-#             tail_frac = float(args.cls_tail_frac)
-#             tail_frac = min(max(tail_frac, 0.0), 1.0)
-
-#             n_t0_total = max(loader.dataset.Nt - args.H, 1)
-#             t_cut = int((1.0 - tail_frac) * n_t0_total)
-
-#             mask = t0 >= t_cut
-
-#             if mask.any():
-#                 acc_tail = (pred_cls[mask] == y_cls[mask]).float().mean().item()
-#                 n_tail_batch = int(mask.sum().item())
-
-#         bs = x.shape[0]
-#         total["mse"] += mse_v*bs
-#         total["rmse"] += rmse_v*bs
-#         total["acc"] += acc*bs
-#         total["cls_loss"] += cls_loss*bs
-#         total["n"] += bs
-#     for k in ["mse","rmse","acc","cls_loss"]:
-#         total[k] /= max(total["n"],1)
-#     return total
-
 @torch.no_grad()
 def eval_split(model, dl, device):
     ce = nn.CrossEntropyLoss()
@@ -134,8 +79,6 @@ def main():
     ap.add_argument("--ckpt_dir", default="ckpt")
     ap.add_argument("--save_metrics", action="store_true")
     ap.add_argument("--out_metrics", default=None)
-    # ap.add_argument("--cls_tail_frac", type=float, default=0.3,
-    #             help="Evaluate tail accuracy on the last frac of windows.")
     args = ap.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
