@@ -7,11 +7,11 @@ with a reaction source term**.
 The workflow combines:
 
 - **High-resolution numerical solver** (WENO5 + SSP-RK3) to generate
-  training data\
-- **Transformer-based surrogate model** for predicting future states\
-- **Physics-informed training (PINN loss)** using PDE residuals\
+  training data
+- **Transformer-based surrogate model** for predicting future states
+- **Physics-informed training (PINN loss)** using PDE residuals
 - **Regime classification** (no detonation / deflagration-like /
-  detonation-like)\
+  detonation-like)
 - **Out-of-distribution (OOD) evaluation**
 
 The goal is to study whether **physics-informed sequence models can
@@ -30,8 +30,8 @@ u_t + u u_x = ν u_xx + R(u,T)
 
 where
 
-- u(x,t) : state variable\
-- ν : viscosity coefficient\
+- u(x,t) : state variable
+- ν : viscosity coefficient
 - R(u,T) : simplified reaction source term
 
 This equation acts as a **detonation analogue model**, capturing
@@ -46,8 +46,8 @@ The dataset is generated using a high-resolution finite-volume solver.
 
 Numerical method:
 
-- **WENO5 reconstruction** for the convection term\
-- **Rusanov flux**\
+- **WENO5 reconstruction** for the convection term
+- **Rusanov flux**
 - **SSP-RK3 time integration**
 
 Each simulation produces a trajectory:
@@ -247,8 +247,8 @@ data_only --seeds 0 1 2 3 4
 
 This script:
 
-1.  runs training\
-2.  runs evaluation\
+1.  runs training
+2.  runs evaluation
 3.  aggregates metrics
 
 and writes a summary file.
