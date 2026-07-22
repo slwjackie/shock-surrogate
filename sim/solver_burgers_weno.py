@@ -1,4 +1,9 @@
+"""WENO5 + Rusanov + SSP-RK3 solver for reactive viscous Burgers dynamics."""
+
+from __future__ import annotations
+
 import numpy as np
+
 
 def weno5_left(v, i, eps=1e-6):
     vmm, vm, v0, vp, vpp = v[i-2], v[i-1], v[i], v[i+1], v[i+2]
@@ -9,12 +14,10 @@ def weno5_left(v, i, eps=1e-6):
     b1 = 13/12*(vm-2*v0+vp)**2 + 1/4*(vm-vp)**2
     b2 = 13/12*(v0-2*vp+vpp)**2 + 1/4*(3*v0-4*vp+vpp)**2
     d0,d1,d2 = 0.1,0.6,0.3
-    a0 = d0/(eps+b0)**2
-    a1 = d1/(eps+b1)**2
-    a2 = d2/(eps+b2)**2
-    s = a0+a1+a2
-    w0,w1,w2 = a0/s,a1/s,a2/s
-    return w0*p0+w1*p1+w2*p2
+    a0,a1,a2 = d0/(eps+b0)**2,d1/(eps+b1)**2,d2/(eps+b2)**2
+    total = a0+a1+a2
+    return (a0*p0+a1*p1+a2*p2)/total
+
 
 def weno5_right(v, i, eps=1e-6):
     vm, v0, vp, vpp, vppp = v[i-1], v[i], v[i+1], v[i+2], v[i+3]
@@ -25,139 +28,112 @@ def weno5_right(v, i, eps=1e-6):
     b1 = 13/12*(vpp-2*vp+v0)**2 + 1/4*(vpp-v0)**2
     b2 = 13/12*(vp-2*v0+vm)**2 + 1/4*(3*vp-4*v0+vm)**2
     d0,d1,d2 = 0.1,0.6,0.3
-    a0 = d0/(eps+b0)**2
-    a1 = d1/(eps+b1)**2
-    a2 = d2/(eps+b2)**2
-    s = a0+a1+a2
-    w0,w1,w2 = a0/s,a1/s,a2/s
-    return w0*p0+w1*p1+w2*p2
+    a0,a1,a2 = d0/(eps+b0)**2,d1/(eps+b1)**2,d2/(eps+b2)**2
+    total = a0+a1+a2
+    return (a0*p0+a1*p1+a2*p2)/total
+
 
 def apply_reflective(u, ng):
-    # Neumann BC via mirror (approx)
-    for k in range(ng):
-        u[k] = u[2*ng-k-1]
-        u[-k-1] = u[-2*ng+k]
+    for offset in range(ng):
+        u[offset] = u[2*ng-offset-1]
+        u[-offset-1] = u[-2*ng+offset]
+
 
 def flux(u):
     return 0.5*u*u
 
+
+def temperature_field(x_normalized, dTdx=0.0, b_quad=0.0):
+    return 1.0 + 0.35*float(dTdx)*x_normalized + 0.40*float(b_quad)*x_normalized**2
+
+
 def rhs_weno(u, dx, nu, Tfield, k, E, ng=3):
-    '''
-    viscous Burgers + reaction:
-      u_t + (0.5 u^2)_x = nu u_xx + k*(1-u)*exp(-E/T)
-    '''
     up = u.copy()
     apply_reflective(up, ng)
-
-    nx = len(u) - 2*ng
-    face_i = np.arange(ng-1, ng+nx)  # nx+1 faces
-
-    uL = np.zeros(nx+1)
-    uR = np.zeros(nx+1)
-    for j,ii in enumerate(face_i):
-        uL[j] = weno5_left(up, ii)
-        uR[j] = weno5_right(up, ii)
-
-    a = np.maximum(np.abs(uL), np.abs(uR))
-    f = 0.5*(flux(uL)+flux(uR)) - 0.5*a*(uR-uL)  # Rusanov flux
-
+    nx = len(u)-2*ng
+    face_indices = np.arange(ng-1, ng+nx)
+    u_left,u_right = np.zeros(nx+1),np.zeros(nx+1)
+    for j,index in enumerate(face_indices):
+        u_left[j] = weno5_left(up,index)
+        u_right[j] = weno5_right(up,index)
+    speed = np.maximum(np.abs(u_left),np.abs(u_right))
+    numerical_flux = 0.5*(flux(u_left)+flux(u_right)) - 0.5*speed*(u_right-u_left)
     dudt = np.zeros_like(u)
-    div = (f[1:]-f[:-1]) / dx
-    dudt[ng:ng+nx] = -div
-
-    ux2 = (up[ng-1:ng+nx-1] - 2*up[ng:ng+nx] + up[ng+1:ng+nx+1]) / (dx*dx)
-    dudt[ng:ng+nx] += nu * ux2
-
-    Tin = Tfield
-    dudt[ng:ng+nx] += k * (1.0 - up[ng:ng+nx]) * np.exp(-E/np.maximum(Tin, 1e-6))
+    dudt[ng:ng+nx] = -(numerical_flux[1:]-numerical_flux[:-1])/dx
+    laplacian = (up[ng-1:ng+nx-1]-2*up[ng:ng+nx]+up[ng+1:ng+nx+1])/(dx*dx)
+    dudt[ng:ng+nx] += float(nu)*laplacian
+    dudt[ng:ng+nx] += float(k)*(1.0-up[ng:ng+nx])*np.exp(-float(E)/np.maximum(Tfield,1e-6))
     return dudt
 
 
-def simulate_case(L_mm=20.0, Nx=256, t_end=1.0, Nt_save=100, CFL=0.45,
-                  nu=0.002, k=1.5, E=5.0, dTdx=0.0, b_quad=0.0,
-                  seed=0, target_label=None):
-    """
-    Returns:
-      x (normalized 0..1): (Nx,)
-      t (0..1): (Nt_save,)
-      U: (Nt_save, Nx) solution snapshots
-      meta_ic: dict with x0, w, A
+def _ssprk3_step(u, dt, dx, nu, Tfield, k, E, ng=3):
+    def operator(state):
+        return rhs_weno(state, dx, nu, Tfield, k, E, ng=ng)
+    k1 = operator(u); u1 = u + dt*k1
+    k2 = operator(u1); u2 = 0.75*u + 0.25*(u1 + dt*k2)
+    k3 = operator(u2)
+    return (1.0/3.0)*u + (2.0/3.0)*(u2 + dt*k3)
 
-    target_label:
-      - "detonation_like"
-      - "deflagration_like"
-      - "no_detonation"
-      - None
-    """
-    rng = np.random.default_rng(seed) 
-    L = L_mm
-    x = np.linspace(0, L, Nx)
-    dx = x[1] - x[0]
-    xn = x / L
 
-    # temperature proxy (nondim): 1 + a*x + b*x^2
-    Tfield = 1.0 + 0.35 * dTdx * xn + 0.40 * b_quad * (xn * xn)
+def _stable_dt(u_inner, dx, nu, k, cfl):
+    advective = float(cfl)*dx/(float(np.max(np.abs(u_inner)))+1e-8)
+    diffusive = 0.45*dx*dx/max(float(nu),1e-12)
+    reactive = 0.25/max(float(k),1e-12)
+    return max(min(advective,diffusive,reactive),1e-8)
 
-    u0 = 0.5 * np.ones(Nx)
 
-    # target_label-aware kernel sampling
-    if target_label == "detonation_like":
-        # stronger / sharper / earlier kernel
-        x0 = rng.uniform(0.2, 0.9)
-        w  = rng.uniform(0.12, 0.35)
-        A  = rng.uniform(1.4, 2.4)
-    elif target_label == "no_detonation":
-        # weaker / broader / later kernel
-        x0 = rng.uniform(0.8, 1.6)
-        w  = rng.uniform(0.45, 1.0)
-        A  = rng.uniform(0.4, 1.0)
-    else:
-        # default / middle regime
-        x0 = rng.uniform(0.3, 1.4)
-        w  = rng.uniform(0.18, 0.70)
-        A  = rng.uniform(0.8, 1.8)
-
-    u0 += A * np.exp(-((x - x0) / w) ** 2)
-
-    u0 += 0.6 * (Tfield - 1.0)
-
-    u0 = np.clip(u0, 0.0, 3.0)
-
+def advance_state(u0, dt_total, L_mm=20.0, CFL=0.45, nu=0.002, k=1.5, E=6.0, dTdx=0.0, b_quad=0.0, max_steps=200000):
+    """Advance an arbitrary physical state by one saved-step interval."""
+    state = np.asarray(u0,dtype=np.float64)
+    nx = state.size
+    if nx < 7:
+        raise ValueError("WENO5 requires at least seven physical cells")
+    x = np.linspace(0.0,float(L_mm),nx)
+    x_normalized = x/float(L_mm)
+    dx = float(x[1]-x[0])
+    temperature = temperature_field(x_normalized,dTdx=dTdx,b_quad=b_quad)
     ng = 3
-    u = np.zeros(Nx + 2 * ng)
-    u[ng:ng + Nx] = u0
+    u = np.zeros(nx+2*ng,dtype=np.float64)
+    u[ng:ng+nx] = state
+    elapsed,steps = 0.0,0
+    while elapsed < float(dt_total)-1e-14:
+        dt = min(_stable_dt(u[ng:ng+nx],dx,nu,k,CFL),float(dt_total)-elapsed)
+        u = _ssprk3_step(u,dt,dx,nu,temperature,k,E,ng=ng)
+        elapsed += dt; steps += 1
+        if steps >= int(max_steps):
+            raise RuntimeError("advance_state exceeded max_steps")
+    return u[ng:ng+nx].astype(np.float32),steps
 
-    ts = np.linspace(0, t_end, Nt_save)
-    U = np.zeros((Nt_save, Nx), dtype=np.float32)
-    t = 0.0
-    ksave = 0
 
-    steps = 0
-    while t < t_end - 1e-12:
-        steps += 1
-        umax = np.max(np.abs(u[ng:ng + Nx])) + 1e-6
-        dt = CFL * dx / umax
-        if ksave < Nt_save:
-            dt = min(dt, ts[ksave] - t + 1e-12)
-        dt = max(dt, 1e-6)
-
-        def F(uvec):
-            return rhs_weno(uvec, dx, nu, Tfield, k, E, ng=ng)
-
-        # SSP-RK3
-        k1 = F(u);  u1 = u + dt * k1
-        k2 = F(u1); u2 = 0.75 * u + 0.25 * (u1 + dt * k2)
-        k3 = F(u2); u  = (1.0 / 3.0) * u + (2.0 / 3.0) * (u2 + dt * k3)
-
-        t += dt
-        while ksave < Nt_save and t >= ts[ksave] - 1e-12:
-            U[ksave, :] = u[ng:ng + Nx]
-            ksave += 1
-            if ksave >= Nt_save:
-                break
-
-        if steps > 200000:
-            break
-
-    meta_ic = {"x0": float(x0), "w": float(w), "A": float(A)}
-    return xn.astype(np.float32), (ts / t_end).astype(np.float32), U, meta_ic
+def simulate_case(L_mm=20.0,Nx=256,t_end=1.0,Nt_save=100,CFL=0.45,nu=0.002,k=1.5,E=5.0,dTdx=0.0,b_quad=0.0,seed=0,target_label=None):
+    rng = np.random.default_rng(seed)
+    x = np.linspace(0,float(L_mm),int(Nx)); dx = float(x[1]-x[0]); xn = x/float(L_mm)
+    temperature = temperature_field(xn,dTdx=dTdx,b_quad=b_quad)
+    u0 = 0.5*np.ones(int(Nx))
+    if target_label == "detonation_like":
+        x0,width,amplitude = rng.uniform(0.2,0.9),rng.uniform(0.12,0.35),rng.uniform(1.4,2.4)
+    elif target_label == "no_detonation":
+        x0,width,amplitude = rng.uniform(0.8,1.6),rng.uniform(0.45,1.0),rng.uniform(0.4,1.0)
+    else:
+        x0,width,amplitude = rng.uniform(0.3,1.4),rng.uniform(0.18,0.70),rng.uniform(0.8,1.8)
+    u0 += amplitude*np.exp(-((x-x0)/width)**2)
+    u0 += 0.6*(temperature-1.0)
+    u0 = np.clip(u0,0.0,3.0)
+    ng = 3
+    u = np.zeros(int(Nx)+2*ng); u[ng:ng+int(Nx)] = u0
+    save_times = np.linspace(0.0,float(t_end),int(Nt_save))
+    snapshots = np.zeros((int(Nt_save),int(Nx)),dtype=np.float32)
+    snapshots[0] = u0.astype(np.float32)
+    save_index,time,steps = 1,0.0,0
+    while save_index < int(Nt_save):
+        target_time = float(save_times[save_index])
+        while time < target_time-1e-14:
+            dt = min(_stable_dt(u[ng:ng+int(Nx)],dx,nu,k,CFL),target_time-time)
+            u = _ssprk3_step(u,dt,dx,nu,temperature,k,E,ng=ng)
+            time += dt; steps += 1
+            if steps > 200000:
+                raise RuntimeError("simulate_case exceeded 200000 steps")
+        snapshots[save_index] = u[ng:ng+int(Nx)]
+        save_index += 1
+    metadata = {"x0":float(x0),"w":float(width),"A":float(amplitude)}
+    return xn.astype(np.float32),(save_times/float(t_end)).astype(np.float32),snapshots,metadata
