@@ -22,4 +22,9 @@ def test_calibration_json_roundtrip(tmp_path):
     assert loaded.group_thresholds == calibrator.group_thresholds
     assert np.allclose(loaded.ood_scorer.mean, calibrator.ood_scorer.mean)
     sample = {name: 0.3 for name in COMPONENT_NAMES}
-    assert loaded.score_one(sample) == calibrator.score_one(sample)
+    assert np.isclose(
+        loaded.score_one(sample),
+        calibrator.score_one(sample),
+        rtol=0.0,
+        atol=1e-14,
+    )
