@@ -1,10 +1,4 @@
-"""Differentiable conservative residuals and risk diagnostics on grid fields.
-
-The numerical generator evolves the conservative Burgers flux with a Rusanov
-flux. This module mirrors that structure at lower order for training and risk
-calibration. Spatial derivatives use the physical coordinate ``x * L_mm``;
-the temperature profile uses normalized ``x`` exactly as the data generator.
-"""
+"""Differentiable conservative residuals and risk diagnostics on grid fields."""
 
 from __future__ import annotations
 
@@ -43,16 +37,31 @@ def physical_grid(x_normalized, L_mm):
     return x_normalized * as_batch_column(L_mm, x_normalized, default=20.0)
 
 
-def mean_dx(x_physical):
+def cell_widths(x_physical: torch.Tensor) -> torch.Tensor:
+    """Finite-volume cell widths reconstructed from monotone cell centers."""
     if x_physical.shape[1] < 2:
-        return torch.ones((x_physical.shape[0], 1), device=x_physical.device, dtype=x_physical.dtype)
-    return (x_physical[:, 1:] - x_physical[:, :-1]).mean(dim=1, keepdim=True).clamp_min(1e-12)
+        return torch.ones_like(x_physical)
+    edges = torch.empty(
+        x_physical.shape[0], x_physical.shape[1] + 1,
+        device=x_physical.device, dtype=x_physical.dtype,
+    )
+    edges[:, 1:-1] = 0.5 * (x_physical[:, :-1] + x_physical[:, 1:])
+    edges[:, 0] = x_physical[:, 0] - 0.5 * (x_physical[:, 1] - x_physical[:, 0])
+    edges[:, -1] = x_physical[:, -1] + 0.5 * (x_physical[:, -1] - x_physical[:, -2])
+    widths = edges[:, 1:] - edges[:, :-1]
+    if torch.any(widths <= 0):
+        raise ValueError("Physical coordinates must be strictly increasing")
+    return widths
+
+
+def mean_dx(x_physical):
+    return cell_widths(x_physical).mean(dim=1, keepdim=True).clamp_min(1e-12)
 
 
 def rusanov_flux_divergence(u, x_physical):
     if u.shape[1] < 2:
         return torch.zeros_like(u)
-    dx = mean_dx(x_physical)
+    widths = cell_widths(x_physical)
     u_left, u_right = u[:, :-1], u[:, 1:]
     f_left, f_right = 0.5 * u_left.square(), 0.5 * u_right.square()
     wave_speed = torch.maximum(u_left.abs(), u_right.abs())
@@ -60,19 +69,33 @@ def rusanov_flux_divergence(u, x_physical):
     left_face = 0.5 * u[:, :1].square()
     right_face = 0.5 * u[:, -1:].square()
     faces = torch.cat([left_face, interior_faces, right_face], dim=1)
-    return (faces[:, 1:] - faces[:, :-1]) / dx
+    return (faces[:, 1:] - faces[:, :-1]) / widths
 
 
 def laplacian_neumann(u, x_physical):
-    dx = mean_dx(x_physical)
-    padded = F.pad(u.unsqueeze(1), (1, 1), mode="replicate").squeeze(1)
-    return (padded[:, 2:] - 2.0 * padded[:, 1:-1] + padded[:, :-2]) / dx.square()
+    if u.shape[1] < 2:
+        return torch.zeros_like(u)
+    # Nonuniform centered second derivative. Replicated boundary states impose a
+    # zero-normal-gradient closure at the two outer faces.
+    left_x = torch.cat([x_physical[:, :1] - (x_physical[:, 1:2] - x_physical[:, :1]), x_physical[:, :-1]], dim=1)
+    right_x = torch.cat([x_physical[:, 1:], x_physical[:, -1:] + (x_physical[:, -1:] - x_physical[:, -2:-1])], dim=1)
+    left_u = torch.cat([u[:, :1], u[:, :-1]], dim=1)
+    right_u = torch.cat([u[:, 1:], u[:, -1:]], dim=1)
+    h_left = (x_physical - left_x).clamp_min(1e-12)
+    h_right = (right_x - x_physical).clamp_min(1e-12)
+    slope_right = (right_u - u) / h_right
+    slope_left = (u - left_u) / h_left
+    return 2.0 * (slope_right - slope_left) / (h_left + h_right)
 
 
 def centered_abs_gradient(u, x_physical):
-    dx = mean_dx(x_physical)
-    padded = F.pad(u.unsqueeze(1), (1, 1), mode="replicate").squeeze(1)
-    return ((padded[:, 2:] - padded[:, :-2]) / (2.0 * dx)).abs()
+    if u.shape[1] < 2:
+        return torch.zeros_like(u)
+    left_x = torch.cat([x_physical[:, :1] - (x_physical[:, 1:2] - x_physical[:, :1]), x_physical[:, :-1]], dim=1)
+    right_x = torch.cat([x_physical[:, 1:], x_physical[:, -1:] + (x_physical[:, -1:] - x_physical[:, -2:-1])], dim=1)
+    left_u = torch.cat([u[:, :1], u[:, :-1]], dim=1)
+    right_u = torch.cat([u[:, 1:], u[:, -1:]], dim=1)
+    return ((right_u - left_u) / (right_x - left_x).clamp_min(1e-12)).abs()
 
 
 def total_variation(u):

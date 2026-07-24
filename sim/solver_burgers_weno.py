@@ -4,6 +4,13 @@ from __future__ import annotations
 
 import numpy as np
 
+from numerics.remap import (
+    cell_edges_from_centers,
+    conservative_remap_1d,
+    is_uniform_grid,
+    uniform_centers_for_domain,
+)
+
 
 def weno5_left(v, i, eps=1e-6):
     vmm, vm, v0, vp, vpp = v[i-2], v[i-1], v[i], v[i+1], v[i+2]
@@ -82,19 +89,64 @@ def _stable_dt(u_inner, dx, nu, k, cfl):
     return max(min(advective,diffusive,reactive),1e-8)
 
 
-def advance_state(u0, dt_total, L_mm=20.0, CFL=0.45, nu=0.002, k=1.5, E=6.0, dTdx=0.0, b_quad=0.0, max_steps=200000):
-    """Advance an arbitrary physical state by one saved-step interval."""
-    state = np.asarray(u0,dtype=np.float64)
+def _prepare_solver_grid(state, L_mm, x_physical=None):
+    """Return uniform internal state/grid and optional source grid for remapping."""
+    nx = state.size
+    if x_physical is None:
+        internal_x = np.linspace(0.0, float(L_mm), nx)
+        return state, internal_x, None
+
+    source_x = np.asarray(x_physical, dtype=np.float64).reshape(-1)
+    if source_x.size != nx:
+        raise ValueError("x_physical and state must have identical length")
+    if np.any(np.diff(source_x) <= 0):
+        raise ValueError("x_physical must be strictly increasing")
+    if is_uniform_grid(source_x):
+        return state, source_x, None
+
+    internal_x = uniform_centers_for_domain(source_x, n_cells=nx)
+    internal_state = conservative_remap_1d(state, source_x, internal_x)
+    return internal_state, internal_x, source_x
+
+
+def advance_state(
+    u0,
+    dt_total,
+    L_mm=20.0,
+    CFL=0.45,
+    nu=0.002,
+    k=1.5,
+    E=6.0,
+    dTdx=0.0,
+    b_quad=0.0,
+    max_steps=200000,
+    x_physical=None,
+):
+    """Advance any monotone 1-D grid state by one saved-step interval.
+
+    WENO5 remains a uniform-grid method. Nonuniform inputs are conservatively
+    remapped to a uniform computational grid, advanced there, and conservatively
+    remapped back to the original centers.
+    """
+    state = np.asarray(u0,dtype=np.float64).reshape(-1)
     nx = state.size
     if nx < 7:
         raise ValueError("WENO5 requires at least seven physical cells")
-    x = np.linspace(0.0,float(L_mm),nx)
-    x_normalized = x/float(L_mm)
-    dx = float(x[1]-x[0])
+    internal_state, x, source_x = _prepare_solver_grid(state, L_mm, x_physical=x_physical)
+    dx_values = np.diff(x)
+    if not np.allclose(dx_values, dx_values.mean(), rtol=1e-5, atol=1e-10):
+        raise RuntimeError("Internal WENO grid is not uniform")
+    dx = float(dx_values.mean())
+
+    if x_physical is None:
+        x_normalized = x / float(L_mm)
+    else:
+        edges = cell_edges_from_centers(x)
+        x_normalized = (x - edges[0]) / max(edges[-1] - edges[0], 1e-12)
     temperature = temperature_field(x_normalized,dTdx=dTdx,b_quad=b_quad)
     ng = 3
     u = np.zeros(nx+2*ng,dtype=np.float64)
-    u[ng:ng+nx] = state
+    u[ng:ng+nx] = internal_state
     elapsed,steps = 0.0,0
     while elapsed < float(dt_total)-1e-14:
         dt = min(_stable_dt(u[ng:ng+nx],dx,nu,k,CFL),float(dt_total)-elapsed)
@@ -102,7 +154,10 @@ def advance_state(u0, dt_total, L_mm=20.0, CFL=0.45, nu=0.002, k=1.5, E=6.0, dTd
         elapsed += dt; steps += 1
         if steps >= int(max_steps):
             raise RuntimeError("advance_state exceeded max_steps")
-    return u[ng:ng+nx].astype(np.float32),steps
+    result = u[ng:ng+nx]
+    if source_x is not None:
+        result = conservative_remap_1d(result, x, source_x)
+    return result.astype(np.float32),steps
 
 
 def simulate_case(L_mm=20.0,Nx=256,t_end=1.0,Nt_save=100,CFL=0.45,nu=0.002,k=1.5,E=5.0,dTdx=0.0,b_quad=0.0,seed=0,target_label=None):

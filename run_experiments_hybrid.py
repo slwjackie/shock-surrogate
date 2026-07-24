@@ -56,6 +56,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--epochs", type=int, default=1200)
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--lr", type=float, default=2e-4)
+    parser.add_argument("--dropout", type=float, default=0.05)
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--num_workers", type=int, default=0)
     parser.add_argument("--physics_residual", choices=["discrete", "autograd"], default="discrete")
@@ -63,6 +64,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ckpt_dir", default="ckpt")
     parser.add_argument("--outputs_dir", default="outputs")
     parser.add_argument("--with_policy", action="store_true")
+    parser.add_argument("--mc_samples", type=int, default=8)
+    parser.add_argument(
+        "--group_strategy",
+        choices=["global", "predicted", "soft_conservative", "worst_case"],
+        default="soft_conservative",
+    )
     parser.add_argument("--threshold_scales", nargs="+", type=float, default=[0.75, 1.0, 1.25])
     parser.add_argument("--max_policy_cases", type=int, default=None)
     parser.add_argument("--dry_run", action="store_true")
@@ -88,6 +95,9 @@ def main() -> None:
         "H": args.H,
         "modes": args.modes,
         "seeds": args.seeds,
+        "dropout": args.dropout,
+        "mc_samples": args.mc_samples,
+        "group_strategy": args.group_strategy,
         "runs": [],
         "aggregates": {},
     }
@@ -100,8 +110,7 @@ def main() -> None:
             try:
                 if not (args.skip_if_exists and metrics_path.exists()):
                     train_command = [
-                        args.python,
-                        "train_transformer_hybrid.py",
+                        args.python, "train_transformer_hybrid.py",
                         "--arch", args.arch,
                         "--mode", mode,
                         "--seed", str(seed),
@@ -109,6 +118,7 @@ def main() -> None:
                         "--epochs", str(args.epochs),
                         "--batch_size", str(args.batch_size),
                         "--lr", str(args.lr),
+                        "--dropout", str(args.dropout),
                         "--stride", str(args.stride),
                         "--num_workers", str(args.num_workers),
                         "--physics_residual", args.physics_residual,
@@ -118,12 +128,12 @@ def main() -> None:
                         "--save_dir", args.ckpt_dir,
                     ]
                     eval_command = [
-                        args.python,
-                        "eval_transformer_hybrid.py",
+                        args.python, "eval_transformer_hybrid.py",
                         "--arch", args.arch,
                         "--mode", mode,
                         "--seed", str(seed),
                         "--H", str(args.H),
+                        "--mc_samples", str(args.mc_samples),
                         "--meta_csv", meta,
                         "--u_val", paths["val"],
                         "--u_test_profile", paths["profile"],
@@ -139,12 +149,13 @@ def main() -> None:
                 if args.with_policy:
                     calibration_path = output_dir / f"calibration_{args.arch}_{mode}_seed{seed}_H{args.H}.json"
                     calibration_command = [
-                        args.python,
-                        "calibrate_residual_policy.py",
+                        args.python, "calibrate_residual_policy.py",
                         "--checkpoint", str(checkpoint),
                         "--meta_csv", meta,
                         "--u_train", paths["train"],
                         "--u_val", paths["val"],
+                        "--mc_samples", str(args.mc_samples),
+                        "--group_source", "true",
                         "--out", str(calibration_path),
                     ]
                     run(calibration_command, args.dry_run)
@@ -152,14 +163,15 @@ def main() -> None:
                     for scale in args.threshold_scales:
                         policy_path = output_dir / f"policy_{args.arch}_{mode}_seed{seed}_H{args.H}_scale{scale:g}.json"
                         policy_command = [
-                            args.python,
-                            "eval_policy.py",
+                            args.python, "eval_policy.py",
                             "--checkpoint", str(checkpoint),
                             "--calibration", str(calibration_path),
                             "--meta_csv", meta,
                             "--u_val", paths["val"],
                             "--u_test_profile", paths["profile"],
                             "--u_test_mismatch", paths["mismatch"],
+                            "--mc_samples", str(args.mc_samples),
+                            "--group_strategy", args.group_strategy,
                             "--threshold_scale", str(scale),
                             "--out", str(policy_path),
                         ]
@@ -182,7 +194,10 @@ def main() -> None:
             keys.update(dotted_keys(record["metrics"]))
         for key in sorted(keys):
             values = [nested_get(record["metrics"], key) for record in runs]
-            values = [float(v) for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)]
+            values = [
+                float(v) for v in values
+                if isinstance(v, (int, float)) and not isinstance(v, bool)
+            ]
             if values:
                 aggregate[key] = {
                     "mean": mean(values),

@@ -1,4 +1,4 @@
-"""Torch-facing adapter for WENO fallback actions."""
+"""Torch-facing adapter for uniform or nonuniform WENO fallback states."""
 
 from __future__ import annotations
 
@@ -23,6 +23,8 @@ def _batch_values(value: Any, batch: int, default: float) -> np.ndarray:
     arr = arr.reshape(arr.shape[0], -1)[:, 0].astype(np.float64)
     if arr.size == 1 and batch > 1:
         arr = np.repeat(arr, batch)
+    if arr.size != batch:
+        raise ValueError("Parameter batch does not match state batch")
     return arr
 
 
@@ -31,8 +33,14 @@ class WENOSolverAdapter:
         self.cfl = float(cfl)
 
     def advance(self, u_last, x_normalized, params: Mapping[str, Any]):
-        del x_normalized
         batch = u_last.shape[0]
+        if x_normalized.ndim == 1:
+            x_normalized = x_normalized.unsqueeze(0)
+        if x_normalized.shape[0] == 1 and batch > 1:
+            x_normalized = x_normalized.expand(batch, -1)
+        if x_normalized.shape[0] != batch:
+            raise ValueError("Coordinate batch does not match state batch")
+
         values = {
             "dt": _batch_values(params.get("dt"), batch, 1.0),
             "L_mm": _batch_values(params.get("L_mm"), batch, 20.0),
@@ -44,11 +52,19 @@ class WENOSolverAdapter:
         }
         outputs, step_counts = [], []
         states = u_last.detach().cpu().numpy()
+        coordinates = x_normalized.detach().cpu().numpy()
         for i in range(batch):
+            x_i = coordinates[i].astype(np.float64)
+            span = float(x_i[-1] - x_i[0])
+            if span <= 0 or np.any(np.diff(x_i) <= 0):
+                raise ValueError("Coordinates must be strictly increasing")
+            x_unit = (x_i - x_i[0]) / span
+            x_physical = x_unit * values["L_mm"][i]
             state, steps = advance_state(
                 states[i], dt_total=values["dt"][i], L_mm=values["L_mm"][i],
                 CFL=self.cfl, nu=values["nu"][i], k=values["k"][i],
                 E=values["E"][i], dTdx=values["dTdx"][i], b_quad=values["b_quad"][i],
+                x_physical=x_physical,
             )
             outputs.append(state)
             step_counts.append(int(steps))

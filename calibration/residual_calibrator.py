@@ -1,9 +1,4 @@
-"""Distributional calibration for residual-based learning-augmented advice.
-
-Each raw diagnostic is converted to an empirical percentile using validation
-predictions. Their weighted average is consumed by the clamp policy, making
-heterogeneous quantities comparable without arbitrary unit scales.
-"""
+"""Distributional calibration for residual-based learning-augmented advice."""
 
 from __future__ import annotations
 
@@ -18,7 +13,13 @@ import numpy as np
 from backbones.conditioning import PARAMETER_KEYS, transform_parameter_array
 
 COMPONENT_NAMES = ("residual", "tv_growth", "shock_shift", "coeff_ood", "uncertainty")
-DEFAULT_WEIGHTS = {"residual": 0.40, "tv_growth": 0.20, "shock_shift": 0.15, "coeff_ood": 0.20, "uncertainty": 0.05}
+DEFAULT_WEIGHTS = {
+    "residual": 0.40,
+    "tv_growth": 0.20,
+    "shock_shift": 0.15,
+    "coeff_ood": 0.20,
+    "uncertainty": 0.05,
+}
 
 
 @dataclass
@@ -67,7 +68,11 @@ class ParameterOODScorer:
 
     @classmethod
     def from_dict(cls, payload):
-        return cls(np.asarray(payload["mean"], dtype=np.float64), np.asarray(payload["std"], dtype=np.float64), tuple(payload.get("keys", PARAMETER_KEYS)))
+        return cls(
+            np.asarray(payload["mean"], dtype=np.float64),
+            np.asarray(payload["std"], dtype=np.float64),
+            tuple(payload.get("keys", PARAMETER_KEYS)),
+        )
 
 
 class EmpiricalRiskCalibrator:
@@ -79,11 +84,13 @@ class EmpiricalRiskCalibrator:
             raise ValueError("At least one risk-component weight must be positive")
         self.weights = {k: max(v, 0.0) / total for k, v in selected.items()}
         self.q_low, self.q_high = float(q_low), float(q_high)
+        if not 0 <= self.q_low <= self.q_high <= 1:
+            raise ValueError("Expected 0 <= q_low <= q_high <= 1")
         self.quantile_grid = np.linspace(0.0, 1.0, int(grid_size), dtype=np.float64)
-        self.component_quantiles = {}
-        self.global_thresholds = None
-        self.group_thresholds = {}
-        self.ood_scorer = None
+        self.component_quantiles: dict[str, np.ndarray] = {}
+        self.global_thresholds: tuple[float, float] | None = None
+        self.group_thresholds: dict[str, tuple[float, float]] = {}
+        self.ood_scorer: ParameterOODScorer | None = None
 
     def _component_percentile(self, name, values):
         if name not in self.component_quantiles:
@@ -93,7 +100,10 @@ class EmpiricalRiskCalibrator:
         unique_q = self.quantile_grid[unique_idx]
         if unique_values.size == 1:
             return (np.asarray(values) > unique_values[0]).astype(np.float64)
-        return np.interp(np.asarray(values, dtype=np.float64), unique_values, unique_q, left=0.0, right=1.0)
+        return np.interp(
+            np.asarray(values, dtype=np.float64), unique_values, unique_q,
+            left=0.0, right=1.0,
+        )
 
     def component_percentile(self, name, value):
         return float(self._component_percentile(name, np.asarray([value]))[0])
@@ -113,7 +123,11 @@ class EmpiricalRiskCalibrator:
         return score
 
     def score_one(self, components):
-        return float(self.score_arrays({name: np.asarray([components.get(name, 0.0)]) for name in COMPONENT_NAMES})[0])
+        return float(
+            self.score_arrays(
+                {name: np.asarray([components.get(name, 0.0)]) for name in COMPONENT_NAMES}
+            )[0]
+        )
 
     def fit(self, components, groups=None, min_group_size=20):
         lengths = {len(np.asarray(v).reshape(-1)) for v in components.values()}
@@ -132,7 +146,10 @@ class EmpiricalRiskCalibrator:
             self.component_quantiles[name] = np.quantile(values, self.quantile_grid)
             normalized[name] = values
         scores = self.score_arrays(normalized)
-        self.global_thresholds = (float(np.quantile(scores, self.q_low)), float(np.quantile(scores, self.q_high)))
+        self.global_thresholds = (
+            float(np.quantile(scores, self.q_low)),
+            float(np.quantile(scores, self.q_high)),
+        )
         self.group_thresholds = {}
         if groups is not None:
             group_arr = np.asarray([str(g) for g in groups])
@@ -141,7 +158,10 @@ class EmpiricalRiskCalibrator:
             for group in np.unique(group_arr):
                 mask = group_arr == group
                 if int(mask.sum()) >= int(min_group_size):
-                    self.group_thresholds[str(group)] = (float(np.quantile(scores[mask], self.q_low)), float(np.quantile(scores[mask], self.q_high)))
+                    self.group_thresholds[str(group)] = (
+                        float(np.quantile(scores[mask], self.q_low)),
+                        float(np.quantile(scores[mask], self.q_high)),
+                    )
         return self
 
     def thresholds(self, group=None):
@@ -151,29 +171,52 @@ class EmpiricalRiskCalibrator:
             return self.group_thresholds[str(group)]
         return self.global_thresholds
 
+    def all_thresholds(self, include_global: bool = True) -> dict[str, tuple[float, float]]:
+        if self.global_thresholds is None:
+            raise RuntimeError("Calibrator has not been fitted")
+        result = dict(self.group_thresholds)
+        if include_global:
+            result["__global__"] = self.global_thresholds
+        return result
+
     def to_dict(self):
         if self.global_thresholds is None:
             raise RuntimeError("Calibrator has not been fitted")
         return {
-            "version": 1,
+            "version": 2,
             "components": list(COMPONENT_NAMES),
             "weights": self.weights,
             "q_low": self.q_low,
             "q_high": self.q_high,
             "quantile_grid": self.quantile_grid.tolist(),
-            "component_quantiles": {name: values.tolist() for name, values in self.component_quantiles.items()},
+            "component_quantiles": {
+                name: values.tolist() for name, values in self.component_quantiles.items()
+            },
             "global_thresholds": list(self.global_thresholds),
-            "group_thresholds": {name: list(values) for name, values in self.group_thresholds.items()},
+            "group_thresholds": {
+                name: list(values) for name, values in self.group_thresholds.items()
+            },
             "parameter_ood": self.ood_scorer.to_dict() if self.ood_scorer is not None else None,
         }
 
     @classmethod
     def from_dict(cls, payload):
-        obj = cls(payload["weights"], float(payload["q_low"]), float(payload["q_high"]), len(payload["quantile_grid"]))
+        obj = cls(
+            payload["weights"],
+            float(payload["q_low"]),
+            float(payload["q_high"]),
+            len(payload["quantile_grid"]),
+        )
         obj.quantile_grid = np.asarray(payload["quantile_grid"], dtype=np.float64)
-        obj.component_quantiles = {name: np.asarray(values, dtype=np.float64) for name, values in payload["component_quantiles"].items()}
+        obj.component_quantiles = {
+            name: np.asarray(values, dtype=np.float64)
+            for name, values in payload["component_quantiles"].items()
+        }
         obj.global_thresholds = tuple(float(v) for v in payload["global_thresholds"])
-        obj.group_thresholds = {str(name): tuple(float(v) for v in values) for name, values in payload.get("group_thresholds", {}).items()}
+        obj.group_thresholds = {
+            str(name): tuple(float(v) for v in values)
+            for name, values in payload.get("group_thresholds", {}).items()
+        }
         if payload.get("parameter_ood") is not None:
             obj.ood_scorer = ParameterOODScorer.from_dict(payload["parameter_ood"])
         return obj

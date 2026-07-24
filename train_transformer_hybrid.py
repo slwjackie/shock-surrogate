@@ -52,7 +52,11 @@ def set_seed(seed: int) -> None:
 def move_params(params, device: torch.device) -> dict[str, torch.Tensor]:
     moved = {}
     for key, value in params.items():
-        moved[key] = value.to(device=device, dtype=torch.float32) if isinstance(value, torch.Tensor) else torch.as_tensor(value, device=device, dtype=torch.float32)
+        moved[key] = (
+            value.to(device=device, dtype=torch.float32)
+            if isinstance(value, torch.Tensor)
+            else torch.as_tensor(value, device=device, dtype=torch.float32)
+        )
     return moved
 
 
@@ -80,14 +84,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--w_phys", type=float, default=None)
     parser.add_argument("--w_tv", type=float, default=None)
 
-    # Shared/Transformer parameters.
     parser.add_argument("--d_model", type=int, default=128)
     parser.add_argument("--nhead", type=int, default=4)
     parser.add_argument("--num_layers", type=int, default=4)
     parser.add_argument("--dim_feedforward", type=int, default=256)
-    parser.add_argument("--dropout", type=float, default=0.0)
+    # Non-zero dropout is required for MC-dropout distributional advice.
+    parser.add_argument("--dropout", type=float, default=0.05)
     parser.add_argument("--mlp_hidden", type=int, default=128)
-    # FNO-specific parameters.
     parser.add_argument("--width", type=int, default=64)
     parser.add_argument("--modes", type=int, default=24)
     parser.add_argument("--depth", type=int, default=4)
@@ -108,16 +111,11 @@ def main() -> None:
     train_ds = HybridTemporalDataset(args.meta_csv, args.u_train, "train", H=args.H, stride=args.stride)
     val_ds = HybridTemporalDataset(args.meta_csv, args.u_val, "val", H=args.H, stride=args.stride)
     train_loader = DataLoader(
-        train_ds,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=args.num_workers,
-        drop_last=True,
+        train_ds, batch_size=args.batch_size, shuffle=True,
+        num_workers=args.num_workers, drop_last=True,
     )
     val_loader = DataLoader(
-        val_ds,
-        batch_size=args.batch_size,
-        shuffle=False,
+        val_ds, batch_size=args.batch_size, shuffle=False,
         num_workers=args.num_workers,
     )
 
@@ -133,21 +131,15 @@ def main() -> None:
         "depth": args.depth,
     }
     model = make_model(
-        args.arch,
-        n_classes=3,
-        causal=causal,
-        history=args.H,
-        **model_kwargs,
+        args.arch, n_classes=3, causal=causal, history=args.H, **model_kwargs,
     ).to(device)
     parameter_mean, parameter_std = fit_parameter_stats(train_ds.parameter_matrix())
     if hasattr(model, "set_parameter_stats"):
         model.set_parameter_stats(parameter_mean, parameter_std)
 
-    optimizer = torch.optim.AdamW(
-        model.parameters(), lr=args.lr, weight_decay=args.weight_decay
-    )
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=max(args.epochs, 1), eta_min=args.lr * 0.05
+        optimizer, T_max=max(args.epochs, 1), eta_min=args.lr * 0.05,
     )
     mse = nn.MSELoss()
     classification_loss = FocalLoss(alpha=[1.0, 1.0, 1.2], gamma=2.0).to(device)
@@ -173,7 +165,6 @@ def main() -> None:
                 last = last.to(device)
                 regime = regime.to(device)
                 params_device = move_params(params, device)
-
                 if needs_autograd_residual:
                     x = x.clone().detach().requires_grad_(True)
 
@@ -181,32 +172,23 @@ def main() -> None:
                 data_loss = mse(prediction, target)
                 cls_loss = (
                     classification_loss(logits, regime)
-                    if logits is not None
-                    else torch.zeros((), device=device)
+                    if logits is not None else torch.zeros((), device=device)
                 )
                 accuracy = (
                     (logits.argmax(dim=1) == regime).float().mean()
-                    if logits is not None
-                    else torch.zeros((), device=device)
+                    if logits is not None else torch.zeros((), device=device)
                 )
-
-                # Match target total variation instead of suppressing shocks.
                 tv_loss = (total_variation(prediction) - total_variation(target)).abs().mean()
                 physics_loss = torch.zeros((), device=device)
                 if w_phys > 0:
                     if args.physics_residual == "discrete":
                         physics_loss, _ = shock_aware_residual_loss(
-                            prediction,
-                            last,
-                            x,
-                            params_device,
+                            prediction, last, x, params_device,
                             shock_beta=args.shock_beta,
                         )
                     else:
                         residual = physics_residual_hybrid(
-                            prediction,
-                            last,
-                            x,
+                            prediction, last, x,
                             dt=params_device["dt"],
                             nu=params_device["nu"],
                             k=params_device["k"],
@@ -222,7 +204,6 @@ def main() -> None:
                     + w_tv * tv_loss
                     + w_phys * physics_loss
                 )
-
                 if training:
                     optimizer.zero_grad(set_to_none=True)
                     loss.backward()
@@ -232,13 +213,8 @@ def main() -> None:
 
                 batch = x.shape[0]
                 values = {
-                    "loss": loss,
-                    "data": data_loss,
-                    "phys": physics_loss,
-                    "tv": tv_loss,
-                    "cls": cls_loss,
-                    "mse": data_loss,
-                    "acc": accuracy,
+                    "loss": loss, "data": data_loss, "phys": physics_loss,
+                    "tv": tv_loss, "cls": cls_loss, "mse": data_loss, "acc": accuracy,
                 }
                 for name, value in values.items():
                     totals[name] += float(value.detach().item()) * batch
@@ -268,10 +244,13 @@ def main() -> None:
                     "parameter_mean": parameter_mean,
                     "parameter_std": parameter_std,
                     "best_val_mse": best_val,
+                    "distributional_advice": {
+                        "method": "mc_dropout",
+                        "dropout": float(args.dropout),
+                    },
                 },
                 best_path,
             )
-
     print(f"Saved best checkpoint: {best_path} (val mse={best_val:.3e})")
 
 

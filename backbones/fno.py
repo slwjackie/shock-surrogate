@@ -1,4 +1,4 @@
-"""A compact parameter-conditioned 1-D Fourier Neural Operator baseline."""
+"""Parameter-conditioned 1-D Fourier Neural Operator with a true local branch."""
 
 from __future__ import annotations
 
@@ -38,6 +38,37 @@ class SpectralConv1d(nn.Module):
         return torch.fft.irfft(out_ft, n=nx, dim=-1)
 
 
+class LocalMultiScaleConv1d(nn.Module):
+    """Local shock-sensitive branch with several finite receptive fields.
+
+    The previous 1x1 layer was only a pointwise channel mixer. These depthwise
+    convolutions explicitly exchange information across neighboring cells at
+    three scales before a pointwise fusion.
+    """
+
+    def __init__(self, channels: int):
+        super().__init__()
+        self.branch3 = nn.Conv1d(
+            channels, channels, kernel_size=3, padding=1,
+            groups=channels, padding_mode="replicate",
+        )
+        self.branch5 = nn.Conv1d(
+            channels, channels, kernel_size=5, padding=2,
+            groups=channels, padding_mode="replicate",
+        )
+        self.branch_dilated = nn.Conv1d(
+            channels, channels, kernel_size=3, padding=2, dilation=2,
+            groups=channels, padding_mode="replicate",
+        )
+        self.mix = nn.Conv1d(3 * channels, channels, kernel_size=1)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        features = torch.cat(
+            [self.branch3(x), self.branch5(x), self.branch_dilated(x)], dim=1
+        )
+        return self.mix(features)
+
+
 class ConditionedFNO1d(SurrogateBackbone):
     def __init__(
         self,
@@ -46,7 +77,7 @@ class ConditionedFNO1d(SurrogateBackbone):
         modes: int = 24,
         depth: int = 4,
         n_classes: int = 3,
-        dropout: float = 0.0,
+        dropout: float = 0.05,
     ):
         super().__init__()
         self.history = int(history)
@@ -57,7 +88,7 @@ class ConditionedFNO1d(SurrogateBackbone):
             [SpectralConv1d(self.width, self.width, modes) for _ in range(self.depth)]
         )
         self.local = nn.ModuleList(
-            [nn.Conv1d(self.width, self.width, kernel_size=1) for _ in range(self.depth)]
+            [LocalMultiScaleConv1d(self.width) for _ in range(self.depth)]
         )
         self.norms = nn.ModuleList([nn.GroupNorm(1, self.width) for _ in range(self.depth)])
         self.conditioner = ParameterConditioner(self.width)
@@ -94,9 +125,9 @@ class ConditionedFNO1d(SurrogateBackbone):
         for i, (spectral, local, norm) in enumerate(zip(self.spectral, self.local, self.norms)):
             y = norm(spectral(h) + local(h))
             y = y * (1.0 + gamma) + beta
-            if i + 1 < self.depth:
-                y = self.dropout(F.gelu(y))
-            h = h + y
+            # Apply dropout on every operator block so MC-dropout yields a field
+            # distribution even for shallow (depth=1) FNO configurations.
+            h = h + self.dropout(F.gelu(y))
         h_grid = h.transpose(1, 2)
         u_next = self.project(h_grid).squeeze(-1)
         logits = None
