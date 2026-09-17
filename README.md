@@ -1,3 +1,15 @@
+# `certified-burgers-poc` branch
+
+The active research workflow on this branch is the 1-D inviscid Burgers/Godunov
+trust-or-fallback study. It includes fair one-step/multi-step comparisons,
+oracle and cheap-verifier audits, separated discretization and advice errors,
+controlled verifier failures, and reusable solver/advice/verifier/policy
+interfaces. See [`certified_burgers/README.md`](certified_burgers/README.md) for
+the current commands and claim boundaries.
+
+The material below documents the repository's earlier reactive-Burgers model
+and remains available for later empirical extensions.
+
 # Physics-Informed Transformer Surrogate for the Burgers Equation with a Reaction Source Term
 
 This project builds a **physics-informed surrogate model** for a
