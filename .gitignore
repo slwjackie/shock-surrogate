@@ -1,23 +1,25 @@
-# python
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
 
-# datasets
+# Datasets
 data/
 
-# outputs
-outputs*
+# Outputs and calibration artifacts
+outputs*/
+calibration/*.json
+.smoke/
 
-#checkpoints
-ckpt*
-
-# model weights
+# Checkpoints and model weights
+ckpt*/
 *.pt
 *.pth
 *.ckpt
 
-# env
+# Environment
 .env
+.venv/
 
-# mac
+# OS
 .DS_Store

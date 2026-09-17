@@ -1,300 +1,401 @@
-# Physics-Informed Transformer Surrogate for the Burgers Equation with a Reaction Source Term
+# Backbone-Agnostic Robust Learning-Augmented Shock Surrogate
 
-This project builds a **physics-informed surrogate model** for a
-simplified detonation-like system using a **1D viscous Burgers equation
-with a reaction source term**.
+This repository studies a **learning-augmented controller for shock-like PDE
+surrogates**.  A neural model supplies inexpensive advice for the next field,
+while a distributionally calibrated online policy decides whether to:
 
-The workflow combines:
+1. accept the surrogate prediction,
+2. apply a local conservative residual projection, or
+3. fall back to the WENO5 solver.
 
-- **High-resolution numerical solver** (WENO5 + SSP-RK3) to generate
-  training data
-- **Transformer-based surrogate model** for predicting future states
-- **Physics-informed training (PINN loss)** using PDE residuals
-- **Regime classification** (no detonation / deflagration-like /
-  detonation-like)
-- **Out-of-distribution (OOD) evaluation**
+The first testbed is a one-dimensional viscous Burgers equation with a reaction
+source term.  It is a controlled detonation analogue, not yet a full hypersonic
+Euler/Navier–Stokes solver.
 
-The goal is to study whether **physics-informed sequence models can
-generalize better than purely data-driven models for
-shock/detonation-like dynamics.**
+## Research question
 
----
+Can a surrogate remain inexpensive when its advice is accurate while avoiding
+catastrophic long-rollout failures under profile and coefficient distribution
+shifts?
 
-# Method Overview
+The project separates two concerns:
 
-## Governing Equation
+- **Advice quality:** Transformer or FNO one-step prediction.
+- **Advice control:** the Residual-Calibrated Clamp Policy (RCCP), which is
+  independent of the chosen backbone.
 
-Training data is generated from a simplified PDE model:
+This separation supports consistency–robustness–cost experiments without
+confounding every algorithmic change with a new neural architecture.
 
-u_t + u u_x = ν u_xx + R(u,T)
+## Implemented pipeline
 
-where
-
-- u(x,t) : state variable
-- ν : viscosity coefficient
-- R(u,T) : simplified reaction source term
-
-This equation acts as a **detonation analogue model**, capturing
-nonlinear shock formation and reaction-driven amplification without
-modeling full chemical kinetics.
-
----
-
-## Numerical Solver
-
-The dataset is generated using a high-resolution finite-volume solver.
-
-Numerical method:
-
-- **WENO5 reconstruction** for the convection term
-- **Rusanov flux**
-- **SSP-RK3 time integration**
-
-Each simulation produces a trajectory:
-
-U(t, x)
-
-These trajectories are then converted into supervised learning samples.
-
----
-
-# Learning Task
-
-The surrogate model learns **temporal evolution of spatial fields**.
-
-Each training sample is constructed from a short time window of
-simulation data.
-
-### Input
-
-spatial grid x\
-history window u_hist (H past timesteps)
-
-### Output
-
-next field u_next
-
-The model therefore learns a spatiotemporal mapping:
-
-u(t + Δt, x) = F(u(t-H:t, x))
-
-where the model predicts the **next spatial field** given a short
-history of previous states.
-
----
-
-# Hybrid Training Objective
-
-The model is trained with several complementary loss components.
-
-## Data Loss
-
-Regression loss between the predicted field and the solver output.
-
-MSE(u_pred, u_next)
-
-## Physics Loss (PINN)
-
-A physics residual is computed from the Burgers + reaction equation
-using automatic differentiation.
-
-This physics-informed loss encourages predictions to remain consistent
-with the governing PDE.
-
-## Total Variation (TV) Loss
-
-A spatial smoothness penalty that discourages unphysical oscillations in
-the predicted solution.
-
-## Regime Classification Loss
-
-In addition to predicting the next field, the model also predicts the
-**combustion regime**.
-
-The classification labels are:
-
-- no_detonation
-- deflagration_like
-- detonation_like
-
-These labels are derived from solver diagnostics such as shock strength
-and gradient magnitude.
-
----
-
-# Dataset Generation
-
-Before training, a dataset must be generated from the numerical solver.
-
-## Step 1 --- Calibrate coefficient-aware thresholds
-
-Run:
-
-python build_dataset.py --calibrate_by_coeff
-
-This computes regime classification thresholds for each coefficient
-combination:
-
-(ν, k, E)
-
-The thresholds are saved to:
-
-data/thresholds_by_coeff.json
-
-This calibration step ensures regime labels remain meaningful even when
-the PDE coefficients change.
-
-## Step 2 --- Generate dataset
-
-Run:
-
-python build_dataset.py
-
-This generates the dataset:
-
+```text
+state history + PDE coefficients
+              │
+              ▼
+ parameter-conditioned advice backbone
+    ├── temporal/spatial Transformer
+    └── 1-D Fourier Neural Operator
+              │
+              ▼
+ discrete conservative residual + risk diagnostics
+              │
+              ▼
+ empirical distributional calibration
+              │
+              ▼
+ Residual-Calibrated Clamp Policy (RCCP)
+    ├── accept surrogate
+    ├── local residual projection
+    └── WENO5 fallback
 ```
+
+## Governing test equation
+
+The data generator solves
+
+\[
+  u_t + \left(\frac{u^2}{2}\right)_x
+  = \nu u_{xx} + k(1-u)\exp(-E/T(x)),
+\]
+
+with
+
+\[
+  T(x)=1+0.35\,dTdx\,x+0.40\,b_{quad}x^2.
+\]
+
+Numerical trajectories are generated using:
+
+- WENO5 reconstruction,
+- Rusanov flux,
+- SSP-RK3 time integration, and
+- an explicit stability limit for advection, diffusion, and reaction.
+
+## What changed from the original version
+
+### 1. Parameter-conditioned backbones
+
+The dataset already stored `nu`, `k`, `E`, `dTdx`, `b_quad`, and `dt`, but the
+original predictor received only `x` and `u_hist`.  All backbones now use a shared
+parameter-conditioning interface.  `L_mm` is also supplied so spatial residuals
+use the physical rather than normalized grid spacing.
+
+### 2. Discrete conservative physics loss
+
+The default physics loss no longer differentiates a grid surrogate twice with
+respect to the coordinate input.  It computes a differentiable finite-volume-like
+residual using a Rusanov flux divergence and a Neumann finite-difference
+Laplacian.  High-gradient cells receive a detached shock-aware weight.
+
+The legacy continuous-coordinate autograd residual remains available as an
+ablation:
+
+```bash
+--physics_residual autograd
+```
+
+The default is:
+
+```bash
+--physics_residual discrete
+```
+
+### 3. Distributional residual calibration
+
+Validation predictions are converted into empirical distributions for:
+
+- discrete physics residual,
+- total-variation change,
+- shock-position shift,
+- coefficient OOD distance, and
+- optional predictive uncertainty.
+
+The calibrator maps each heterogeneous diagnostic to an empirical percentile and
+combines them into one risk score.  It stores global and, when sufficiently
+populated, regime-conditional thresholds.
+
+### 4. Residual-Calibrated Clamp Policy
+
+RCCP applies two calibrated thresholds:
+
+```text
+risk <= tau_low              accept surrogate
+
+tau_low < risk <= tau_high  local residual correction
+
+risk > tau_high              WENO fallback
+```
+
+A raw-tail safety guard also triggers fallback when the residual or coefficient
+shift lies far outside validation support.
+
+### 5. Local conservative correction
+
+The middle action performs a small trust-region residual projection only around
+cells selected by a shock sensor.  It is intentionally cheaper than a full WENO
+fallback and does not require a GNN on the present uniform one-dimensional grid.
+
+### 6. Interchangeable advice backbones
+
+Both implemented backbones expose the same call:
+
+```python
+u_next, logits = model(x, state_history, parameters)
+```
+
+Supported names:
+
+- `transformer_hybrid`
+- `fno1d`
+
+A later local–global neural operator or mesh GNN can be registered without
+changing calibration, policy, solver fallback, or rollout evaluation.
+
+## Repository layout
+
+```text
+backbones/
+├── base.py                  common interface
+├── conditioning.py          shared physical-parameter FiLM conditioning
+├── transformer.py           Transformer factory
+├── fno.py                   parameter-conditioned FNO1d
+└── registry.py              backbone registry
+
+physics/
+├── discrete_residual.py     conservative residual and risk components
+└── residual_projection.py   local shock-region correction
+
+calibration/
+└── residual_calibrator.py   empirical percentile calibration and OOD scoring
+
+policies/
+└── clamp_policy.py          RCCP accept/correct/fallback decisions
+
+solvers/
+└── weno_adapter.py          Torch-facing fallback adapter
+
+evaluation/
+└── rollout_policy_eval.py   long-rollout and cost metrics
+```
+
+The original dataset builder, solver, one-step trainer/evaluator, OOD verifier,
+and experiment runner remain available. Existing datasets remain compatible.
+Because parameter conditioning changes the model state dictionary, checkpoints
+trained by the pre-RCCP code must be retrained; they are not silently loaded as
+if they represented the new architecture.
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Core dependencies are NumPy, pandas, and PyTorch.  Pytest is needed only for the
+test suite.
+
+## Dataset generation
+
+Coefficient-aware regime thresholds must be calibrated first:
+
+```bash
+python sim/build_dataset.py --calibrate_by_coeff
+```
+
+Then generate the data:
+
+```bash
+python sim/build_dataset.py
+```
+
+Expected outputs:
+
+```text
 data/
 ├── meta.csv
 ├── grid.npz
+├── thresholds_by_coeff.json
 ├── u_train.npz
 ├── u_val.npz
 ├── u_test_profile_ood.npz
-├── u_test_mismatch_ood.npz
-└── thresholds_by_coeff.json
+└── u_test_mismatch_ood.npz
 ```
 
----
+## Train an advice backbone
 
-# Training
+### Parameter-conditioned Transformer
 
-Train the hybrid Transformer model using:
+```bash
+python train_transformer_hybrid.py \
+  --arch transformer_hybrid \
+  --mode full \
+  --physics_residual discrete \
+  --epochs 1200
+```
 
-python train_transformer_hybrid.py --mode full
+### Parameter-conditioned FNO
 
-Available training modes:
+```bash
+python train_transformer_hybrid.py \
+  --arch fno1d \
+  --mode full \
+  --physics_residual discrete \
+  --width 64 \
+  --modes 24 \
+  --depth 4 \
+  --epochs 1200
+```
 
-mode description
+Available modes retain the original ablation semantics:
 
----
+| mode | losses/settings |
+|---|---|
+| `full` | data + discrete physics + TV matching + classification |
+| `no_causal` | Transformer without a causal temporal mask |
+| `no_phys` | data + TV matching + classification |
+| `data_only` | data + classification |
 
-full data + physics + TV + classification
-no_causal same as full but without causal model setting
-no_phys data + TV + classification (no physics loss)
-data_only data + classification only
+Unlike the old TV magnitude penalty, the new objective matches the target total
+variation and therefore does not systematically erase shocks.
 
-The best checkpoint (based on validation MSE) is saved automatically.
+## One-step evaluation
 
----
+```bash
+python eval_transformer_hybrid.py \
+  --arch transformer_hybrid \
+  --mode full \
+  --save_metrics
+```
 
-# Evaluation
+Metrics include:
 
-Evaluate a trained model using:
+- MSE, RMSE, and MAE,
+- regime accuracy,
+- discrete physics-residual MAE, and
+- peak-gradient error.
 
-python eval_transformer_hybrid.py --mode full
+## Calibrate the advice-risk distribution
 
-Evaluation metrics include:
+```bash
+python calibrate_residual_policy.py \
+  --checkpoint ckpt/best_transformer_hybrid_full_seed0_H5.pt \
+  --out outputs/calibration_transformer_full_seed0.json
+```
 
-- Mean Squared Error (MSE)
-- Root Mean Squared Error (RMSE)
-- Classification accuracy
-- Classification loss
+Calibration uses only the validation split.  The generated JSON contains the
+component empirical quantiles, low/high clamp thresholds, regime thresholds, and
+training-parameter OOD statistics.
 
-Evaluation is performed on three datasets:
+## Compare pure-surrogate and RCCP rollouts
 
-val\
-test_profile_ood\
-test_mismatch_ood
+```bash
+python eval_policy.py \
+  --checkpoint ckpt/best_transformer_hybrid_full_seed0_H5.pt \
+  --calibration outputs/calibration_transformer_full_seed0.json \
+  --threshold_scale 1.0 \
+  --out outputs/policy_rollout.json
+```
 
----
+The evaluator reports:
 
-# OOD Settings
+- rollout and final-time errors,
+- shock-position and peak-gradient errors,
+- selected-state physics residual,
+- accept/correct/fallback counts and rates,
+- WENO internal substeps, and
+- normalized computational cost.
 
-Two types of distribution shift are included.
+`--threshold_scale` exposes the consistency–robustness trade-off:
 
-## Profile OOD
+- values below `1.0` are more conservative,
+- values above `1.0` trust neural advice more.
 
-The temperature profile curvature parameter (b_quad) differs from the
-training distribution.
+The cost model is configurable with `--surrogate_cost`, `--correction_cost`, and
+`--fallback_cost`.  These are normalized proxies; wall-clock measurements should
+also be reported in final experiments.
 
-This tests robustness to **changes in input field structure**.
+## Multi-seed experiments and policy sweeps
 
-## Solver Mismatch OOD
+Standard backbone ablations:
 
-Test cases use different PDE coefficients:
+```bash
+python run_experiments_hybrid.py \
+  --arch transformer_hybrid \
+  --modes full no_causal no_phys data_only \
+  --seeds 0 1 2 3 4
+```
 
-ν, k, E
+End-to-end learning-augmented experiments:
 
-This tests whether the surrogate model generalizes to **different
-physical regimes**.
+```bash
+python run_experiments_hybrid.py \
+  --arch transformer_hybrid \
+  --modes full no_phys data_only \
+  --seeds 0 1 2 3 4 \
+  --with_policy \
+  --threshold_scales 0.75 1.0 1.25
+```
 
-Coefficient-aware threshold calibration ensures regime labels remain
-consistent.
+Run the same command with `--arch fno1d` to test whether RCCP improvements are
+backbone-independent.
 
-In practice, the two OOD types behave differently:
-Profile OOD mainly changes the **input field shape**, while solver-mismatch OOD changes the **governing coefficients** and induces measurable differences in **shock-strength diagnostics**, even when field-level differences remain moderate.
+## Tests
 
-The verify_ood.py script can be used to inspect these differences using trajectory diagnostics such as peak gradient and final-time error.
+```bash
+pytest
+```
 
----
+The tests cover:
 
-# Experiment Runner
+- shared Transformer/FNO interfaces,
+- the constant-state discrete residual,
+- calibrated clamp decisions, and
+- arbitrary-state WENO fallback.
 
-Multiple experiments (training modes and random seeds) can be run
-automatically using:
+## Recommended paper ablations
 
-python run_experiments_hybrid.py --modes full no_causal no_phys
-data_only --seeds 0 1 2 3 4
+At minimum, compare:
 
-This script:
+| advice backbone | controller |
+|---|---|
+| Transformer | none |
+| Transformer | RCCP |
+| FNO | none |
+| FNO | RCCP |
 
-1.  runs training
-2.  runs evaluation
-3.  aggregates metrics
+Additional controller ablations:
 
-and writes a summary file.
+- no parameter conditioning,
+- autograd residual versus discrete residual,
+- no coefficient OOD component,
+- no raw-tail guard,
+- accept/fallback only,
+- no local correction, and
+- multiple threshold scales and cost ratios.
 
----
+The central claim should concern the **controller**, not merely a stronger neural
+operator: accurate advice should be used cheaply, while unreliable/OOD advice
+should be clamped toward conservative correction or solver fallback.
 
-# Installation
+## Scope and roadmap
 
-Install the required Python packages:
+The present implementation is Phase 1–2 infrastructure:
 
-pip install numpy pandas torch matplotlib
+- a 1-D reactive Burgers proof-of-concept,
+- parameter-conditioned Transformer and FNO advice,
+- backbone-agnostic calibration and RCCP,
+- local residual correction, and
+- WENO fallback evaluation.
 
----
+Not yet implemented:
 
-# Typical Workflow
+- compressible Euler/Navier–Stokes state vectors,
+- density/pressure positivity projection,
+- a published LGNO reproduction,
+- 2-D/3-D geometry,
+- adaptive or unstructured meshes, and
+- a shock-front GNN.
 
-# 1. calibrate regime thresholds
-
-python build_dataset.py --calibrate_by_coeff
-
-# 2. generate dataset
-
-python build_dataset.py
-
-# 3. train model
-
-python train_transformer_hybrid.py --mode full
-
-# 4. evaluate model
-
-python eval_transformer_hybrid.py --mode full
-
----
-
-# Research Motivation
-
-Detonation simulations using full CFD are computationally expensive.
-
-This project explores whether a **physics-informed machine learning
-surrogate** can:
-
-- predict shock evolution
-- classify combustion regimes
-- generalize to unseen physical parameters
-
-while maintaining consistency with the governing PDE.
-
-The Burgers + reaction system serves as a **simplified detonation
-analogue model** that captures essential nonlinear shock dynamics.
+A GNN becomes technically justified when the project moves to unstructured or
+adaptive meshes.  Until then, the local residual projection provides a controlled
+and interpretable middle action without unnecessary architectural complexity.
