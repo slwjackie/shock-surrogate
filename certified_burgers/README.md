@@ -10,8 +10,43 @@ time stepper. It follows the professor's recommended order:
 5. audit prediction, empirical coverage, shocks, and OOD failures;
 6. maintain a claim/novelty table before selecting the next theorem.
 
-The reactive Burgers/WENO code elsewhere in the repository is not used by
+The reactive Burgers/WENO and Transformer code elsewhere in the repository is not used by
 this experiment.
+
+## Surrogate architecture: small local CNNs, not a Transformer
+
+The active PoC deliberately uses small 1-D CNNs. Two variants are kept because they answer
+different scientific questions:
+
+| Variant | Update | Role |
+|---|---|---|
+| `StateConvSurrogate` | directly predicts the next state | non-conservative control; needed to measure whether conservation defect predicts `eta_t` |
+| `ConservativeFluxSurrogate` | predicts a local average interface flux and applies a telescoping finite-volume update | preferred conservative model for one-step and multi-step horizon studies |
+
+`TinyConvSurrogate` is only a backward-compatible alias for `StateConvSurrogate`.
+
+All convolutions use **circular padding**, matching the periodic Burgers domain. The state
+model uses kernel size 5, width 24, and three hidden convolutional layers. The flux model
+uses width 24 and four local layers. For `H>1`, its dilation schedule expands as
+`1,2,4,8,...` up to the requested horizon.
+
+The flux model predicts a time-averaged interface flux and applies
+
+```text
+u_i^(n+H) = u_i^n - H*(dt/dx)*(Fbar_(i+1/2) - Fbar_(i-1/2)).
+```
+
+Thus global conservation is structural. Conservation defect is therefore expected to be
+nearly zero for the flux model and is not an informative verifier for that architecture;
+the state model is retained as the required control.
+
+The interface accepts `[B,C,N]` tensors for future multi-variable conservative systems.
+`interfaces.apply_accept_mask` is reserved for later per-cell fallback work; the current
+PoC still makes one global accept/reject decision.
+
+The baseline loss remains plain supervised MSE on same-grid Godunov targets. Pushforward
+training and deep ensembles should be later ablations rather than silent changes to the
+professor's initial simple-surrogate baseline.
 
 ## Mathematical object being tested
 
@@ -49,7 +84,7 @@ They are adjacent but not identical:
 | Verifier | Maps a proposed state to observable evidence or a score | conservation defect, weak residual, MC-dropout, research-only oracle |
 | Decision policy | Converts the evidence into accept or fallback | calibrated scalar threshold plus hard guards |
 | Trusted stepper | Supplies the fallback update | `GodunovMacroStepper` |
-| Advice model | Supplies the fast candidate | `TorchSurrogateAdapter(TinyConvSurrogate)` |
+| Advice model | Supplies the fast candidate | `TorchSurrogateAdapter(StateConvSurrogate or ConservativeFluxSurrogate)` |
 
 The verifier is therefore the trust signal; the online decision policy is the
 rule that acts on it. The contracts live in `interfaces.py`, so a future 0-D
@@ -74,8 +109,9 @@ Run one-step and multi-step training together:
 
 ```bash
 python -m certified_burgers.horizon_study \
-  --horizons 1 4 \
-  --reference_steps 24 \
+  --surrogate flux \
+  --horizons 1 2 4 8 16 \
+  --reference_steps 32 \
   --epochs 60 \
   --out_dir outputs/certified_burgers_horizons
 ```
@@ -153,6 +189,7 @@ Then run:
 
 ```bash
 python -m certified_burgers.experiment \
+  --surrogate state \
   --horizon 1 \
   --reference_steps 24 \
   --epochs 60 \
