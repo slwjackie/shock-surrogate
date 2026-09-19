@@ -88,3 +88,25 @@ class AlwaysAcceptPolicy:
 class AlwaysFallbackPolicy:
     def decide(self, result: VerifierResult) -> Decision:
         return Decision(False, "always_fallback", result.score)
+
+
+def apply_accept_mask(candidate, fallback, accept_mask):
+    """Select candidate/fallback values with a scalar or per-cell mask.
+
+    Current Burgers policies still return one global boolean. This helper fixes the
+    interface for later cell-wise fallback experiments without changing today's
+    decision semantics. A 1-D mask of length N broadcasts over leading axes.
+    """
+    candidate = np.asarray(candidate)
+    fallback = np.asarray(fallback)
+    if candidate.shape != fallback.shape:
+        raise ValueError("candidate and fallback must have identical shapes.")
+    mask = np.asarray(accept_mask, dtype=bool)
+    if mask.ndim == 0:
+        return candidate.copy() if bool(mask) else fallback.copy()
+    if mask.shape == candidate.shape:
+        return np.where(mask, candidate, fallback)
+    if mask.ndim == 1 and candidate.shape[-1] == mask.shape[0]:
+        reshape = (1,) * (candidate.ndim - 1) + (mask.shape[0],)
+        return np.where(mask.reshape(reshape), candidate, fallback)
+    raise ValueError("accept_mask must be scalar, full-shape, or a 1-D cell mask.")
