@@ -125,6 +125,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--horizons", type=int, nargs="+", default=(1, 4))
     parser.add_argument("--reference_steps", type=int, default=24)
+    parser.add_argument("--surrogate", choices=("state", "flux"), default="flux")
     parser.add_argument("--n_cells", type=int, default=128)
     parser.add_argument("--train_samples", type=int, default=768)
     parser.add_argument("--calib_samples", type=int, default=192)
@@ -148,6 +149,7 @@ def main():
         batch_size=arguments.batch_size,
         rollout_cases=arguments.rollout_cases,
         reference_steps=arguments.reference_steps,
+        surrogate_kind=arguments.surrogate,
         fine_reference_factor=arguments.fine_reference_factor,
         sweep_points=arguments.sweep_points,
         runtime_repeats=arguments.runtime_repeats,
