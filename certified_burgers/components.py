@@ -104,7 +104,8 @@ class MCDropoutVerifier:
             device = torch.device("cpu")
         state = torch.as_tensor(proposal.state[None], dtype=torch.float32, device=device)
         draws = mc_dropout_predictions(self.model, state, samples=self.samples)
-        score = draws.std(dim=0, unbiased=True).mean(dim=-1)[0]
+        spread = draws.std(dim=0, unbiased=True)
+        score = spread.flatten(start_dim=1).mean(dim=1)[0]
         return VerifierResult(self.name, float(score.detach().cpu()))
 
 
