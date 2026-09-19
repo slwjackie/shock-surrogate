@@ -25,10 +25,11 @@ different scientific questions:
 
 `TinyConvSurrogate` is only a backward-compatible alias for `StateConvSurrogate`.
 
-All convolutions use **circular padding**, matching the periodic Burgers domain. The state
-model uses kernel size 5, width 24, and three hidden convolutional layers. The flux model
-uses width 24 and four local layers. For `H>1`, its dilation schedule expands as
-`1,2,4,8,...` up to the requested horizon.
+All spatial convolutions use **circular padding**, matching the periodic Burgers domain. For
+`H=1`, the network uses exactly one 5-point spatial convolution; the remaining small layers
+are `1x1` channel mixers, so the effective spatial stencil does not silently grow beyond five
+cells. For `H>1`, the flux model adds only as many dilated 5-point convolutions (`1,2,4,8,...`)
+as needed to cover the H-step domain of dependence, with unused depth kept pointwise.
 
 The flux model predicts a time-averaged interface flux and applies
 
