@@ -10,9 +10,9 @@ from certified_burgers.fine_reference import (
 from certified_burgers.godunov import godunov_flux,godunov_step
 from certified_burgers.horizon_study import run_horizon_study
 from certified_burgers.initial_conditions import smooth_state
-from certified_burgers.interfaces import ThresholdPolicy, VerifierResult
+from certified_burgers.interfaces import ThresholdPolicy, VerifierResult, apply_accept_mask
 from certified_burgers.oracle_error import l1_error,oracle_gate
-from certified_burgers.surrogate import TinyConvSurrogate
+from certified_burgers.surrogate import ConservativeFluxSurrogate, StateConvSurrogate, TinyConvSurrogate
 from certified_burgers.verifiers import conservation_defect,weak_residual_score
 from certified_burgers.rollout import rollout_diagnostics
 from certified_burgers.splits import make_data_splits
@@ -154,3 +154,37 @@ def test_horizon_study_keeps_split_and_final_time_fixed(tmp_path):
     assert summary["fairness_checks"]["identical_reference_step_count"]
     assert summary["fairness_checks"]["identical_final_physical_time"]
     assert [row["macro_steps"] for row in summary["rows"]]==[2,1]
+
+
+def test_state_cnn_is_periodic_translation_equivariant():
+    torch.manual_seed(4)
+    model=StateConvSurrogate(width=8,depth=2,dropout=0.0).eval()
+    state=torch.randn(3,32)
+    shift=7
+    with torch.no_grad():
+        direct=model(torch.roll(state,shifts=shift,dims=-1))
+        shifted=torch.roll(model(state),shifts=shift,dims=-1)
+    assert torch.allclose(direct,shifted,atol=1e-6,rtol=1e-6)
+
+
+def test_conservative_flux_cnn_preserves_each_channel_sum():
+    torch.manual_seed(5)
+    model=ConservativeFluxSurrogate(
+        horizon=4,dt_over_dx=0.1,channels=3,width=8,depth=3,dropout=0.0
+    ).eval()
+    state=torch.randn(2,3,64)
+    with torch.no_grad():
+        prediction=model(state)
+    assert prediction.shape==state.shape
+    assert torch.allclose(
+        prediction.sum(dim=-1),state.sum(dim=-1),atol=2e-5,rtol=1e-6
+    )
+
+
+def test_cell_accept_mask_broadcasts_over_channels():
+    candidate=np.ones((2,3,8))
+    fallback=np.zeros_like(candidate)
+    mask=np.array([True,False,True,False,True,False,True,False])
+    mixed=apply_accept_mask(candidate,fallback,mask)
+    assert np.all(mixed[...,mask]==1.0)
+    assert np.all(mixed[...,~mask]==0.0)
