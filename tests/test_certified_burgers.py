@@ -159,6 +159,7 @@ def test_horizon_study_keeps_split_and_final_time_fixed(tmp_path):
 def test_state_cnn_is_periodic_translation_equivariant():
     torch.manual_seed(4)
     model=StateConvSurrogate(width=8,depth=2,dropout=0.0).eval()
+    assert model.receptive_radius_cells==2
     state=torch.randn(3,32)
     shift=7
     with torch.no_grad():
@@ -172,6 +173,7 @@ def test_conservative_flux_cnn_preserves_each_channel_sum():
     model=ConservativeFluxSurrogate(
         horizon=4,dt_over_dx=0.1,channels=3,width=8,depth=3,dropout=0.0
     ).eval()
+    assert model.receptive_radius_cells>=4
     state=torch.randn(2,3,64)
     with torch.no_grad():
         prediction=model(state)
