@@ -38,16 +38,19 @@ def _periodic_conv(in_channels, out_channels, kernel_size, dilation=1):
     )
 
 
-def _dilation_schedule(horizon: int, depth: int):
-    horizon = int(horizon); depth = int(depth)
-    if horizon < 1 or depth < 1:
+def _spatial_dilations(horizon: int, depth: int, kernel_size: int):
+    """Use only as many spatial layers as the H-step domain of dependence needs."""
+    horizon=int(horizon); depth=int(depth); kernel_size=int(kernel_size)
+    if horizon<1 or depth<1:
         raise ValueError("horizon and depth must be positive.")
-    if horizon == 1:
-        return (1,) * depth
-    values=[]; dilation=1
-    for _ in range(depth):
-        values.append(min(dilation, horizon))
-        dilation=min(2*dilation, horizon)
+    radius_per_dilation=kernel_size//2
+    values=[]; radius=0; dilation=1
+    while radius<horizon and len(values)<depth:
+        values.append(dilation)
+        radius += radius_per_dilation*dilation
+        dilation *= 2
+    if radius<horizon:
+        raise ValueError("Increase depth: receptive field is too small for this horizon.")
     return tuple(values)
 
 
@@ -60,14 +63,15 @@ class StateConvSurrogate(nn.Module):
         if int(depth)<1: raise ValueError("depth must be >= 1")
         self.channels=int(channels); self.width=int(width); self.depth=int(depth)
         self.kernel_size=int(kernel_size); self.dropout=float(dropout)
-        layers=[]; in_channels=self.channels
-        for _ in range(self.depth):
-            layers += [_periodic_conv(in_channels,self.width,self.kernel_size),
+        # Exactly one 5-point spatial stencil for H=1; later layers only mix channels.
+        layers=[_periodic_conv(self.channels,self.width,self.kernel_size),
+                nn.GELU(),nn.Dropout(self.dropout)]
+        for _ in range(self.depth-1):
+            layers += [nn.Conv1d(self.width,self.width,kernel_size=1),
                        nn.GELU(),nn.Dropout(self.dropout)]
-            in_channels=self.width
-        layers.append(_periodic_conv(self.width,self.channels,self.kernel_size))
+        layers.append(nn.Conv1d(self.width,self.channels,kernel_size=1))
         self.net=nn.Sequential(*layers)
-        self.receptive_radius_cells=(self.kernel_size//2)*(self.depth+1)
+        self.receptive_radius_cells=self.kernel_size//2
 
     def forward(self,u):
         x,squeeze_channel=_channel_first(u,self.channels)
@@ -92,15 +96,17 @@ class ConservativeFluxSurrogate(nn.Module):
         self.horizon=int(horizon); self.dt_over_dx=float(dt_over_dx)
         self.channels=int(channels); self.width=int(width); self.depth=int(depth)
         self.kernel_size=int(kernel_size); self.dropout=float(dropout)
-        self.dilations=_dilation_schedule(self.horizon,self.depth)
+        self.dilations=_spatial_dilations(self.horizon,self.depth,self.kernel_size)
         self.receptive_radius_cells=(self.kernel_size//2)*sum(self.dilations)
-        if self.receptive_radius_cells<self.horizon:
-            raise ValueError("Flux CNN receptive field is too small for the requested horizon.")
         layers=[]; in_channels=self.channels
         for dilation in self.dilations:
             layers += [_periodic_conv(in_channels,self.width,self.kernel_size,dilation),
                        nn.GELU(),nn.Dropout(self.dropout)]
             in_channels=self.width
+        # Keep total depth small without enlarging the spatial stencil unnecessarily.
+        for _ in range(self.depth-len(self.dilations)):
+            layers += [nn.Conv1d(self.width,self.width,kernel_size=1),
+                       nn.GELU(),nn.Dropout(self.dropout)]
         layers.append(nn.Conv1d(self.width,self.channels,kernel_size=1))
         self.flux_net=nn.Sequential(*layers)
 
