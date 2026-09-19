@@ -42,7 +42,7 @@ from .rollout import (
 )
 from .splits import make_data_splits
 from .stability import stability_sweep
-from .surrogate import TinyConvSurrogate
+from .surrogate import build_surrogate
 from .validation import godunov_validation_suite
 from .verifiers import conservation_defect, mc_dropout_uncertainty, weak_residual_score
 
@@ -68,6 +68,7 @@ class ExperimentConfig:
     horizon: int = 1
     cfl: float = 0.8
     max_abs_global: float = 4.0
+    surrogate_kind: str = "state"
     seed: int = 0
     mc_samples: int = 8
     rollout_cases: int = 8
@@ -109,6 +110,8 @@ class ExperimentConfig:
             )
         if self.lr <= 0.0:
             raise ValueError("lr must be positive.")
+        if self.surrogate_kind not in {"state", "flux"}:
+            raise ValueError("surrogate_kind must be 'state' or 'flux'.")
         if self.fine_reference_factor < 1:
             raise ValueError("fine_reference_factor must be at least one.")
         if self.epochs < 1 or self.batch_size < 1:
@@ -440,7 +443,12 @@ def _policy_sweep(model, states, thresholds, *, dx, dt, config, policy):
 
 
 def _train_model(config, train_x, train_y, device):
-    model = TinyConvSurrogate().to(device)
+    model = build_surrogate(
+        config.surrogate_kind,
+        horizon=config.horizon,
+        dt_over_dx=config.cfl / config.max_abs_global,
+        channels=1,
+    ).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr)
     loss_function = nn.MSELoss()
     dataset = TensorDataset(
@@ -754,6 +762,8 @@ def run(config: ExperimentConfig, out_path=None):
         },
         "device": str(device),
         "training": {
+            "surrogate_kind": config.surrogate_kind,
+            "architecture": model.architecture_summary(),
             "first_epoch_mse": float(losses[0]),
             "final_epoch_mse": float(losses[-1]),
         },
@@ -837,6 +847,7 @@ def main():
     parser.add_argument("--horizon", type=int, default=1)
     parser.add_argument("--cfl", type=float, default=0.8)
     parser.add_argument("--max_abs_global", type=float, default=4.0)
+    parser.add_argument("--surrogate", choices=("state", "flux"), default="state")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--mc_samples", type=int, default=8)
     parser.add_argument("--rollout_cases", type=int, default=8)
@@ -872,6 +883,7 @@ def main():
         horizon=arguments.horizon,
         cfl=arguments.cfl,
         max_abs_global=arguments.max_abs_global,
+        surrogate_kind=arguments.surrogate,
         seed=arguments.seed,
         mc_samples=arguments.mc_samples,
         rollout_cases=arguments.rollout_cases,
