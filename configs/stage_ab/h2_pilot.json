@@ -1,0 +1,1 @@
+{"epochs": 80, "train_cases": 8, "other_cases": 1, "points": 64, "steps": 32, "final_time": 0.001, "local_tolerance": 0.05}

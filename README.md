@@ -1,6 +1,11 @@
-# `certified-burgers-poc` branch
+# `certified-stage-ab-h2` branch
 
-This branch is the active **1-D inviscid Burgers / first-order Godunov trust-or-fallback study**.
+This branch extends `certified-burgers-poc` with certified Burgers fluxes and
+0-D hydrogen autoignition. See the Stage A/B section below.
+
+## Preserved Burgers PoC
+
+The original package is the active **1-D inviscid Burgers / first-order Godunov trust-or-fallback study**.
 The surrogate used by `certified_burgers/` is a deliberately small **local 1-D CNN**, not a
 physics-informed Transformer. Architecture novelty is intentionally not the objective of this
 proof-of-concept; the main research questions are oracle opportunity, cheap verification,
@@ -45,3 +50,25 @@ Files such as `train_transformer_hybrid.py`, `eval_transformer_hybrid.py`,
 `models/model_hybrid_temporal_spatial.py`, and the reactive-Burgers/WENO scripts are retained
 from an earlier project direction. They are **not used by the active `certified_burgers`
 experiment** and should not be read as the architecture description for this branch.
+
+## Stage A/B extension (new branch)
+
+`certified-stage-ab-h2` preserves the original PoC and adds:
+
+- **Stage A:** H=1 two-input ReLU flux, offline interval/Lipschitz certificates,
+  roundoff-aware cumulative error budget and certified fallback.
+- **Stage B:** Cantera H2/O2/N2 autoignition, frozen reflected-shock conditioning,
+  physically guarded neural chemistry and independent ID/OOD evaluation.
+- A restricted interval-AD ODE certificate is included; empirical chemistry gates
+  and unvalidated CVODES fallback are not mislabelled as a global certificate.
+
+Start with [the run guide](docs/stage_ab_workflow.md),
+[mathematical contracts](docs/stage_ab_theory.md), and
+[validation report](reports/stage_ab_validation.md).
+
+```bash
+python -m pip install -r requirements-stage-ab.txt
+python -m pytest -q
+python -m stage_ab.experiments a --smoke --out outputs/stage_a
+python -m stage_ab.experiments b --smoke --out outputs/stage_b
+```

@@ -2,6 +2,7 @@ name: Stage A B validation
 on:
   push:
     branches: [certified-stage-ab-h2]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,20 +21,28 @@ jobs:
           python-version: '3.13'
       - name: Install scientific dependencies
         run: |
-          python -m pip install numpy scipy pytest matplotlib mpmath 'cantera==3.2.0'
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-      - name: Run regression tests
+          python -m pip install -r requirements-stage-ab.txt
+      - name: Run all regression tests
         run: python -m pytest -q --junitxml=validation/junit.xml
-      - name: Reproducible validation inputs
+      - name: Stage A end-to-end smoke
+        run: python -m stage_ab.experiments a --smoke --out validation/stage_a
+      - name: Stage B with restricted interval certificate
+        run: python -m stage_ab.experiments b --smoke --certified-ode --out validation/stage_b
+      - name: Plot and CSV export
+        run: |
+          python -m stage_ab.plots validation/stage_a
+          python -m stage_ab.plots validation/stage_b
+      - name: Reproducibility manifest
         if: always()
         run: |
-          mkdir -p validation/wheels
+          mkdir -p validation
           git archive HEAD -o validation/source.zip
-          python -m pip download --only-binary=:all: --no-deps 'cantera==3.2.0' 'ruamel.yaml==0.18.16' -d validation/wheels
           python -m pip freeze > validation/environment.txt
+          git rev-parse HEAD > validation/commit.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: stage-ab-validation
           path: validation/
-          retention-days: 7
+          retention-days: 14

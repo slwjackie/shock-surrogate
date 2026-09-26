@@ -1,0 +1,103 @@
+{
+  "base_commit": "93262e7c3d6a640614e7a96bb07e0f32eac96647",
+  "branch": "certified-stage-ab-h2",
+  "local_regression": {
+    "tests": "47",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "8.572"
+  },
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "torch": "2.10.0+cpu",
+    "cantera": "3.2.0"
+  },
+  "stage_a": {
+    "epochs": 200,
+    "model_sha256": "fb73e412bdd44935a607849087234ec2813a18c193bc66bde65f188417271827",
+    "certificate_build_sec": 0.16474793099996532,
+    "all_global_certificates_hold": true,
+    "fourier_probe": {
+      "n": 128,
+      "K": 8,
+      "amplitude": 0.05,
+      "conservation": 6.5052130349130266e-18,
+      "weak_residual": 1.1288728172153622e-16,
+      "eta": 0.03203644309676884,
+      "scope": "Arbitrary candidate pairs. A deterministic translation-equivariant CNN maps a constant input to a constant output."
+    }
+  },
+  "stage_b_integration": {
+    "epochs": 60,
+    "cases": 5,
+    "points": 40,
+    "steps": 12,
+    "initial_loss": 2.9879253041427747,
+    "final_loss": 0.25784061144938514,
+    "reference_tolerance_check": 8.127017591882946e-07,
+    "restricted_exact_ode_probe": {
+      "available": true,
+      "bound": 1.6794129271447887e-16,
+      "reason": "interval_residual_and_closed_tube",
+      "slabs": [
+        {
+          "piece": 0,
+          "mu_upper": 29522140.51769693,
+          "residual_upper": 1.6769351536765073e-06,
+          "bound": 1.6794129271447887e-16,
+          "tube_radius": 1e-05
+        }
+      ],
+      "target": "exact constant-volume kinetics ODE, not Cantera numerical trajectory"
+    }
+  },
+  "stage_b_interval_smoke": {
+    "completed_cases": 5,
+    "policies": [
+      "always_solver",
+      "always_solver_restarted",
+      "always_neural",
+      "physical",
+      "oracle",
+      "residual",
+      "consistency",
+      "uncertainty",
+      "certified_ode"
+    ],
+    "restricted_exact_ode_probe": {
+      "available": true,
+      "bound": 1.6794129271447887e-16,
+      "reason": "interval_residual_and_closed_tube",
+      "slabs": [
+        {
+          "piece": 0,
+          "mu_upper": 29522140.51769693,
+          "residual_upper": 1.6769351536765073e-06,
+          "bound": 1.6794129271447887e-16,
+          "tube_radius": 1e-05
+        }
+      ],
+      "target": "exact constant-volume kinetics ODE, not Cantera numerical trajectory"
+    }
+  },
+  "limitations": [
+    "Large h2_full benchmark was interrupted by the execution limit; no complete full-benchmark result is claimed.",
+    "The 60-epoch integration benchmark is deliberately small and has no neural speedup.",
+    "The conservative H2 empirical gates rejected all rollout proposals at the tested tolerance.",
+    "Tiny-slab exact-ODE enclosure is not a full ignition-trajectory certification.",
+    "No independent experimental or second-mechanism validation is claimed."
+  ],
+  "source_sha256": {
+    "stage_ab/__init__.py": "1885de7de67d9af75364c1508a0fbf2c4a8c8e107214a6fff53b8d68a3b75b95",
+    "stage_ab/adapters.py": "53c4835ed12d41f325e8550842638149a7251079e23507379f070af05433576b",
+    "stage_ab/burgers.py": "22fbd1f6a1f0afd3f2a2d200db4ec43314a9acc46963b4a47cd55f7a8f7ca8f4",
+    "stage_ab/chemistry.py": "08d457a11fd29f60be36085b8875634870a71ae747a0ff839f81ca41877e6757",
+    "stage_ab/experiments.py": "c3c6f4a57682b87f5e0492bd887ed90ed05702430575de101e0fb074381cbee4",
+    "stage_ab/hydrogen.py": "fee79dcaac11e24814cf0c7290fec8e936d89032c175bb65dfb0c3e754653a1d",
+    "stage_ab/interval.py": "1851e421afa5ccb2968614d53cfd418a4505afdfc8db959b40a7014f215249c6",
+    "stage_ab/kinetics_bounds.py": "7bce7409365201c3b18eb1553b02f1c7054a6be4bfee43c2c693957592508d4d",
+    "stage_ab/plots.py": "70fe4a3e4c8f15132a2a29d915bdcdb325f6ddceca78f62c75091f429b1b7fec"
+  }
+}
