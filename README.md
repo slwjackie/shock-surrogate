@@ -66,6 +66,28 @@ Start with [the run guide](docs/stage_ab_workflow.md),
 [mathematical contracts](docs/stage_ab_theory.md), and
 [validation report](reports/stage_ab_validation.md).
 
+### Stage A2: difference-aware certificates and certified routing
+
+`stage_ab/stage_a2.py`, `stage_ab/vinterval.py` and `stage_ab/budget.py` strengthen
+Stage A (all claims remain relative to same-grid exact-arithmetic Godunov):
+
+- **Difference-aware certificate** (table and local-box variants) bounding
+  `e_i - e_(i-1)` instead of `|e_i| + |e_(i-1)|`: O(h) instead of Θ(1), and
+  asymptotically exact on smooth data under the local variant.
+- **Face-selective routing**: per-face NN/Godunov choice, exact trust frontier by
+  an O(N²) dynamic program on the cycle, certified for every trust pattern.
+- **Online budget allocation** of the global certified error (online
+  multiple-choice knapsack): threshold policy with a proved competitive bound,
+  robustification of any heuristic, lower bounds for greedy and pacing.
+
+Proofs: [docs/stage_a2_theory.md](docs/stage_a2_theory.md).
+Measurements: [reports/stage_a2_validation.md](reports/stage_a2_validation.md).
+
+```bash
+python -m stage_ab.experiments_a2 --out outputs/stage_a2      # ~5 min, CPU
+python -m stage_ab.plots_a2 outputs/stage_a2
+```
+
 ```bash
 python -m pip install -r requirements-stage-ab.txt
 python -m pytest -q

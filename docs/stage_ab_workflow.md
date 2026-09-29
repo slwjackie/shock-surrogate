@@ -39,6 +39,21 @@ table. Do not reuse a certificate with different weights or a different
 inference implementation. `stage_ab.adapters` connects the new certificate to
 the original `Proposal` / `VerifierResult` / `DecisionPolicy` contracts.
 
+## Stage A2 (difference-aware certificates, routing, budget policies)
+
+```bash
+python -m stage_ab.experiments_a2 --quick --out outputs/stage_a2_quick   # ~30 s
+python -m stage_ab.experiments_a2 --out outputs/stage_a2                 # ~5 min
+python -m stage_ab.plots_a2 outputs/stage_a2
+```
+
+`certified_rollout_a2(model, tables, v0, steps=..., lam=..., total_budget=...,
+policy=..., mode="local")` is the certified entry point. `mode` selects the
+certificate (`separable` = original Stage A table, `table`, `local`, `both`);
+`policy` is any `stage_ab.budget.Policy`. The total budget is enforced in exact
+rationals whatever the policy does. `audit=True` adds exact-rational oracle
+checks and is slow. Statements and proofs: `docs/stage_a2_theory.md`.
+
 ## Stage B
 
 ```bash
