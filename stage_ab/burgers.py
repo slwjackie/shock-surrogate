@@ -343,6 +343,10 @@ def certified_rollout(model, table, initial, *, steps=20, lam=0.2,
             budget += bound
         else:
             state, arithmetic_defect = fallback_step(before, lam, h)
+            # Review item A-1: the L1-contraction argument needs every state in
+            # K=[-M,M]^N.  S(v) lies in K and projection onto K is L1-nonexpansive
+            # (docs/stage_a2_theory.md, Lemma C1), so clipping keeps the bound.
+            state = np.clip(state, -envelope, envelope)
             budget += arithmetic_defect
         row = {"step": n, "accept": accept, "reason": reason,
                "local_bound": None if bound is None else upper_fraction(bound),
@@ -352,6 +356,7 @@ def certified_rollout(model, table, initial, *, steps=20, lam=0.2,
                 eta = exact_local_error(candidate, before, lam, h)
                 row.update(oracle_eta=float(eta), certificate_holds=(bound is not None and eta <= bound))
             reference, defect = fallback_step(reference, lam, h)
+            reference = np.clip(reference, -envelope, envelope)
             reference_roundoff += defect
             measured = Q(float(h))*sum((abs(Q(float(x))-Q(float(y))) for x, y in zip(state, reference)), Q(0))
             row.update(error_vs_fp64_godunov=float(measured),
