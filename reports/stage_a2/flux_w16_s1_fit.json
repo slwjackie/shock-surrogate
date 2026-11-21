@@ -1,0 +1,10 @@
+{
+ "sup_error_grid": 0.05658438223960838,
+ "mean_error_grid": 0.006525486049142174,
+ "sup_consistency_defect_diag": 0.02107050918044462,
+ "train_sec": 9.598151143999985,
+ "final_loss": 6.811055936850607e-05,
+ "width": 16,
+ "steps": 6000,
+ "seed": 1
+}

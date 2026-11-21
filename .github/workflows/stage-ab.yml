@@ -29,10 +29,13 @@ jobs:
         run: python -m stage_ab.experiments a --smoke --out validation/stage_a
       - name: Stage B with restricted interval certificate
         run: python -m stage_ab.experiments b --smoke --certified-ode --out validation/stage_b
+      - name: Stage A2 quick run (certificates, routing, budget policies)
+        run: python -m stage_ab.experiments_a2 --quick --out validation/stage_a2
       - name: Plot and CSV export
         run: |
           python -m stage_ab.plots validation/stage_a
           python -m stage_ab.plots validation/stage_b
+          python -m stage_ab.plots_a2 validation/stage_a2
       - name: Reproducibility manifest
         if: always()
         run: |

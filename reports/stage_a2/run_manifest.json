@@ -1,0 +1,49 @@
+{
+ "environment": {
+  "python": "3.11.15",
+  "numpy": "2.4.4",
+  "torch": "2.14.0+cu130",
+  "platform": "Linux-6.18.44-fc-v49-x86_64-with-glibc2.39"
+ },
+ "fits": [
+  {
+   "sup_error_grid": 0.04733392373949408,
+   "mean_error_grid": 0.00463003503169904,
+   "sup_consistency_defect_diag": 0.013668921015632857,
+   "train_sec": 9.705816269000024,
+   "final_loss": 3.3149328373838216e-05,
+   "width": 16,
+   "steps": 6000,
+   "seed": 0
+  },
+  {
+   "sup_error_grid": 0.05658438223960838,
+   "mean_error_grid": 0.006525486049142174,
+   "sup_consistency_defect_diag": 0.02107050918044462,
+   "train_sec": 9.598151143999985,
+   "final_loss": 6.811055936850607e-05,
+   "width": 16,
+   "steps": 6000,
+   "seed": 1
+  },
+  {
+   "sup_error_grid": 0.03358429997959789,
+   "mean_error_grid": 0.005114146314683221,
+   "sup_consistency_defect_diag": 0.018533645492379458,
+   "train_sec": 8.654974323999795,
+   "final_loss": 3.971499245380983e-05,
+   "width": 16,
+   "steps": 6000,
+   "seed": 2
+  }
+ ],
+ "table_build_sec": {
+  "16": 1.4533314459999929,
+  "32": 6.4450468
+ },
+ "config": {
+  "lam": 0.2,
+  "envelope": 2.0
+ },
+ "total_sec": 265.13330343000007
+}
