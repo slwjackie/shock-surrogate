@@ -139,11 +139,13 @@ class FrozenFlux:
             result *= max(sum((abs(Q(float(x))) for x in row), Q(0)) for row in w)
         return result
 
-    def fp_roundoff_bound(self, box):
+    def fp_roundoff_bound(self, box, *, reordered=False):
         """Uniform forward-error bound between the frozen FP64 and real network.
 
-        Gamma_(2d) dot-product estimate plus an absolute subnormal allowance;
-        component errors propagate through |W| and 1-Lipschitz ReLU.
+        The Gamma_(2d) dot-product estimate includes a subnormal allowance.
+        Component errors propagate through |W| and 1-Lipschitz ReLU.
+        With a reordered dot, the interval encloses the real inputs, so the
+        magnitude used for local rounding must also include their FP errors.
         """
         x, errors = list(box), [Q(0), Q(0)]
         u, tiny = Q(1, 2**53), Q(1, 2**1074)
@@ -160,6 +162,8 @@ class FrozenFlux:
                     magnitude += abs(Q(float(coefficient)))*Q(float(item.abs_upper()))
                     propagated += abs(Q(float(coefficient)))*error
                 values.append(accum.relu() if layer_index+1 < len(self.layers) else accum)
+                if reordered:
+                    magnitude += propagated
                 new_errors.append(propagated+gamma*magnitude+count*tiny/(1-count*u))
             x, errors = values, new_errors
         return errors[0]

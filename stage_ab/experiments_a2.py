@@ -299,15 +299,19 @@ def _median_time(fn, reps):
 def e5_timing(model, tables, ns, reps=15):
     from .burgers import neural_step
     consts = FPConstants.build(LAM, ENVELOPE)
+    sequential = FrozenFlux(model.layers)
     rows = []
     for n in ns:
         v = discretize({"kind": "shocked", "amp": .8, "offset": .1, "phase": .3, "mode": 1, "t": .35}, n)
         costs = cell_costs(model, tables, consts, v, mode="local")
         fr = trust_frontier(costs)
         s = fr.select(n)
+        face_inputs = pairs(v)
         rec = {"n": n,
+               "flux_sequential": _median_time(lambda: sequential.predict(face_inputs), reps),
+               "flux_matmul": _median_time(lambda: model.predict(face_inputs), reps),
                "godunov_step": _median_time(lambda: godunov_step(v, 1.0, dt=LAM), reps),
-               "neural_step": _median_time(lambda: neural_step(model._frozen, v, LAM), reps),
+               "neural_step": _median_time(lambda: neural_step(model, v, LAM), reps),
                "cert_separable": _median_time(lambda: cell_costs(model, tables, consts, v, mode="separable"), reps),
                "cert_table": _median_time(lambda: cell_costs(model, tables, consts, v, mode="table"), reps),
                "cert_local": _median_time(lambda: cell_costs(model, tables, consts, v, mode="local"), reps),

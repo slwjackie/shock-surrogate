@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from fractions import Fraction as Q
+import hashlib
 import json
 from pathlib import Path
 import time
@@ -37,7 +38,7 @@ from .vinterval import (VI, U, up, up_float, rigorous_nonneg_sum,
                         godunov_value_enclosure, godunov_gradient_cases,
                         hidden_slopes_degenerate)
 
-ARITHMETIC = "numpy-float64-separate-multiply-add-v1"
+ARITHMETIC = "numpy-float64-matmul-bias-v1"
 
 
 # ---------------------------------------------------------------------------
@@ -58,17 +59,28 @@ class CertifiedFlux:
             w.setflags(write=False)
             b.setflags(write=False)
         self.layers = self._frozen.layers
-        self.digest = self._frozen.digest
+        self.digest = hashlib.sha256(f"{ARITHMETIC}:{self._frozen.digest}".encode("ascii")).hexdigest()
         self.width = max(len(b) for _, b in self.layers)
 
     def predict(self, pairs):
-        return self._frozen.predict(pairs)
+        """Evaluate all selected faces in one binary64 matrix product per layer."""
+        x = np.asarray(pairs, dtype=np.float64)
+        if x.ndim != 2 or x.shape[1] != 2 or not np.isfinite(x).all():
+            raise ValueError("Expected finite [batch,2] pairs")
+        for k, (weight, bias) in enumerate(self.layers):
+            x = x @ weight.T
+            x += bias
+            if not np.isfinite(x).all():
+                raise ArithmeticError("Nonfinite flux preactivation")
+            if k + 1 < len(self.layers):
+                np.maximum(x, 0., out=x)
+        return x[:, 0]
 
     def real_predict(self, pairs):
         return self._frozen.real_predict(pairs)
 
     def fp_roundoff_bound(self, box):
-        return self._frozen.fp_roundoff_bound(box)
+        return self._frozen.fp_roundoff_bound(box, reordered=True)
 
 
 # ---------------------------------------------------------------------------
@@ -154,7 +166,7 @@ class CertificateTables:
         if edges[0] != -envelope or edges[-1] != envelope:
             raise ArithmeticError("linspace did not reproduce the envelope endpoints")
         P = bins
-        # --- delta table: enclosure of the FP network minus the exact Godunov range.
+        # Enclose the real network first, then add the binary64 matmul allowance.
         delta = np.zeros((P, P))
         fmax = 0.0
         sub = sub_edges(edges, subdivisions)            # (P, S+1), exact shared endpoints
@@ -173,8 +185,9 @@ class CertificateTables:
             for q in range(P):
                 box = [I(edges[p], edges[p+1]), I(edges[q], edges[q+1])]
                 eps_fp[p, q] = up_float(model.fp_roundoff_bound(box))
+        delta = up(delta + eps_fp)
         obj = cls(model.digest, edges, int(subdivisions), delta, eps_fp,
-                  *([None]*6), flux_abs_max=up_float(Q(fmax)))
+                  *([None]*6), flux_abs_max=up_float(Q(fmax) + Q(float(eps_fp.max()))))
         if triple:
             obj._build_triples(model)
         obj.build_seconds = time.perf_counter()-start
@@ -217,7 +230,7 @@ class CertificateTables:
         """Tables are rebuilt and compared on load; a hash alone authenticates nothing."""
         d = json.loads(Path(path).read_text())
         if d["model_hash"] != model.digest or d.get("arithmetic") != ARITHMETIC:
-            raise ValueError("Certificate contract mismatch")
+            raise ValueError("Certificate contract mismatch. Rebuild the tables for the current model and arithmetic.")
         edges = np.array(d["edges"])
         rebuilt = cls.build(model, envelope=float(edges[-1]), bins=len(edges)-1,
                             subdivisions=int(d["subdivisions"]), triple=bool(d["triple"]))
@@ -304,18 +317,19 @@ def face_bounds(model: CertifiedFlux, tables: CertificateTables, v, *, mode="bot
     """Per-face bound eps_N(f) >= |F_fp(x_f) - G(x_f)|, x_f = (v_f, v_(f+1)).
 
     'table' / 'separable': the offline bin table (Lemma A5).
-    'local' / 'both': additionally the outward enclosure of the FP network and of
-    G at the single point x_f (Lemma A4 applied to a degenerate box), which is
-    within a few ulps of the true face error; the minimum of sound bounds is sound.
+    'local' / 'both': bound the real network and G at x_f and add the
+    bin's matmul roundoff allowance before taking the minimum.
     """
     v = np.asarray(v, dtype=np.float64)
     idx = tables.bin_index(v)
-    delta = tables.delta[idx, np.roll(idx, -1)]
+    face_bins = (idx, np.roll(idx, -1))
+    delta = tables.delta[face_bins]
     if mode in ("local", "both"):
         a, b = VI.point(v), VI.point(np.roll(v, -1))
         val = network_value_enclosure(model.layers, a, b)
         g = godunov_value_enclosure(a, b)
-        delta = np.minimum(delta, np.maximum(up(val.hi - g.lo), up(g.hi - val.lo)))
+        real_error = np.maximum(up(val.hi - g.lo), up(g.hi - val.lo))
+        delta = np.minimum(delta, up(real_error + tables.eps_fp[face_bins]))
     return delta
 
 

@@ -42,8 +42,8 @@ by a literature search in this note (Section 10).
   $G(a,b)=\max(p(a),q(b))$.
 * Face $f$ carries the input $x_f=(v_f,v_{f+1})$; cell $i$ lies between faces $i-1$ and $i$.
   $S(v)_i=v_i-\lambda\,(G(x_i)-G(x_{i-1}))$.
-* $F$ is the real-arithmetic ReLU network, $\hat F$ its binary64 implementation
-  (`FrozenFlux.predict`: bias first, then products added input by input), $\hat G$ the
+* $F$ is the real-arithmetic ReLU network, $\hat F$ its A2 binary64 implementation
+  (`CertifiedFlux.predict` evaluates a batched matrix product followed by bias addition), $\hat G$ the
   binary64 `godunov_flux`. $D:=F-G$ and $\phi:=\hat F-F$.
 * $\boldsymbol u=2^{-53}$, $\eta=2^{-1075}$ (half the least subnormal); $\mathrm{fl}$ is round-to-nearest-even;
   $\mathrm{pred},\mathrm{succ}$ are `nextafter` towards $\mp\infty$.
@@ -53,6 +53,9 @@ by a literature search in this note (Section 10).
 
 * **H1** IEEE-754 binary64, round-to-nearest-even, gradual underflow. Any nonfinite intermediate raises (fail closed).
 * **H2** NumPy element-wise ufuncs (`+ - * abs maximum minimum clip nextafter` and comparisons) are single correctly rounded operations, without FMA contraction; `np.sum` of $n$ terms evaluates some binary tree of correctly rounded additions. This is a platform assumption, tested but not proved.
+  For inference, the CPU matrix product computes each ordinary binary64 dot product using
+  products and additions or fused multiply-adds in any reduction order. Reduced-precision,
+  flush-to-zero and algebraically transformed matrix products fall outside this contract.
 * **H3** $\lambda M\le 1$ (checked in exact rationals).
 * **H4** $v_0\in K$ with binary64 entries.
 
@@ -108,22 +111,33 @@ $xy$ over a box attains its extremes at corners; each exact corner value is $\ge
 \mathrm{pred}(\min\mathrm{fl}(\text{corners}))$, because `pred` is nondecreasing. `mul_point` is the special case with a
 degenerate second operand. $\square$
 
-**Lemma 3.2 (network enclosure).** `network_value_enclosure` evaluates the network on a box with the *same
-operation sequence* as $\hat F$, each operation outward rounded. Its result contains both $F(x)$ and $\hat F(x)$ for
-every $x$ in the box.
+**Lemma 3.2 (network enclosure).** `network_value_enclosure` encloses $F(x)$ on the box by
+induction using Lemma 3.1 and monotone ReLU. Enlarging the result by the bin's
+$\varepsilon_{fp}$ on each side also encloses $\hat F(x)$.
 
-*Proof.* Induction over operations. Real values: Lemma 3.1. Floating values: if $\hat x\in X$, $\hat y\in Y$ then,
-$\mathrm{fl}$ being monotone, $\mathrm{fl}(\hat x+\hat y)\in[\mathrm{fl}(x_{lo}+y_{lo}),\mathrm{fl}(x_{hi}+y_{hi})]\subseteq
-[\mathrm{pred}(\cdot),\mathrm{succ}(\cdot)]$, and $\mathrm{fl}(\hat x w)$ lies between $\mathrm{fl}(x_{lo}w)$ and $\mathrm{fl}(x_{hi}w)$.
-ReLU is exact and monotone. $\square$
+*Proof of the enlargement.* Let $M_j$ bound the magnitude of each real layer input,
+$E_j$ bound its binary64 error and $P=\sum_j |w_j|E_j$. Using the computed inputs in
+an exact affine map changes its result by at most $P$. For fan-in $d$, the products,
+their reduction and the bias addition involve at most $k=2d$ effective roundings.
+Expanding the reduction tree multiplies each term by at most $k$ factors $1+\delta$,
+$|\delta|\le\boldsymbol u$. Fused multiply-add uses one rounding for its two operations.
+Thus with $\gamma_k=k\boldsymbol u/(1-k\boldsymbol u)$ and $k\boldsymbol u<1$, the new error is at most
+$$P+\gamma_k\left(|b|+\sum_j|w_j|M_j+P\right)+k\,2^{-1074}/(1-k\boldsymbol u).$$
+The last term bounds absolute roundoff in the subnormal range. ReLU is 1-Lipschitz.
+Starting with $E_j=0$, `fp_roundoff_bound(reordered=True)` computes these bounds in rational
+arithmetic. The same allowance on each face covers different reductions for different batch sizes.
+$\square$
 
 **Lemma 3.3 (face bounds).** (a) *Table.* For every $x$ in the closed bin $B_{pq}$,
 $|\hat F(x)-G(x)|\le\delta_{pq}$. (b) *Point.* `face_bounds(mode="local")` returns
 $\delta^{pt}_f\ge|\hat F(x_f)-G(x_f)|$.
 
-*Proof.* On a box $\beta=[a_{lo},a_{hi}]\times[b_{lo},b_{hi}]$, Lemma 3.2 gives $\hat F(x)\in[\nu_{lo},\nu_{hi}]$ and
+*Proof.* On a box $\beta=[a_{lo},a_{hi}]\times[b_{lo},b_{hi}]$, enclose $F(x)\in[\nu_{lo},\nu_{hi}]$ and
 Lemma 2.1 gives $G(\beta)=[G(a_{lo},b_{hi}),G(a_{hi},b_{lo})]$; `godunov_value_enclosure` rounds these two corner values
-outward. Then $|\hat F(x)-G(x)|\le\max(\nu_{hi}-g_{lo},\,g_{hi}-\nu_{lo})$, rounded up. `sub_edges` returns sub-bin edges
+outward. Then $|\hat F(x)-G(x)|\le\max(\nu_{hi}-g_{lo},\,g_{hi}-\nu_{lo})+\varepsilon_{fp}$, rounded up.
+The global flux magnitude used for the budget reserve includes the maximum bin allowance as well.
+Table fingerprints include the A2 inference contract. Existing saved weights can be reused to rebuild the tables.
+`sub_edges` returns sub-bin edges
 whose first and last entries are the bin edges and in which consecutive closed sub-intervals share the *same* float
 endpoint (a running maximum enforces order), so the sub-boxes cover the bin exactly. `bin_index` sends every value to
 a closed bin containing it. (b) is (a) with the degenerate box $\{x_f\}$. $\square$

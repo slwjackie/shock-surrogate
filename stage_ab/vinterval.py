@@ -174,11 +174,12 @@ def scale_by_slope(g: VI, s: VI) -> VI:
 
 
 def network_value_enclosure(layers, a: VI, b: VI) -> VI:
-    """Enclose both the real network value and the frozen FP64 evaluation.
+    """Enclose the real network and the Stage A bias-first FP64 evaluation.
 
     The accumulation order (bias first, then inputs j = 0, 1, ... in order)
     mirrors ``FrozenFlux.predict`` exactly, so Lemma V1 applies to the FP
     computation as well as to the real one (Lemma A4 of the Stage A review).
+    Stage A2 adds its per-bin roundoff bound to enclose batched matmul.
     Shapes: a, b are (M,); returns (M,).
     """
     x = [VI(a.lo[:, None], a.hi[:, None]), VI(b.lo[:, None], b.hi[:, None])]

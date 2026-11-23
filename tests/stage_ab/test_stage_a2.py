@@ -83,6 +83,7 @@ def test_network_value_gradient_and_difference_enclosures():
     rng = np.random.default_rng(2)
     for seed in range(6):
         f = random_flux(seed)
+        bias_first = FrozenFlux(f.layers)
         c = rng.uniform(-2, 2, (60, 2))
         r = rng.uniform(0, .4, (60, 2))*rng.choice([0., 1e-7, 1.], (60, 2))
         A, B = VI(c[:, 0]-r[:, 0], c[:, 0]+r[:, 0]), VI(c[:, 1]-r[:, 1], c[:, 1]+r[:, 1])
@@ -92,8 +93,8 @@ def test_network_value_gradient_and_difference_enclosures():
         for i in range(60):
             x = np.array([[rng.uniform(A.lo[i], A.hi[i]), rng.uniform(B.lo[i], B.hi[i])]])
             y = np.array([[rng.uniform(A.lo[i], A.hi[i]), rng.uniform(B.lo[i], B.hi[i])]])
-            fp, real = f.predict(x)[0], f.real_predict(x)[0]
-            assert val.lo[i] <= fp <= val.hi[i]
+            real = f.real_predict(x)[0]
+            assert val.lo[i] <= bias_first.predict(x)[0] <= val.hi[i]
             assert Q(float(val.lo[i])) <= real <= Q(float(val.hi[i]))
             assert Q(float(v2.lo[i])) <= real <= Q(float(v2.hi[i]))
             gx = exact_godunov(Q(float(x[0, 0])), Q(float(x[0, 1])))
@@ -104,6 +105,40 @@ def test_network_value_gradient_and_difference_enclosures():
             db = VI.point(y[:, 1]) - VI.point(x[:, 1])
             J = difference_enclosure(f.layers, A[i:i+1], B[i:i+1], da, db)
             assert Q(float(J.lo[0])) <= d <= Q(float(J.hi[0]))
+
+
+def test_matmul_roundoff_covers_cancellation_and_batch_sizes():
+    # The dot can round away a unit before the bias cancels the large term.
+    large = 2.**53
+    frozen = FrozenFlux([(np.array([[large, 1.]]), np.array([-large]))])
+    model = CertifiedFlux(frozen)
+    tables = CertificateTables.build(model, envelope=2., bins=4)
+    assert frozen.digest != model.digest
+    v = np.tile([1., 1., -2., np.nextafter(0., 1.), 2.], 27)
+    inputs = pairs(v)
+    for batch in (inputs[:0], inputs[:1], inputs[::2], inputs):
+        prediction = model.predict(batch)
+        assert prediction.shape == (len(batch),)
+        p, q = tables.bin_index(batch).T
+        for value, real, eps in zip(prediction, model.real_predict(batch), tables.eps_fp[p, q]):
+            assert abs(Q(float(value))-real) <= Q(float(eps))
+            assert abs(value) <= tables.flux_abs_max
+    for mode in ("table", "local", "both"):
+        face = face_bounds(model, tables, v, mode=mode)
+        diff = difference_bounds(model, tables, v, mode=mode)
+        errors = [Q(float(y)) - exact_godunov(Q(float(a)), Q(float(b)))
+                  for y, (a, b) in zip(model.predict(inputs), inputs)]
+        for i, error in enumerate(errors):
+            assert abs(error) <= Q(float(face[i]))
+            assert abs(error - errors[i-1]) <= Q(float(diff[i]))
+
+
+def test_matmul_rejects_overflow_before_relu():
+    model = CertifiedFlux(FrozenFlux([
+        (np.array([[-np.finfo(float).max, 0.]]), np.zeros(1)),
+        (np.ones((1, 1)), np.zeros(1))]))
+    with np.errstate(over="ignore"), pytest.raises(ArithmeticError):
+        model.predict([[2., 0.]])
 
 
 def test_godunov_gradient_branch_cases():
@@ -270,6 +305,11 @@ def test_tables_roundtrip_and_tamper(setup, tmp_path):
     loaded = CertificateTables.load(tmp_path/"t.json", model)
     assert np.array_equal(loaded.delta, tables.delta)
     d = json.loads((tmp_path/"t.json").read_text())
+    legacy = dict(d, arithmetic="numpy-float64-separate-multiply-add-v1",
+                  model_hash=FrozenFlux(model.layers).digest)
+    (tmp_path/"legacy.json").write_text(json.dumps(legacy))
+    with pytest.raises(ValueError, match="Rebuild"):
+        CertificateTables.load(tmp_path/"legacy.json", model, verify=False)
     d["delta"][0][0] = 0.
     (tmp_path/"t.json").write_text(json.dumps(d))
     with pytest.raises(ValueError):
