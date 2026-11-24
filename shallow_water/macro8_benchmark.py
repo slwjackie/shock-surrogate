@@ -97,7 +97,7 @@ def budget_pass(errors):
     return np.all(errors <= ENDPOINT_BUDGET, axis=1)
 
 
-def true_shock(q):
+def true_shock(q, blocks=1):
     """Coarse-cell position and midpoint depth of the unique compressive dam wave."""
     (hl,ml),(hr,mr) = q[[0,-1]]
     ul,ur = ml/hl,mr/hr
@@ -108,11 +108,11 @@ def true_shock(q):
     jump = np.flatnonzero(q[1:,0] != q[:-1,0])
     if len(jump) != 1:
         raise ValueError('The shock diagnostic expects one original dam jump')
-    return jump[0]+1+speed*DURATION*len(q), .5*(h+star), sign
+    return jump[0]+1+speed*DURATION*blocks*len(q), .5*(h+star), sign
 
 
-def shock_error(q, prediction):
-    position, level, sign = true_shock(q)
+def shock_error(q, prediction, blocks=1):
+    position, level, sign = true_shock(q, blocks)
     h = prediction[:,0]
     dh = h[1:]-h[:-1]
     # Depth gradients across the compressive wave have the opposite sign to

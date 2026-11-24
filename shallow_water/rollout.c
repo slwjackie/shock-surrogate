@@ -118,8 +118,9 @@ static int godunov(Cell l, Cell r, double tol, int mode, Flux *flux) {
    Success commits the last full step into state, failure leaves it intact.
    -1 invalid arguments, -2 nonphysical/nonfinite result, -3 cell CFL > 1,
    -4 vacuum, -5 unresolved interface depth, -6 insufficient memory. */
-int sw_rollout(int n, double *state, double length, double T, int steps,
-               double tol, int mode) {
+int sw_rollout_with_transfer(int n, double *state, double length, double T, int steps,
+                             double tol, int mode, int face, double *transfer) {
+    if (transfer && (face < 1 || face >= n)) return -1;
     if (!state || n<2 || (size_t)n>SIZE_MAX/(4*sizeof(double)) ||
         !(length>0) || !isfinite(length) || !(T>0) || !isfinite(T) ||
         steps<=0 || !(tol>=0) || !isfinite(tol) || mode<0 || mode>8) return -1;
@@ -129,6 +130,7 @@ int sw_rollout(int n, double *state, double length, double T, int steps,
     double *cur=buffer, *next=buffer+count;
     memcpy(cur,state,count*sizeof(*cur));
     double lambda = (T/steps)/(length/n);
+    Flux integrated = {0., 0.};
     int status = 0;
     for (int k=0; k<steps; ++k) {
         Cell left, right;
@@ -149,6 +151,10 @@ int sw_rollout(int n, double *state, double length, double T, int steps,
                 status = godunov(left,right,tol,mode,&flux);
                 if (status) break;
             }
+            if (transfer && i+1 == face) {
+                integrated.mass += lambda*flux.mass;
+                integrated.momentum += lambda*flux.momentum;
+            }
             double h = left.h-lambda*(flux.mass-previous.mass);
             double m = left.m-lambda*(flux.momentum-previous.momentum);
             if (!(h>0) || !isfinite(h) || !isfinite(m)) { status=-2; break; }
@@ -160,7 +166,18 @@ int sw_rollout(int n, double *state, double length, double T, int steps,
         if (status) break;
         double *swap=cur;cur=next;next=swap;
     }
-    if (!status) memcpy(state,cur,count*sizeof(*cur));
+    if (!status) {
+        memcpy(state,cur,count*sizeof(*cur));
+        if (transfer) {
+            transfer[0] = integrated.mass;
+            transfer[1] = integrated.momentum;
+        }
+    }
     free(buffer);
     return status;
+}
+
+int sw_rollout(int n, double *state, double length, double T, int steps,
+               double tol, int mode) {
+    return sw_rollout_with_transfer(n,state,length,T,steps,tol,mode,0,NULL);
 }

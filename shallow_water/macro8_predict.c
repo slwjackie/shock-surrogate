@@ -7,7 +7,9 @@
 
 enum { R = 7, TAPS = 15, WIDTH = 8, CHANNELS = 18 };
 
-int sw_macro8_predict(int n, const double *q, double *out, int model) {
+int sw_macro8_predict_with_transfer(int n, const double *q, double *out, int model,
+                                    int face, double *transfer) {
+    if (transfer && (face < 1 || face >= n)) return -1;
     if (!q || !out || q == out || n < 2 || model < 0 || model > 2 ||
         (size_t)n > SIZE_MAX/(2*sizeof(double))-2*R-1) return -1;
     const double c = sqrt(9.81);
@@ -64,6 +66,10 @@ int sw_macro8_predict(int n, const double *q, double *out, int model) {
         flux[R][1] = left1;
         flux[(size_t)n+R][0] = last_m;
         flux[(size_t)n+R][1] = last_momentum_flux;
+        if (transfer) {
+            transfer[0] = courant*flux[face+R][0];
+            transfer[1] = (courant*flux[face+R][1])*c;
+        }
         for (int i=0; i<n; ++i) {
             size_t k = 2*(size_t)i, left = (size_t)i+R;
             out[k] = q[k] + courant*(flux[left][0]-flux[left+1][0]);
@@ -72,4 +78,8 @@ int sw_macro8_predict(int n, const double *q, double *out, int model) {
     }
     free(flux);
     return status;
+}
+
+int sw_macro8_predict(int n, const double *q, double *out, int model) {
+    return sw_macro8_predict_with_transfer(n,q,out,model,0,NULL);
 }

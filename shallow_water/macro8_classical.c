@@ -13,6 +13,7 @@ static int engineering_depth(double hl, double ul, double hr, double ur,
    across controls. Only the scalar middle-depth solve is exchanged. */
 #define sw_solve engineering_depth
 #define sw_rollout sw_engineering_rollout
+#define sw_rollout_with_transfer sw_engineering_rollout_with_transfer
 #include "rollout.c"
 #undef sw_rollout
 #undef sw_solve
