@@ -1,0 +1,2608 @@
+{
+  "source_weights_sha256": "7b25de2028b76677f89e1ec99b3a412d7bbe8b2302cce97a1f0b48f6e40eac5c",
+  "weight_sha256": "e59d23632420806fcc3ce7f8f344ef3fbf4adde0dc88fe2e1ba71c26a3cf9e86",
+  "frozen_modes": [
+    "on_policy_uniform",
+    "on_policy_hard"
+  ],
+  "initial_model": "frozen hard",
+  "replay_seed": 721060,
+  "new_profiles": 96,
+  "encoder_steps_per_arm": 108,
+  "readout_solves_per_arm": 4,
+  "threshold": [
+    0.01,
+    0.04
+  ],
+  "mining_priority": "Nonpositive or nonfinite outgoing proposals first, then descending maximum local field MAE divided by the two thresholds. Retain their preceding valid incoming state and true label. Stop each history at its first invalid output or teacher failure.",
+  "mining": {
+    "trajectory_ids": [
+      "mine-000256",
+      "mine-000257",
+      "mine-000258",
+      "mine-000259",
+      "mine-000260",
+      "mine-000261",
+      "mine-000262",
+      "mine-000263",
+      "mine-000264",
+      "mine-000265",
+      "mine-000266",
+      "mine-000267",
+      "mine-000268",
+      "mine-000269",
+      "mine-000270",
+      "mine-000271",
+      "mine-000272",
+      "mine-000273",
+      "mine-000274",
+      "mine-000275",
+      "mine-000276",
+      "mine-000277",
+      "mine-000278",
+      "mine-000279",
+      "mine-000280",
+      "mine-000281",
+      "mine-000282",
+      "mine-000283",
+      "mine-000284",
+      "mine-000285",
+      "mine-000286",
+      "mine-000287",
+      "mine-000288",
+      "mine-000289",
+      "mine-000290",
+      "mine-000291",
+      "mine-000292",
+      "mine-000293",
+      "mine-000294",
+      "mine-000295",
+      "mine-000296",
+      "mine-000297",
+      "mine-000298",
+      "mine-000299",
+      "mine-000300",
+      "mine-000301",
+      "mine-000302",
+      "mine-000303",
+      "mine-000304",
+      "mine-000305",
+      "mine-000306",
+      "mine-000307",
+      "mine-000308",
+      "mine-000309",
+      "mine-000310",
+      "mine-000311",
+      "mine-000312",
+      "mine-000313",
+      "mine-000314",
+      "mine-000315",
+      "mine-000316",
+      "mine-000317",
+      "mine-000318",
+      "mine-000319",
+      "mine-000320",
+      "mine-000321",
+      "mine-000322",
+      "mine-000323",
+      "mine-000324",
+      "mine-000325",
+      "mine-000326",
+      "mine-000327",
+      "mine-000328",
+      "mine-000329",
+      "mine-000330",
+      "mine-000331",
+      "mine-000332",
+      "mine-000333",
+      "mine-000334",
+      "mine-000335",
+      "mine-000336",
+      "mine-000337",
+      "mine-000338",
+      "mine-000339",
+      "mine-000340",
+      "mine-000341",
+      "mine-000342",
+      "mine-000343",
+      "mine-000344",
+      "mine-000345",
+      "mine-000346",
+      "mine-000347",
+      "mine-000348",
+      "mine-000349",
+      "mine-000350",
+      "mine-000351",
+      "mine-000352",
+      "mine-000353",
+      "mine-000354",
+      "mine-000355",
+      "mine-000356",
+      "mine-000357",
+      "mine-000358",
+      "mine-000359",
+      "mine-000360",
+      "mine-000361",
+      "mine-000362",
+      "mine-000363",
+      "mine-000364",
+      "mine-000365",
+      "mine-000366",
+      "mine-000367",
+      "mine-000368",
+      "mine-000369",
+      "mine-000370",
+      "mine-000371",
+      "mine-000372",
+      "mine-000373",
+      "mine-000374",
+      "mine-000375",
+      "mine-000376",
+      "mine-000377",
+      "mine-000378",
+      "mine-000379",
+      "mine-000380",
+      "mine-000381",
+      "mine-000382",
+      "mine-000383"
+    ],
+    "requested_histories": 128,
+    "max_blocks": 8,
+    "candidate_rows": 1023,
+    "missed_local_accuracy": 103,
+    "nonpositive_or_nonfinite_predictions": [],
+    "unlabelled_incoming_cfl_or_teacher_failures": [
+      {
+        "id": "mine-000297/block-8",
+        "reason": "Native rollout returned -3 on N=256, steps=8, duration=0.0021875, mode=6"
+      }
+    ],
+    "omitted_rows_due_to_early_exit": 1
+  },
+  "selected": {
+    "on_policy_uniform": {
+      "ids": [
+        "mine-000359/block-4",
+        "mine-000296/block-8",
+        "mine-000372/block-5",
+        "mine-000259/block-5",
+        "mine-000292/block-1",
+        "mine-000312/block-7",
+        "mine-000280/block-2",
+        "mine-000378/block-3",
+        "mine-000283/block-8",
+        "mine-000295/block-8",
+        "mine-000360/block-4",
+        "mine-000266/block-5",
+        "mine-000369/block-3",
+        "mine-000330/block-5",
+        "mine-000292/block-3",
+        "mine-000328/block-7",
+        "mine-000350/block-5",
+        "mine-000299/block-3",
+        "mine-000331/block-5",
+        "mine-000351/block-2",
+        "mine-000322/block-5",
+        "mine-000300/block-6",
+        "mine-000258/block-7",
+        "mine-000332/block-2",
+        "mine-000347/block-1",
+        "mine-000314/block-7",
+        "mine-000300/block-7",
+        "mine-000378/block-5",
+        "mine-000377/block-3",
+        "mine-000350/block-2",
+        "mine-000304/block-7",
+        "mine-000354/block-8",
+        "mine-000289/block-2",
+        "mine-000337/block-7",
+        "mine-000380/block-1",
+        "mine-000319/block-1",
+        "mine-000273/block-8",
+        "mine-000306/block-5",
+        "mine-000337/block-3",
+        "mine-000260/block-2",
+        "mine-000285/block-5",
+        "mine-000357/block-3",
+        "mine-000347/block-5",
+        "mine-000340/block-2",
+        "mine-000353/block-2",
+        "mine-000361/block-6",
+        "mine-000335/block-7",
+        "mine-000311/block-2",
+        "mine-000333/block-5",
+        "mine-000291/block-8",
+        "mine-000348/block-5",
+        "mine-000332/block-8",
+        "mine-000259/block-2",
+        "mine-000343/block-2",
+        "mine-000268/block-6",
+        "mine-000260/block-4",
+        "mine-000257/block-6",
+        "mine-000333/block-3",
+        "mine-000276/block-3",
+        "mine-000322/block-2",
+        "mine-000271/block-4",
+        "mine-000362/block-2",
+        "mine-000270/block-4",
+        "mine-000356/block-1",
+        "mine-000328/block-1",
+        "mine-000306/block-6",
+        "mine-000288/block-1",
+        "mine-000300/block-3",
+        "mine-000269/block-3",
+        "mine-000332/block-4",
+        "mine-000262/block-3",
+        "mine-000376/block-8",
+        "mine-000373/block-2",
+        "mine-000358/block-6",
+        "mine-000340/block-5",
+        "mine-000290/block-6",
+        "mine-000318/block-5",
+        "mine-000345/block-4",
+        "mine-000359/block-5",
+        "mine-000336/block-4",
+        "mine-000370/block-4",
+        "mine-000287/block-7",
+        "mine-000267/block-7",
+        "mine-000257/block-1",
+        "mine-000298/block-4",
+        "mine-000260/block-1",
+        "mine-000337/block-8",
+        "mine-000314/block-4",
+        "mine-000378/block-2",
+        "mine-000347/block-7",
+        "mine-000334/block-4",
+        "mine-000288/block-2",
+        "mine-000285/block-4",
+        "mine-000321/block-2",
+        "mine-000292/block-7",
+        "mine-000337/block-2"
+      ],
+      "distinct_histories": 69,
+      "invalid_prediction_examples": 0,
+      "above_mae_targets": 6
+    },
+    "on_policy_hard": {
+      "ids": [
+        "mine-000297/block-7",
+        "mine-000327/block-8",
+        "mine-000362/block-8",
+        "mine-000334/block-8",
+        "mine-000362/block-7",
+        "mine-000297/block-6",
+        "mine-000327/block-7",
+        "mine-000367/block-8",
+        "mine-000354/block-8",
+        "mine-000338/block-8",
+        "mine-000379/block-8",
+        "mine-000334/block-7",
+        "mine-000298/block-8",
+        "mine-000362/block-6",
+        "mine-000367/block-7",
+        "mine-000274/block-8",
+        "mine-000379/block-7",
+        "mine-000354/block-7",
+        "mine-000382/block-8",
+        "mine-000338/block-7",
+        "mine-000315/block-8",
+        "mine-000367/block-6",
+        "mine-000294/block-8",
+        "mine-000334/block-6",
+        "mine-000374/block-8",
+        "mine-000327/block-6",
+        "mine-000298/block-7",
+        "mine-000325/block-8",
+        "mine-000274/block-7",
+        "mine-000318/block-8",
+        "mine-000357/block-8",
+        "mine-000334/block-5",
+        "mine-000354/block-6",
+        "mine-000291/block-8",
+        "mine-000379/block-6",
+        "mine-000362/block-5",
+        "mine-000297/block-5",
+        "mine-000266/block-8",
+        "mine-000315/block-7",
+        "mine-000310/block-8",
+        "mine-000382/block-7",
+        "mine-000326/block-8",
+        "mine-000325/block-7",
+        "mine-000298/block-6",
+        "mine-000271/block-8",
+        "mine-000318/block-7",
+        "mine-000294/block-7",
+        "mine-000338/block-6",
+        "mine-000346/block-4",
+        "mine-000295/block-5",
+        "mine-000342/block-2",
+        "mine-000350/block-1",
+        "mine-000344/block-2",
+        "mine-000274/block-6",
+        "mine-000285/block-1",
+        "mine-000330/block-8",
+        "mine-000381/block-1",
+        "mine-000334/block-4",
+        "mine-000349/block-4",
+        "mine-000350/block-5",
+        "mine-000300/block-2",
+        "mine-000299/block-8",
+        "mine-000381/block-7",
+        "mine-000380/block-1",
+        "mine-000356/block-5",
+        "mine-000257/block-1",
+        "mine-000336/block-3",
+        "mine-000313/block-1",
+        "mine-000379/block-2",
+        "mine-000293/block-2",
+        "mine-000317/block-3",
+        "mine-000334/block-2",
+        "mine-000303/block-1",
+        "mine-000306/block-5",
+        "mine-000346/block-7",
+        "mine-000372/block-4",
+        "mine-000270/block-8",
+        "mine-000259/block-8",
+        "mine-000368/block-6",
+        "mine-000352/block-8",
+        "mine-000269/block-2",
+        "mine-000347/block-1",
+        "mine-000317/block-5",
+        "mine-000359/block-1",
+        "mine-000258/block-2",
+        "mine-000291/block-1",
+        "mine-000359/block-6",
+        "mine-000323/block-8",
+        "mine-000370/block-8",
+        "mine-000361/block-4",
+        "mine-000350/block-2",
+        "mine-000265/block-8",
+        "mine-000271/block-7",
+        "mine-000353/block-8",
+        "mine-000373/block-7",
+        "mine-000357/block-3"
+      ],
+      "distinct_histories": 57,
+      "invalid_prediction_examples": 0,
+      "above_mae_targets": 55
+    }
+  },
+  "splits": {
+    "test": {
+      "split": "test",
+      "start_index": 256,
+      "endpoint": "64 steps of same coarse-grid teacher from original q0",
+      "shared_survivor_count": 32,
+      "methods": {
+        "previous_hard": {
+          "overall": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 14,
+            "mean_terminal_mae_in_survivors": [
+              0.004514083311757624,
+              0.046576529750764734
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.015756390124492294,
+              0.15486307198017235
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 14,
+            "mean_terminal_mae_in_survivors": [
+              0.004514083311757624,
+              0.046576529750764734
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.015756390124492294,
+              0.15486307198017235
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0027780031110284115,
+                0.024061877087135076
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.004689548105893031,
+                0.031554578918875746
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 6,
+              "mean_terminal_mae_in_survivors": [
+                0.005954723767854977,
+                0.06055137674988843
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.015756390124492294,
+                0.15486307198017235
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 7,
+              "mean_terminal_mae_in_survivors": [
+                0.007088744292911294,
+                0.09148842238547397
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.01025252760589591,
+                0.13256244925087873
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 1,
+              "mean_terminal_mae_in_survivors": [
+                0.0022348620752358165,
+                0.010204442780561438
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.008085020938056813,
+                0.043112110737535285
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "test-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.008085020938056813,
+                0.043112110737535285
+              ],
+              "min_final_depth_m": 2.196148705460968
+            },
+            {
+              "id": "test-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.004689548105893031,
+                0.029209478714637235
+              ],
+              "min_final_depth_m": 1.063259077497898
+            },
+            {
+              "id": "test-000258",
+              "family": "interacting",
+              "terminal_mae": [
+                0.005658527002839075,
+                0.06514708961456518
+              ],
+              "min_final_depth_m": 1.8120029638347774
+            },
+            {
+              "id": "test-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.005335703649200501,
+                0.08812197982779153
+              ],
+              "min_final_depth_m": 2.0375113126850257
+            },
+            {
+              "id": "test-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0018462665060994185,
+                0.009581714360074023
+              ],
+              "min_final_depth_m": 2.1048244472924584
+            },
+            {
+              "id": "test-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.002185188414240441,
+                0.015729604317595926
+              ],
+              "min_final_depth_m": 1.1250605299781542
+            },
+            {
+              "id": "test-000262",
+              "family": "interacting",
+              "terminal_mae": [
+                0.002763879547678389,
+                0.033932594152956734
+              ],
+              "min_final_depth_m": 1.736682566572324
+            },
+            {
+              "id": "test-000263",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0008948670719750914,
+                0.00329914032716505
+              ],
+              "min_final_depth_m": 1.1515124706504658
+            },
+            {
+              "id": "test-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0009582800184123547,
+                0.0034020483768847456
+              ],
+              "min_final_depth_m": 1.7813468214601678
+            },
+            {
+              "id": "test-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.002429884612639707,
+                0.025455691601571497
+              ],
+              "min_final_depth_m": 0.7235765381329966
+            },
+            {
+              "id": "test-000266",
+              "family": "interacting",
+              "terminal_mae": [
+                0.008457363451816689,
+                0.10957649869653485
+              ],
+              "min_final_depth_m": 1.924570199230179
+            },
+            {
+              "id": "test-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.007527496277468494,
+                0.06396906376695231
+              ],
+              "min_final_depth_m": 1.9844802421718197
+            },
+            {
+              "id": "test-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.002908900582264096,
+                0.007295659096858531
+              ],
+              "min_final_depth_m": 1.2358576615440455
+            },
+            {
+              "id": "test-000269",
+              "family": "dam",
+              "terminal_mae": [
+                0.003435524743251102,
+                0.031554578918875746
+              ],
+              "min_final_depth_m": 1.4355421125265297
+            },
+            {
+              "id": "test-000270",
+              "family": "interacting",
+              "terminal_mae": [
+                0.006973822297900395,
+                0.06891541750450868
+              ],
+              "min_final_depth_m": 2.025985439783741
+            },
+            {
+              "id": "test-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.002563658449221377,
+                0.01713506012213881
+              ],
+              "min_final_depth_m": 1.0575955251287277
+            },
+            {
+              "id": "test-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0011895887282697536,
+                0.003969452897768285
+              ],
+              "min_final_depth_m": 1.191490174600859
+            },
+            {
+              "id": "test-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.004326927386729238,
+                0.027839384707203724
+              ],
+              "min_final_depth_m": 0.8149764271295444
+            },
+            {
+              "id": "test-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.00983597998832309,
+                0.12818898377403573
+              ],
+              "min_final_depth_m": 2.117392463663757
+            },
+            {
+              "id": "test-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.015756390124492294,
+                0.15486307198017235
+              ],
+              "min_final_depth_m": 2.104575072031776
+            },
+            {
+              "id": "test-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0006921745425678182,
+                0.0043495595233448816
+              ],
+              "min_final_depth_m": 1.987403389535295
+            },
+            {
+              "id": "test-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.0011110213081216244,
+                0.009039296547035709
+              ],
+              "min_final_depth_m": 0.7586278644538994
+            },
+            {
+              "id": "test-000278",
+              "family": "interacting",
+              "terminal_mae": [
+                0.004662724030816908,
+                0.07092564818835155
+              ],
+              "min_final_depth_m": 1.7386382675160654
+            },
+            {
+              "id": "test-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0063923518316326595,
+                0.05967410413461744
+              ],
+              "min_final_depth_m": 1.972561366486328
+            },
+            {
+              "id": "test-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0016493795348687867,
+                0.0078229193209885
+              ],
+              "min_final_depth_m": 1.960222905974319
+            },
+            {
+              "id": "test-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.0017851718396320474,
+                0.024768369428126966
+              ],
+              "min_final_depth_m": 1.0939093222440057
+            },
+            {
+              "id": "test-000282",
+              "family": "interacting",
+              "terminal_mae": [
+                0.01025252760589591,
+                0.12265869790196042
+              ],
+              "min_final_depth_m": 1.8891522436850068
+            },
+            {
+              "id": "test-000283",
+              "family": "evolved",
+              "terminal_mae": [
+                0.006653228483179731,
+                0.056825004509926856
+              ],
+              "min_final_depth_m": 1.9239605106985673
+            },
+            {
+              "id": "test-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0005492857513474895,
+                0.0021020779310372503
+              ],
+              "min_final_depth_m": 1.1411140247772507
+            },
+            {
+              "id": "test-000285",
+              "family": "dam",
+              "terminal_mae": [
+                0.0022607584777201003,
+                0.0288986124620338
+              ],
+              "min_final_depth_m": 0.981962599842831
+            },
+            {
+              "id": "test-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.008105130418019892,
+                0.13256244925087873
+              ],
+              "min_final_depth_m": 2.081820692156684
+            },
+            {
+              "id": "test-000287",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0025140942556696674,
+                0.04052358933034319
+              ],
+              "min_final_depth_m": 1.1210926151827945
+            }
+          ]
+        },
+        "on_policy_uniform": {
+          "overall": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 0,
+            "mean_terminal_mae_in_survivors": [
+              0.0018016451309836052,
+              0.008167643816028657
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.006624086596973781,
+              0.03494752008429955
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 0,
+            "mean_terminal_mae_in_survivors": [
+              0.0018016451309836052,
+              0.008167643816028657
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.006624086596973781,
+              0.03494752008429955
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.001402223022101604,
+                0.0057664690745204
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.003632183153628894,
+                0.016948873068192913
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0019309030216236051,
+                0.008997969116594883
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.002831959603430051,
+                0.0135956206037334
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0020970092561525084,
+                0.009999791802827
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.0030078423272159732,
+                0.016242244109633413
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0017764452240567035,
+                0.007906345270172345
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.006624086596973781,
+                0.03494752008429955
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "test-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.006624086596973781,
+                0.03494752008429955
+              ],
+              "min_final_depth_m": 2.1950628973377144
+            },
+            {
+              "id": "test-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.003632183153628894,
+                0.016948873068192913
+              ],
+              "min_final_depth_m": 1.0633349394591243
+            },
+            {
+              "id": "test-000258",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0027087536290039266,
+                0.010595138920141096
+              ],
+              "min_final_depth_m": 1.800036369347174
+            },
+            {
+              "id": "test-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.002254950548044093,
+                0.011623094453642
+              ],
+              "min_final_depth_m": 2.036371888296688
+            },
+            {
+              "id": "test-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.001514405824100614,
+                0.006539729749175159
+              ],
+              "min_final_depth_m": 2.1047389729526502
+            },
+            {
+              "id": "test-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.0013802781930647469,
+                0.005831973631991179
+              ],
+              "min_final_depth_m": 1.124987956347669
+            },
+            {
+              "id": "test-000262",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0011820895750253354,
+                0.005761557982289012
+              ],
+              "min_final_depth_m": 1.7368071404973877
+            },
+            {
+              "id": "test-000263",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0006452733524130796,
+                0.0023283742510079794
+              ],
+              "min_final_depth_m": 1.1515123373249165
+            },
+            {
+              "id": "test-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0008250234528725609,
+                0.002948094661877802
+              ],
+              "min_final_depth_m": 1.7812925447202252
+            },
+            {
+              "id": "test-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.0013006561232116105,
+                0.00451075799000163
+              ],
+              "min_final_depth_m": 0.7240966368774088
+            },
+            {
+              "id": "test-000266",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0017506011018150278,
+                0.00891944820764637
+              ],
+              "min_final_depth_m": 1.9266585489340315
+            },
+            {
+              "id": "test-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.002831959603430051,
+                0.011986391996162912
+              ],
+              "min_final_depth_m": 1.9783210799969548
+            },
+            {
+              "id": "test-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.002127619638169565,
+                0.004458526864407286
+              ],
+              "min_final_depth_m": 1.2328015727700399
+            },
+            {
+              "id": "test-000269",
+              "family": "dam",
+              "terminal_mae": [
+                0.0008935588216896799,
+                0.003409259640287356
+              ],
+              "min_final_depth_m": 1.4349487676973407
+            },
+            {
+              "id": "test-000270",
+              "family": "interacting",
+              "terminal_mae": [
+                0.001322245180137311,
+                0.006599460620264129
+              ],
+              "min_final_depth_m": 2.0352036267086207
+            },
+            {
+              "id": "test-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0018291727641824044,
+                0.006975492414642982
+              ],
+              "min_final_depth_m": 1.057595350711988
+            },
+            {
+              "id": "test-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0009014137423017802,
+                0.0033428044197887394
+              ],
+              "min_final_depth_m": 1.1899247039291077
+            },
+            {
+              "id": "test-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.001499581703120853,
+                0.004443650208932588
+              ],
+              "min_final_depth_m": 0.8218027000063223
+            },
+            {
+              "id": "test-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0020888345452662743,
+                0.01025877766348093
+              ],
+              "min_final_depth_m": 2.1172545342491262
+            },
+            {
+              "id": "test-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.002665799568277609,
+                0.0135956206037334
+              ],
+              "min_final_depth_m": 2.1023032870466416
+            },
+            {
+              "id": "test-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0006317531613376877,
+                0.00360147630412958
+              ],
+              "min_final_depth_m": 1.9871717585721087
+            },
+            {
+              "id": "test-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.0007347074420257205,
+                0.002194287888416896
+              ],
+              "min_final_depth_m": 0.7584533406198241
+            },
+            {
+              "id": "test-000278",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0018606534084853596,
+                0.00817785129425546
+              ],
+              "min_final_depth_m": 1.733659823588458
+            },
+            {
+              "id": "test-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0019071106240866687,
+                0.008674207028800444
+              ],
+              "min_final_depth_m": 1.9746956907518654
+            },
+            {
+              "id": "test-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0012508827330463407,
+                0.006016071743315704
+              ],
+              "min_final_depth_m": 1.9601375820995814
+            },
+            {
+              "id": "test-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.0009707125692805562,
+                0.005872428733756702
+              ],
+              "min_final_depth_m": 1.093907089375385
+            },
+            {
+              "id": "test-000282",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0028550542822708596,
+                0.013443855624905594
+              ],
+              "min_final_depth_m": 1.913854404706047
+            },
+            {
+              "id": "test-000283",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0020360054713457693,
+                0.009223272541181373
+              ],
+              "min_final_depth_m": 1.9220546904786315
+            },
+            {
+              "id": "test-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.00033637664365129827,
+                0.001396538334384943
+              ],
+              "min_final_depth_m": 1.1403906449259287
+            },
+            {
+              "id": "test-000285",
+              "family": "dam",
+              "terminal_mae": [
+                0.0008061061707907691,
+                0.0029205214345839367
+              ],
+              "min_final_depth_m": 0.9819431877480316
+            },
+            {
+              "id": "test-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0030078423272159732,
+                0.016242244109633413
+              ],
+              "min_final_depth_m": 2.071837330548767
+            },
+            {
+              "id": "test-000287",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0012769522412091694,
+                0.007577299643587967
+              ],
+              "min_final_depth_m": 1.1210914361080624
+            }
+          ]
+        },
+        "on_policy_hard": {
+          "overall": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 0,
+            "mean_terminal_mae_in_survivors": [
+              0.0019282130003292215,
+              0.008170097342479928
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.006067810487955483,
+              0.03190346870895286
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 32,
+            "survived": 32,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 0,
+            "mean_terminal_mae_in_survivors": [
+              0.0019282130003292215,
+              0.008170097342479928
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.006067810487955483,
+              0.03190346870895286
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0014776384770273225,
+                0.0058092153840034605
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.004100550912389648,
+                0.019133919989511198
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0020346907473791373,
+                0.008917502648701586
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.0031309054374816193,
+                0.012755041974961377
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0023909985909614964,
+                0.0103273899344953
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.0033952909033727998,
+                0.0147865043287633
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 0,
+              "mean_terminal_mae_in_survivors": [
+                0.0018095241859489297,
+                0.007626281402719361
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.006067810487955483,
+                0.03190346870895286
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "test-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.006067810487955483,
+                0.03190346870895286
+              ],
+              "min_final_depth_m": 2.195347736760242
+            },
+            {
+              "id": "test-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.004100550912389648,
+                0.019133919989511198
+              ],
+              "min_final_depth_m": 1.063341134941991
+            },
+            {
+              "id": "test-000258",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0031471800613242246,
+                0.011871760263270097
+              ],
+              "min_final_depth_m": 1.795008971642733
+            },
+            {
+              "id": "test-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0023681843437642416,
+                0.011260206905437994
+              ],
+              "min_final_depth_m": 2.033514771900631
+            },
+            {
+              "id": "test-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0017676067835352312,
+                0.0061309313849779445
+              ],
+              "min_final_depth_m": 2.106696249474014
+            },
+            {
+              "id": "test-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.0011879712284063619,
+                0.004831971788183714
+              ],
+              "min_final_depth_m": 1.1250619818705823
+            },
+            {
+              "id": "test-000262",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0015323670516545875,
+                0.006855648227337021
+              ],
+              "min_final_depth_m": 1.7368280890978112
+            },
+            {
+              "id": "test-000263",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0005819556142040144,
+                0.0020571450078029794
+              ],
+              "min_final_depth_m": 1.1515124706013964
+            },
+            {
+              "id": "test-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0008857456441383072,
+                0.003376922265289934
+              ],
+              "min_final_depth_m": 1.7816931102855411
+            },
+            {
+              "id": "test-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.0012376189570383377,
+                0.004311500159346109
+              ],
+              "min_final_depth_m": 0.7273458521020689
+            },
+            {
+              "id": "test-000266",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0019106042903366885,
+                0.008767896934441051
+              ],
+              "min_final_depth_m": 1.9267168317054384
+            },
+            {
+              "id": "test-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0031309054374816193,
+                0.012755041974961377
+              ],
+              "min_final_depth_m": 1.9875380332088302
+            },
+            {
+              "id": "test-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.002275255118787763,
+                0.00480907633285019
+              ],
+              "min_final_depth_m": 1.2330615665491635
+            },
+            {
+              "id": "test-000269",
+              "family": "dam",
+              "terminal_mae": [
+                0.000764892693771186,
+                0.002864583632368446
+              ],
+              "min_final_depth_m": 1.4352890781128338
+            },
+            {
+              "id": "test-000270",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0016490286361688245,
+                0.007941291708901135
+              ],
+              "min_final_depth_m": 2.041591324743985
+            },
+            {
+              "id": "test-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0019018399090339746,
+                0.007294959017309419
+              ],
+              "min_final_depth_m": 1.0575989420365441
+            },
+            {
+              "id": "test-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.000981225295104718,
+                0.0035561230863883665
+              ],
+              "min_final_depth_m": 1.1902529344870962
+            },
+            {
+              "id": "test-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.0020646279936110414,
+                0.005140015778064072
+              ],
+              "min_final_depth_m": 0.8214868676981552
+            },
+            {
+              "id": "test-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.002073184408551561,
+                0.00971988965852787
+              ],
+              "min_final_depth_m": 2.1173861828775697
+            },
+            {
+              "id": "test-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0027059826837080043,
+                0.011837159898691049
+              ],
+              "min_final_depth_m": 2.102037731615641
+            },
+            {
+              "id": "test-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0007797050360376263,
+                0.0035816085792969403
+              ],
+              "min_final_depth_m": 1.9880214690281057
+            },
+            {
+              "id": "test-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.0006356001751975171,
+                0.0017209201009606506
+              ],
+              "min_final_depth_m": 0.7594639607154718
+            },
+            {
+              "id": "test-000278",
+              "family": "interacting",
+              "terminal_mae": [
+                0.002185031754003302,
+                0.008949096788860387
+              ],
+              "min_final_depth_m": 1.7363058475116981
+            },
+            {
+              "id": "test-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0019775626327442402,
+                0.008835950824851134
+              ],
+              "min_final_depth_m": 1.9816177499159136
+            },
+            {
+              "id": "test-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0013768127052473681,
+                0.006407355290954845
+              ],
+              "min_final_depth_m": 1.9609335871524454
+            },
+            {
+              "id": "test-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.001020227754482286,
+                0.005614257899678472
+              ],
+              "min_final_depth_m": 1.0939079709081012
+            },
+            {
+              "id": "test-000282",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0033952909033727998,
+                0.013727031565861535
+              ],
+              "min_final_depth_m": 1.9208986438989226
+            },
+            {
+              "id": "test-000283",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0022593253984631925,
+                0.009975983783901934
+              ],
+              "min_final_depth_m": 1.928051739893534
+            },
+            {
+              "id": "test-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.00034203241678493895,
+                0.0012447655730438109
+              ],
+              "min_final_depth_m": 1.1403328065122045
+            },
+            {
+              "id": "test-000285",
+              "family": "dam",
+              "terminal_mae": [
+                0.0008096181013221996,
+                0.0028565537239150195
+              ],
+              "min_final_depth_m": 0.9819552544846387
+            },
+            {
+              "id": "test-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.003235301622279984,
+                0.0147865043287633
+              ],
+              "min_final_depth_m": 2.070349938387236
+            },
+            {
+              "id": "test-000287",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0013517699596338117,
+                0.007323573776656801
+              ],
+              "min_final_depth_m": 1.1210915973605529
+            }
+          ]
+        }
+      }
+    },
+    "shift": {
+      "split": "shift",
+      "start_index": 256,
+      "endpoint": "64 steps of same coarse-grid teacher from original q0",
+      "shared_survivor_count": 21,
+      "methods": {
+        "previous_hard": {
+          "overall": {
+            "requested": 32,
+            "survived": 23,
+            "failed": 9,
+            "terminal_above_target_in_survivors": 19,
+            "mean_terminal_mae_in_survivors": [
+              0.025135445244558515,
+              0.1866492970865411
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.10693792131573296,
+              0.7958388341860831
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 21,
+            "survived": 21,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 17,
+            "mean_terminal_mae_in_survivors": [
+              0.025229297497313438,
+              0.18793393519648607
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.10693792131573296,
+              0.7958388341860831
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 6,
+              "failed": 2,
+              "terminal_above_target_in_survivors": 6,
+              "mean_terminal_mae_in_survivors": [
+                0.024086087747338118,
+                0.1962529031460953
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.08470547590019804,
+                0.7857461013130853
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 6,
+              "failed": 2,
+              "terminal_above_target_in_survivors": 6,
+              "mean_terminal_mae_in_survivors": [
+                0.04309654380813552,
+                0.3193951212366657
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.10693792131573296,
+                0.7958388341860831
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 3,
+              "failed": 5,
+              "terminal_above_target_in_survivors": 3,
+              "mean_terminal_mae_in_survivors": [
+                0.022105951420638644,
+                0.20220092056227976
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.035205104673061066,
+                0.33195562978932375
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 4,
+              "mean_terminal_mae_in_survivors": [
+                0.013587699628761008,
+                0.07405536562587994
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.02957578135980589,
+                0.17372573973306543
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "shift-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.02048905022384075,
+                0.11051482787446854
+              ],
+              "min_final_depth_m": 2.48676476317916
+            },
+            {
+              "id": "shift-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.00960818525573636,
+                0.053627456750880306
+              ],
+              "min_final_depth_m": 0.6430958838927016
+            },
+            {
+              "id": "shift-000258",
+              "family": "interacting",
+              "failed_at_block": 5,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.045330106596084024,
+                0.3394435723609996
+              ],
+              "min_final_depth_m": 0.7780048571888305
+            },
+            {
+              "id": "shift-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.02957578135980589,
+                0.17372573973306543
+              ],
+              "min_final_depth_m": 2.1388120428844
+            },
+            {
+              "id": "shift-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.021850869448462835,
+                0.10703370154709131
+              ],
+              "min_final_depth_m": 0.6508534266489994
+            },
+            {
+              "id": "shift-000262",
+              "family": "interacting",
+              "failed_at_block": 5,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000263",
+              "family": "evolved",
+              "terminal_mae": [
+                0.03177050467636794,
+                0.24579028557189653
+              ],
+              "min_final_depth_m": 1.812121281439988
+            },
+            {
+              "id": "shift-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0035033893030649264,
+                0.011392805253772875
+              ],
+              "min_final_depth_m": 1.763931194444923
+            },
+            {
+              "id": "shift-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.08470547590019804,
+                0.7857461013130853
+              ],
+              "min_final_depth_m": 0.4235344320847705
+            },
+            {
+              "id": "shift-000266",
+              "family": "interacting",
+              "failed_at_block": 4,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.014790293688455807,
+                0.13139177157657184
+              ],
+              "min_final_depth_m": 0.9043332604749338
+            },
+            {
+              "id": "shift-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0021605263160207984,
+                0.006910066302353534
+              ],
+              "min_final_depth_m": 1.3214176098913215
+            },
+            {
+              "id": "shift-000269",
+              "family": "dam",
+              "failed_at_block": 8,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000270",
+              "family": "interacting",
+              "failed_at_block": 8,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.05136616493401828,
+                0.35420736436112216
+              ],
+              "min_final_depth_m": 2.5842458456147126
+            },
+            {
+              "id": "shift-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.003423856954182399,
+                0.017221578281804865
+              ],
+              "min_final_depth_m": 1.7671346830657564
+            },
+            {
+              "id": "shift-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.008407104635567098,
+                0.04883398981699522
+              ],
+              "min_final_depth_m": 0.8958057610733302
+            },
+            {
+              "id": "shift-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.01458326108395919,
+                0.17411622360517523
+              ],
+              "min_final_depth_m": 1.920897854377344
+            },
+            {
+              "id": "shift-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.10693792131573296,
+                0.7958388341860831
+              ],
+              "min_final_depth_m": 0.9396652367972201
+            },
+            {
+              "id": "shift-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.024597086080289134,
+                0.1299519287107467
+              ],
+              "min_final_depth_m": 2.626665221396014
+            },
+            {
+              "id": "shift-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.003077526044974243,
+                0.04374002748950514
+              ],
+              "min_final_depth_m": 0.8535609599456278
+            },
+            {
+              "id": "shift-000278",
+              "family": "interacting",
+              "terminal_mae": [
+                0.016529488504895676,
+                0.10053090829234025
+              ],
+              "min_final_depth_m": 1.7236677942109861
+            },
+            {
+              "id": "shift-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.008384271638154068,
+                0.04969889936332088
+              ],
+              "min_final_depth_m": 0.6163665163324209
+            },
+            {
+              "id": "shift-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0231284325253237,
+                0.13567185841991763
+              ],
+              "min_final_depth_m": 2.000436642407628
+            },
+            {
+              "id": "shift-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.016867365199090125,
+                0.1385361419590146
+              ],
+              "min_final_depth_m": 0.7143747222702455
+            },
+            {
+              "id": "shift-000282",
+              "family": "interacting",
+              "failed_at_block": 3,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000283",
+              "family": "evolved",
+              "failed_at_block": 5,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.001823474267560481,
+                0.007054120430909974
+              ],
+              "min_final_depth_m": 1.1516815409922512
+            },
+            {
+              "id": "shift-000285",
+              "family": "dam",
+              "failed_at_block": 8,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.035205104673061066,
+                0.33195562978932375
+              ],
+              "min_final_depth_m": 2.4077991507397707
+            },
+            {
+              "id": "shift-000287",
+              "family": "evolved",
+              "failed_at_block": 3,
+              "failure_reason": "nonpositive_depth"
+            }
+          ]
+        },
+        "on_policy_uniform": {
+          "overall": {
+            "requested": 32,
+            "survived": 30,
+            "failed": 2,
+            "terminal_above_target_in_survivors": 15,
+            "mean_terminal_mae_in_survivors": [
+              0.012646617042909118,
+              0.07532174817506458
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.0452769631217636,
+              0.3037097964750276
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 21,
+            "survived": 21,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 8,
+            "mean_terminal_mae_in_survivors": [
+              0.009851286725865596,
+              0.05331951882564995
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.034734280347442824,
+              0.18911618677619788
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 2,
+              "mean_terminal_mae_in_survivors": [
+                0.007791951333925365,
+                0.038350565346949826
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.02698376190060015,
+                0.14102277070478278
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 5,
+              "mean_terminal_mae_in_survivors": [
+                0.019991152648818497,
+                0.12661423539201652
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.0452769631217636,
+                0.3037097964750276
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 6,
+              "failed": 2,
+              "terminal_above_target_in_survivors": 4,
+              "mean_terminal_mae_in_survivors": [
+                0.011600370706441874,
+                0.07514978619124547
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.030899861372061625,
+                0.2359217722043064
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 4,
+              "mean_terminal_mae_in_survivors": [
+                0.010941431898333938,
+                0.0611294152740917
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.024646207776121247,
+                0.1474368482091883
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "shift-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.015412693449742484,
+                0.08566567319517099
+              ],
+              "min_final_depth_m": 2.4945264562562453
+            },
+            {
+              "id": "shift-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.0038926096766018162,
+                0.01671948436234019
+              ],
+              "min_final_depth_m": 0.6430929581581546
+            },
+            {
+              "id": "shift-000258",
+              "family": "interacting",
+              "failed_at_block": 7,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.004379819218692126,
+                0.02344364846885095
+              ],
+              "min_final_depth_m": 0.7738710158525302
+            },
+            {
+              "id": "shift-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.024646207776121247,
+                0.1474368482091883
+              ],
+              "min_final_depth_m": 2.141743821377945
+            },
+            {
+              "id": "shift-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.004072813423385812,
+                0.01911441343745893
+              ],
+              "min_final_depth_m": 0.6499675277047915
+            },
+            {
+              "id": "shift-000262",
+              "family": "interacting",
+              "terminal_mae": [
+                0.030899861372061625,
+                0.2359217722043064
+              ],
+              "min_final_depth_m": 2.382389197156603
+            },
+            {
+              "id": "shift-000263",
+              "family": "evolved",
+              "terminal_mae": [
+                0.028368065369812345,
+                0.11389788728703315
+              ],
+              "min_final_depth_m": 1.5178223271963682
+            },
+            {
+              "id": "shift-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0029519414786543154,
+                0.010289018025855698
+              ],
+              "min_final_depth_m": 1.764275398381239
+            },
+            {
+              "id": "shift-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.02698376190060015,
+                0.14102277070478278
+              ],
+              "min_final_depth_m": 0.9059182723445214
+            },
+            {
+              "id": "shift-000266",
+              "family": "interacting",
+              "terminal_mae": [
+                0.010915945255716243,
+                0.05604491828902246
+              ],
+              "min_final_depth_m": 2.011115019205733
+            },
+            {
+              "id": "shift-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.003902382607797238,
+                0.01827052858256436
+              ],
+              "min_final_depth_m": 0.900368297206215
+            },
+            {
+              "id": "shift-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.001669292682740471,
+                0.005108739052172662
+              ],
+              "min_final_depth_m": 1.3211810905080612
+            },
+            {
+              "id": "shift-000269",
+              "family": "dam",
+              "terminal_mae": [
+                0.006085925187423754,
+                0.02605597946794614
+              ],
+              "min_final_depth_m": 0.4870824565048193
+            },
+            {
+              "id": "shift-000270",
+              "family": "interacting",
+              "terminal_mae": [
+                0.010178933658376034,
+                0.08255514100929802
+              ],
+              "min_final_depth_m": 2.4798976794945538
+            },
+            {
+              "id": "shift-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.013921718385332963,
+                0.09086297789303607
+              ],
+              "min_final_depth_m": 2.748545304935478
+            },
+            {
+              "id": "shift-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0025975422934357614,
+                0.01217029581299103
+              ],
+              "min_final_depth_m": 1.7637497117392953
+            },
+            {
+              "id": "shift-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.006608909590693022,
+                0.03153833854828346
+              ],
+              "min_final_depth_m": 0.896670411995249
+            },
+            {
+              "id": "shift-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.003835054015680796,
+                0.02275958923329436
+              ],
+              "min_final_depth_m": 1.921039712436598
+            },
+            {
+              "id": "shift-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.034734280347442824,
+                0.18911618677619788
+              ],
+              "min_final_depth_m": 0.937360539376124
+            },
+            {
+              "id": "shift-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.02018348473000067,
+                0.11061774931262415
+              ],
+              "min_final_depth_m": 2.6313579468929733
+            },
+            {
+              "id": "shift-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.0013196139896735795,
+                0.007762875420601849
+              ],
+              "min_final_depth_m": 0.8542312329174626
+            },
+            {
+              "id": "shift-000278",
+              "family": "interacting",
+              "terminal_mae": [
+                0.011366830181943165,
+                0.03962175436928691
+              ],
+              "min_final_depth_m": 1.5176216739761268
+            },
+            {
+              "id": "shift-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0028964372420060736,
+                0.007688232597697885
+              ],
+              "min_final_depth_m": 0.6235195772161773
+            },
+            {
+              "id": "shift-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.018856771549741337,
+                0.11318376605515261
+              ],
+              "min_final_depth_m": 1.9991117053737564
+            },
+            {
+              "id": "shift-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.010392565903726215,
+                0.048379985078541875
+              ],
+              "min_final_depth_m": 0.7149121163887121
+            },
+            {
+              "id": "shift-000282",
+              "family": "interacting",
+              "failed_at_block": 5,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000283",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0452769631217636,
+                0.3037097964750276
+              ],
+              "min_final_depth_m": 0.9093362004993574
+            },
+            {
+              "id": "shift-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0012135212262352098,
+                0.0045632325295782
+              ],
+              "min_final_depth_m": 1.1496620369255006
+            },
+            {
+              "id": "shift-000285",
+              "family": "dam",
+              "terminal_mae": [
+                0.002979410999298575,
+                0.016210675755643403
+              ],
+              "min_final_depth_m": 0.7254780897800748
+            },
+            {
+              "id": "shift-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0024055997548733856,
+                0.01399554204226476
+              ],
+              "min_final_depth_m": 2.5075054169238973
+            },
+            {
+              "id": "shift-000287",
+              "family": "evolved",
+              "terminal_mae": [
+                0.026449554897700803,
+                0.2659246250557243
+              ],
+              "min_final_depth_m": 2.3084300809372125
+            }
+          ]
+        },
+        "on_policy_hard": {
+          "overall": {
+            "requested": 32,
+            "survived": 27,
+            "failed": 5,
+            "terminal_above_target_in_survivors": 12,
+            "mean_terminal_mae_in_survivors": [
+              0.01298557889283118,
+              0.07519413306825116
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.05970586975189089,
+              0.43114892253520104
+            ]
+          },
+          "matched_common_survivors": {
+            "requested": 21,
+            "survived": 21,
+            "failed": 0,
+            "terminal_above_target_in_survivors": 8,
+            "mean_terminal_mae_in_survivors": [
+              0.009946952454184569,
+              0.052973950556625696
+            ],
+            "worst_terminal_mae_in_survivors": [
+              0.04039321341869103,
+              0.2192232931754981
+            ]
+          },
+          "families": {
+            "dam": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 2,
+              "mean_terminal_mae_in_survivors": [
+                0.008681176517473865,
+                0.0406081978418005
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.032661109845178005,
+                0.15610987591549585
+              ]
+            },
+            "evolved": {
+              "requested": 8,
+              "survived": 7,
+              "failed": 1,
+              "terminal_above_target_in_survivors": 4,
+              "mean_terminal_mae_in_survivors": [
+                0.020557977431348396,
+                0.13566140490880121
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.05970586975189089,
+                0.43114892253520104
+              ]
+            },
+            "interacting": {
+              "requested": 8,
+              "survived": 4,
+              "failed": 4,
+              "terminal_above_target_in_survivors": 2,
+              "mean_terminal_mae_in_survivors": [
+                0.014391658157645064,
+                0.07489433822297986
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.04020508002366432,
+                0.18809267661775486
+              ]
+            },
+            "smooth": {
+              "requested": 8,
+              "survived": 8,
+              "failed": 0,
+              "terminal_above_target_in_survivors": 4,
+              "mean_terminal_mae_in_survivors": [
+                0.009961092914578975,
+                0.05702110285685617
+              ],
+              "worst_terminal_mae_in_survivors": [
+                0.022831125591084248,
+                0.13779593439496582
+              ]
+            }
+          },
+          "cases": [
+            {
+              "id": "shift-000256",
+              "family": "smooth",
+              "terminal_mae": [
+                0.012387226488739063,
+                0.07272006412432666
+              ],
+              "min_final_depth_m": 2.5100596996933793
+            },
+            {
+              "id": "shift-000257",
+              "family": "dam",
+              "terminal_mae": [
+                0.004029966892463524,
+                0.01685899648477656
+              ],
+              "min_final_depth_m": 0.6381364396505183
+            },
+            {
+              "id": "shift-000258",
+              "family": "interacting",
+              "failed_at_block": 6,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000259",
+              "family": "evolved",
+              "terminal_mae": [
+                0.003761226775755912,
+                0.023165740357868607
+              ],
+              "min_final_depth_m": 0.769119140757742
+            },
+            {
+              "id": "shift-000260",
+              "family": "smooth",
+              "terminal_mae": [
+                0.022831125591084248,
+                0.13779593439496582
+              ],
+              "min_final_depth_m": 2.1443311054476633
+            },
+            {
+              "id": "shift-000261",
+              "family": "dam",
+              "terminal_mae": [
+                0.0051860385039663864,
+                0.01803617417576415
+              ],
+              "min_final_depth_m": 0.6472880712790969
+            },
+            {
+              "id": "shift-000262",
+              "family": "interacting",
+              "failed_at_block": 6,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000263",
+              "family": "evolved",
+              "failed_at_block": 6,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000264",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0030679024295781916,
+                0.01150210648451447
+              ],
+              "min_final_depth_m": 1.7632544081895567
+            },
+            {
+              "id": "shift-000265",
+              "family": "dam",
+              "terminal_mae": [
+                0.032661109845178005,
+                0.15610987591549585
+              ],
+              "min_final_depth_m": 0.9090455674330085
+            },
+            {
+              "id": "shift-000266",
+              "family": "interacting",
+              "terminal_mae": [
+                0.04020508002366432,
+                0.18809267661775486
+              ],
+              "min_final_depth_m": 1.5932175863426048
+            },
+            {
+              "id": "shift-000267",
+              "family": "evolved",
+              "terminal_mae": [
+                0.0020294707662714333,
+                0.01389391732939063
+              ],
+              "min_final_depth_m": 0.9099049190189992
+            },
+            {
+              "id": "shift-000268",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0016856071088811346,
+                0.005058303447751998
+              ],
+              "min_final_depth_m": 1.3213748918673787
+            },
+            {
+              "id": "shift-000269",
+              "family": "dam",
+              "terminal_mae": [
+                0.005622000902634083,
+                0.024519486405064968
+              ],
+              "min_final_depth_m": 0.48152554407135245
+            },
+            {
+              "id": "shift-000270",
+              "family": "interacting",
+              "terminal_mae": [
+                0.011559072111119116,
+                0.07991568932179413
+              ],
+              "min_final_depth_m": 2.4779138157435363
+            },
+            {
+              "id": "shift-000271",
+              "family": "evolved",
+              "terminal_mae": [
+                0.011702175328883686,
+                0.07407755373399136
+              ],
+              "min_final_depth_m": 2.757117222216549
+            },
+            {
+              "id": "shift-000272",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0025573873185967743,
+                0.01286156049125494
+              ],
+              "min_final_depth_m": 1.7657427833381834
+            },
+            {
+              "id": "shift-000273",
+              "family": "dam",
+              "terminal_mae": [
+                0.0069755742752475825,
+                0.03431413404539985
+              ],
+              "min_final_depth_m": 0.8966034549769606
+            },
+            {
+              "id": "shift-000274",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0037856476268982786,
+                0.020481209109680744
+              ],
+              "min_final_depth_m": 1.9210428838815024
+            },
+            {
+              "id": "shift-000275",
+              "family": "evolved",
+              "terminal_mae": [
+                0.04039321341869103,
+                0.2192232931754981
+              ],
+              "min_final_depth_m": 0.9342628438395965
+            },
+            {
+              "id": "shift-000276",
+              "family": "smooth",
+              "terminal_mae": [
+                0.018733418155878916,
+                0.10566018167249688
+              ],
+              "min_final_depth_m": 2.634415480573405
+            },
+            {
+              "id": "shift-000277",
+              "family": "dam",
+              "terminal_mae": [
+                0.0009520994828008415,
+                0.006542135465408111
+              ],
+              "min_final_depth_m": 0.8579333622111225
+            },
+            {
+              "id": "shift-000278",
+              "family": "interacting",
+              "failed_at_block": 8,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000279",
+              "family": "evolved",
+              "terminal_mae": [
+                0.004610395185942996,
+                0.010637711068824772
+              ],
+              "min_final_depth_m": 0.622249836716708
+            },
+            {
+              "id": "shift-000280",
+              "family": "smooth",
+              "terminal_mae": [
+                0.017163974559352084,
+                0.10560113818596005
+              ],
+              "min_final_depth_m": 1.9968521202081124
+            },
+            {
+              "id": "shift-000281",
+              "family": "dam",
+              "terminal_mae": [
+                0.01109350725024597,
+                0.05185562012950168
+              ],
+              "min_final_depth_m": 0.712248872451253
+            },
+            {
+              "id": "shift-000282",
+              "family": "interacting",
+              "failed_at_block": 3,
+              "failure_reason": "nonpositive_depth"
+            },
+            {
+              "id": "shift-000283",
+              "family": "evolved",
+              "terminal_mae": [
+                0.05970586975189089,
+                0.43114892253520104
+              ],
+              "min_final_depth_m": 0.7016798221246393
+            },
+            {
+              "id": "shift-000284",
+              "family": "smooth",
+              "terminal_mae": [
+                0.0012621016645213805,
+                0.004969534053578586
+              ],
+              "min_final_depth_m": 1.1495321181601155
+            },
+            {
+              "id": "shift-000285",
+              "family": "dam",
+              "terminal_mae": [
+                0.0029291149872545355,
+                0.01662916011299289
+              ],
+              "min_final_depth_m": 0.7237748979143956
+            },
+            {
+              "id": "shift-000286",
+              "family": "interacting",
+              "terminal_mae": [
+                0.0020168328688985413,
+                0.011087777842689633
+              ],
+              "min_final_depth_m": 2.5110072556018825
+            },
+            {
+              "id": "shift-000287",
+              "family": "evolved",
+              "terminal_mae": [
+                0.021703490792002823,
+                0.17748269616083395
+              ],
+              "min_final_depth_m": 2.321924791013655
+            }
+          ]
+        }
+      }
+    }
+  }
+}

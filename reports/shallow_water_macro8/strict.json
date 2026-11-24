@@ -1,0 +1,644 @@
+{
+  "scope": "Secondary single-block operating point. The 10x tighter component thresholds were fixed after observing no primary inaccuracy on the independent calibration cases, before selecting any cutoff using held-out endpoint errors.",
+  "target": "Both per-profile spatial mean absolute deviations from the 256-cell, eight-step tight Godunov reference must meet their respective bounds.",
+  "mae_budget": {
+    "depth_m": 0.001,
+    "discharge_m2_s": 0.004
+  },
+  "calibration_rule": "Same finite-score prefix as the primary guard, zero inaccurate calibration accepts; fallback everywhere if no valid prefix.",
+  "training": "Frozen existing model weights and raw guard score including its original normalizations.",
+  "count_per_panel": 128,
+  "calibration_count": 256,
+  "affinity": [
+    3
+  ],
+  "rounds": 15,
+  "timing": "Two warmups, shuffled native methods within each repeat, one Python call per 128 independent 256-cell profiles, microseconds per profile.",
+  "seeds": {
+    "calibrate": 68657,
+    "test": 68437,
+    "shift": 68543
+  },
+  "sha256": {
+    "guard.json": "7f9de83a2ec9d081fc55468ac730e9a485f8686b6fae870e309965fab7fe27e5",
+    "macro8_strict.py": "291adc0a3cf494e15e1f10948aa272e8f4b6f285e922044407da3abe52bcd121",
+    "macro8_predict.c": "b3074dcbf4c1ce0512087472d78d3fedef5ffb6c71354ca100549cae52e0b51c",
+    "macro8_guard.c": "4ff01d949773443e043e8d66536cbff24b37eac4935a7e11a49e3dbd514ef8be",
+    "macro8_weights.h": "1b8c047e2564fc63dd9451a84ebd3c6d8a7af2a775fe33cf60f5476ad3aa57d9",
+    "macro8_workload.c": "3c35a153c78bfd952df634a439a45af340c5660d320ab016f11ff5bbf498c4ad",
+    "macro8_classical.c": "d30fb8fb26d2e4b627615c6922ecdd979f65fdb111f3f2c32d6cd88bb6ecf3f9",
+    "rollout.c": "2c61706c66df784c99eec796da74f7f7121c365ae274d16f6a43fd1cce82f2e2",
+    "solver.c": "07ea1473a88f2fe0fb14377469c7e43bee599b706d51837c8aaf814192e486f7"
+  },
+  "calibration": {
+    "initial": {
+      "cutoff": 0.12693677349846808,
+      "within_budget": 138,
+      "proposals_over_budget": 118,
+      "accepted": 72,
+      "accepted_over_budget": 0
+    },
+    "uniform": {
+      "cutoff": 0.11306428663950964,
+      "within_budget": 155,
+      "proposals_over_budget": 101,
+      "accepted": 76,
+      "accepted_over_budget": 0
+    },
+    "hard": {
+      "cutoff": 0.11763343669954056,
+      "within_budget": 152,
+      "proposals_over_budget": 104,
+      "accepted": 72,
+      "accepted_over_budget": 0
+    }
+  },
+  "panels": {
+    "test": {
+      "engineering_cfl": {
+        "within_budget": 70,
+        "output_mae": [
+          0.0009762690918310319,
+          0.004090272267986292
+        ],
+        "median_us": 19.5524140625,
+        "time_iqr_us": [
+          18.99944921875,
+          20.9682578125
+        ],
+        "teacher_time_over_method": 3.15052768819707,
+        "samples_us": [
+          23.2740078125,
+          20.7257109375,
+          19.5524140625,
+          19.8964375,
+          21.79596875,
+          18.893390625,
+          20.033359375,
+          18.720640625,
+          21.4736171875,
+          21.2108046875,
+          19.007625,
+          18.9912734375,
+          19.344453125,
+          18.8401875,
+          19.3101015625
+        ]
+      },
+      "hlle_cfl": {
+        "within_budget": 69,
+        "output_mae": [
+          0.0010371860603544643,
+          0.0040500608743704375
+        ],
+        "median_us": 7.962234375,
+        "time_iqr_us": [
+          7.781890625,
+          8.475375
+        ],
+        "teacher_time_over_method": 7.736574807244355,
+        "samples_us": [
+          7.8086484375,
+          8.098140625,
+          8.59934375,
+          7.7551328125,
+          8.35140625,
+          7.8674140625,
+          9.0816328125,
+          7.7151484375,
+          7.7012265625,
+          8.1993828125,
+          7.676421875,
+          7.9128671875,
+          8.985625,
+          9.074890625,
+          7.962234375
+        ]
+      },
+      "routed_hard": {
+        "within_budget": 128,
+        "output_mae": [
+          6.622262916750491e-05,
+          0.0003451782292330797
+        ],
+        "accepted": 38,
+        "accept_rate": 0.296875,
+        "unsafe_proposed": 52,
+        "unsafe_accepted": 0,
+        "unsafe_rejected": 52,
+        "safe_rejected": 38,
+        "safe_accepted": 38,
+        "accepted_by_family": {
+          "smooth": 32,
+          "dam": 3,
+          "interacting": 0,
+          "evolved": 3
+        },
+        "inaccurate_accepted_cases": [],
+        "median_us": 27.5988359375,
+        "time_iqr_us": [
+          27.04070703125,
+          29.5664765625
+        ],
+        "teacher_time_over_method": 2.2319934802503845,
+        "samples_us": [
+          28.9141484375,
+          28.8796328125,
+          31.95278125,
+          26.638203125,
+          27.1966796875,
+          31.14259375,
+          27.263109375,
+          27.5988359375,
+          30.4950703125,
+          30.1748359375,
+          27.328203125,
+          28.9581171875,
+          26.884734375,
+          26.622625,
+          26.726296875
+        ]
+      },
+      "rusanov_cfl": {
+        "within_budget": 62,
+        "output_mae": [
+          0.0012465445970387375,
+          0.004276345262422934
+        ],
+        "median_us": 6.3569765625,
+        "time_iqr_us": [
+          6.16059375,
+          6.629296875
+        ],
+        "teacher_time_over_method": 9.69020748611577,
+        "samples_us": [
+          6.4034453125,
+          6.70178125,
+          6.5876328125,
+          6.816875,
+          6.151515625,
+          6.0711640625,
+          6.565171875,
+          6.169671875,
+          6.218875,
+          6.6709609375,
+          6.0505859375,
+          6.2244296875,
+          6.3569765625,
+          5.981890625,
+          7.018734375
+        ]
+      },
+      "teacher8": {
+        "within_budget": 128,
+        "output_mae": [
+          0.0,
+          0.0
+        ],
+        "median_us": 61.600421875,
+        "time_iqr_us": [
+          60.629300781249995,
+          63.97541406250001
+        ],
+        "teacher_time_over_method": 1.0,
+        "samples_us": [
+          64.0550625,
+          63.895765625,
+          65.9635859375,
+          61.600421875,
+          61.759328125,
+          67.5664296875,
+          60.84775,
+          60.321109375,
+          65.0318984375,
+          63.5677109375,
+          61.461,
+          59.93921875,
+          61.4658515625,
+          59.7506640625,
+          60.4108515625
+        ]
+      },
+      "routed_initial": {
+        "within_budget": 128,
+        "output_mae": [
+          6.673738392025058e-05,
+          0.0003372320525364242
+        ],
+        "accepted": 37,
+        "accept_rate": 0.2890625,
+        "unsafe_proposed": 57,
+        "unsafe_accepted": 0,
+        "unsafe_rejected": 57,
+        "safe_rejected": 34,
+        "safe_accepted": 37,
+        "accepted_by_family": {
+          "smooth": 32,
+          "dam": 1,
+          "interacting": 0,
+          "evolved": 4
+        },
+        "inaccurate_accepted_cases": [],
+        "median_us": 27.5220078125,
+        "time_iqr_us": [
+          26.8720234375,
+          27.71134765625
+        ],
+        "teacher_time_over_method": 2.238224125749365,
+        "samples_us": [
+          27.68646875,
+          27.67746875,
+          27.814625,
+          27.5220078125,
+          29.402125,
+          28.5777109375,
+          26.535546875,
+          26.6106640625,
+          27.69828125,
+          26.848828125,
+          26.89521875,
+          27.7244140625,
+          27.0945,
+          27.0977890625,
+          26.498078125
+        ]
+      },
+      "godunov8": {
+        "within_budget": 128,
+        "output_mae": [
+          4.082432335422697e-06,
+          1.7776244238362215e-05
+        ],
+        "median_us": 50.165078125,
+        "time_iqr_us": [
+          49.56591796875,
+          51.398546875
+        ],
+        "teacher_time_over_method": 1.2279542697313401,
+        "samples_us": [
+          55.058953125,
+          50.5943125,
+          50.1031171875,
+          50.58328125,
+          52.096140625,
+          50.165078125,
+          49.366953125,
+          48.6759296875,
+          51.77965625,
+          54.3172421875,
+          49.7648828125,
+          48.5943203125,
+          49.8823203125,
+          48.913859375,
+          51.0174375
+        ]
+      },
+      "routed_uniform": {
+        "within_budget": 128,
+        "output_mae": [
+          6.442322741961155e-05,
+          0.0003107327311383972
+        ],
+        "accepted": 39,
+        "accept_rate": 0.3046875,
+        "unsafe_proposed": 47,
+        "unsafe_accepted": 0,
+        "unsafe_rejected": 47,
+        "safe_rejected": 42,
+        "safe_accepted": 39,
+        "accepted_by_family": {
+          "smooth": 32,
+          "dam": 3,
+          "interacting": 0,
+          "evolved": 4
+        },
+        "inaccurate_accepted_cases": [],
+        "median_us": 27.8362265625,
+        "time_iqr_us": [
+          27.13811328125,
+          28.451425781250002
+        ],
+        "teacher_time_over_method": 2.2129587764595207,
+        "samples_us": [
+          26.956953125,
+          26.934578125,
+          26.942796875,
+          30.38584375,
+          27.1778984375,
+          30.806859375,
+          27.8362265625,
+          27.970328125,
+          27.4577734375,
+          30.1526953125,
+          27.4219375,
+          27.098328125,
+          28.491640625,
+          28.13165625,
+          28.4112109375
+        ]
+      }
+    },
+    "shift": {
+      "godunov8": {
+        "within_budget": 128,
+        "output_mae": [
+          1.357685761174647e-05,
+          7.49500769816067e-05
+        ],
+        "median_us": 50.790921875,
+        "time_iqr_us": [
+          49.572328125,
+          52.5017421875
+        ],
+        "teacher_time_over_method": 1.2667805731769857,
+        "samples_us": [
+          49.7788046875,
+          51.472953125,
+          49.3658515625,
+          50.790921875,
+          52.687328125,
+          55.123265625,
+          49.1628203125,
+          49.981296875,
+          52.31615625,
+          50.8553984375,
+          49.3278359375,
+          54.3012734375,
+          49.306,
+          50.0655625,
+          55.313
+        ]
+      },
+      "engineering_cfl": {
+        "within_budget": 55,
+        "output_mae": [
+          0.0012316618545034604,
+          0.005300477836118983
+        ],
+        "median_us": 24.389171875,
+        "time_iqr_us": [
+          24.019171874999998,
+          25.094433593749997
+        ],
+        "teacher_time_over_method": 2.638095030645644,
+        "samples_us": [
+          24.0224609375,
+          23.773734375,
+          25.726390625,
+          24.020265625,
+          24.9216796875,
+          23.905015625,
+          23.9624453125,
+          24.6986171875,
+          24.018078125,
+          37.5713125,
+          25.596578125,
+          24.55065625,
+          24.0208984375,
+          25.2671875,
+          24.389171875
+        ]
+      },
+      "routed_hard": {
+        "within_budget": 127,
+        "output_mae": [
+          1.7631084699625746e-05,
+          9.645856288349497e-05
+        ],
+        "accepted": 5,
+        "accept_rate": 0.0390625,
+        "unsafe_proposed": 117,
+        "unsafe_accepted": 1,
+        "unsafe_rejected": 116,
+        "safe_rejected": 7,
+        "safe_accepted": 4,
+        "accepted_by_family": {
+          "smooth": 5,
+          "dam": 0,
+          "interacting": 0,
+          "evolved": 0
+        },
+        "inaccurate_accepted_cases": [
+          {
+            "id": "shift-000120",
+            "family": "smooth",
+            "proposal_mae": [
+              0.001360033511649688,
+              0.007138862916497495
+            ]
+          }
+        ],
+        "median_us": 65.433203125,
+        "time_iqr_us": [
+          63.90786328125,
+          65.96343359375
+        ],
+        "teacher_time_over_method": 0.9833074043782721,
+        "samples_us": [
+          66.2562109375,
+          65.3055859375,
+          69.0493984375,
+          68.6494375,
+          63.4439296875,
+          68.847375,
+          65.433203125,
+          63.9788671875,
+          65.557359375,
+          63.4869609375,
+          63.4113046875,
+          64.0713359375,
+          65.67065625,
+          65.6388125,
+          63.836859375
+        ]
+      },
+      "routed_initial": {
+        "within_budget": 127,
+        "output_mae": [
+          2.416399209233969e-05,
+          0.0001187701191688943
+        ],
+        "accepted": 6,
+        "accept_rate": 0.046875,
+        "unsafe_proposed": 118,
+        "unsafe_accepted": 1,
+        "unsafe_rejected": 117,
+        "safe_rejected": 5,
+        "safe_accepted": 5,
+        "accepted_by_family": {
+          "smooth": 6,
+          "dam": 0,
+          "interacting": 0,
+          "evolved": 0
+        },
+        "inaccurate_accepted_cases": [
+          {
+            "id": "shift-000120",
+            "family": "smooth",
+            "proposal_mae": [
+              0.0014687196736061208,
+              0.007348791444972965
+            ]
+          }
+        ],
+        "median_us": 63.913453125,
+        "time_iqr_us": [
+          63.00221875,
+          65.3155625
+        ],
+        "teacher_time_over_method": 1.0066887326391818,
+        "samples_us": [
+          65.566671875,
+          70.37440625,
+          64.0488046875,
+          63.0136015625,
+          64.802265625,
+          63.8218359375,
+          66.4999296875,
+          61.846640625,
+          74.9543046875,
+          62.1334765625,
+          62.9908359375,
+          63.913453125,
+          62.558328125,
+          65.064453125,
+          63.52646875
+        ]
+      },
+      "hlle_cfl": {
+        "within_budget": 41,
+        "output_mae": [
+          0.002351326317450985,
+          0.007184355255881987
+        ],
+        "median_us": 9.4374609375,
+        "time_iqr_us": [
+          9.38218359375,
+          10.489878906249999
+        ],
+        "teacher_time_over_method": 6.817612655681522,
+        "samples_us": [
+          10.9738046875,
+          9.30453125,
+          9.864890625,
+          9.2569609375,
+          9.4223671875,
+          9.7476171875,
+          10.582359375,
+          9.39246875,
+          9.3718984375,
+          23.9256015625,
+          9.30359375,
+          10.62421875,
+          9.4374609375,
+          9.4153203125,
+          10.3973984375
+        ]
+      },
+      "routed_uniform": {
+        "within_budget": 128,
+        "output_mae": [
+          6.942159592348765e-06,
+          3.830165262706522e-05
+        ],
+        "accepted": 4,
+        "accept_rate": 0.03125,
+        "unsafe_proposed": 115,
+        "unsafe_accepted": 0,
+        "unsafe_rejected": 115,
+        "safe_rejected": 9,
+        "safe_accepted": 4,
+        "accepted_by_family": {
+          "smooth": 4,
+          "dam": 0,
+          "interacting": 0,
+          "evolved": 0
+        },
+        "inaccurate_accepted_cases": [],
+        "median_us": 66.5626015625,
+        "time_iqr_us": [
+          65.153609375,
+          68.435328125
+        ],
+        "teacher_time_over_method": 0.9666231729928111,
+        "samples_us": [
+          67.10175,
+          64.65540625,
+          69.85340625,
+          64.998578125,
+          64.3755390625,
+          65.5281015625,
+          66.5626015625,
+          72.962609375,
+          67.1763984375,
+          64.3891484375,
+          65.308640625,
+          86.170015625,
+          66.83565625,
+          69.6942578125,
+          65.813140625
+        ]
+      },
+      "rusanov_cfl": {
+        "within_budget": 19,
+        "output_mae": [
+          0.0036013349859975547,
+          0.010307654822115712
+        ],
+        "median_us": 7.061453125,
+        "time_iqr_us": [
+          6.89452734375,
+          7.3857187500000006
+        ],
+        "teacher_time_over_method": 9.111574060756794,
+        "samples_us": [
+          7.061453125,
+          6.9161640625,
+          8.046109375,
+          7.5295703125,
+          7.0670078125,
+          6.90121875,
+          7.63425,
+          6.8243828125,
+          7.2795078125,
+          7.0097421875,
+          7.4388046875,
+          6.8878359375,
+          6.8690546875,
+          7.3326328125,
+          6.7730546875
+        ]
+      },
+      "teacher8": {
+        "within_budget": 128,
+        "output_mae": [
+          0.0,
+          0.0
+        ],
+        "median_us": 64.340953125,
+        "time_iqr_us": [
+          63.9246015625,
+          65.49473437500001
+        ],
+        "teacher_time_over_method": 1.0,
+        "samples_us": [
+          66.0268828125,
+          66.897859375,
+          70.552484375,
+          64.9303515625,
+          68.6501328125,
+          63.8870859375,
+          63.926125,
+          63.923078125,
+          64.7683828125,
+          64.340953125,
+          63.43603125,
+          63.933796875,
+          64.3372734375,
+          64.9625859375,
+          62.5752265625
+        ]
+      }
+    }
+  }
+}

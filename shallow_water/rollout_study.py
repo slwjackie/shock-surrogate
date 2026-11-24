@@ -48,12 +48,19 @@ def physical_flux(h, u):
     return np.array([h*u, h*u*u + .5*G*h*h])
 
 
-def exact_cell_averages(case, n):
+def exact_cell_averages(case, n, duration=DURATION, jump_cell=None):
     """Piecewise exactly integrate the constant/fan/shock entropy solution in FP64.
 
     In a fan h(x/t) is quadratic and hu(x/t) cubic, so two-point Gauss
     integration is exact after splitting each coarse cell at each wave edge.
     """
+    if jump_cell is None:
+        if n % 2:
+            raise ValueError("A centred discontinuity requires an even grid")
+        jump_cell = n//2
+    if not 0 < jump_cell < n or not duration > 0:
+        raise ValueError("The discontinuity must be internal and the duration positive")
+    jump_x = LENGTH * jump_cell/n
     hl, ul, hr, ur = case
     hs = float(reference(np.array([case]))[0])
     us = .5*(ul+ur + wave_term(hs,hr)-wave_term(hs,hl))
@@ -67,7 +74,8 @@ def exact_cell_averages(case, n):
     else:
         ra, rb = us+cs, ur+cr
     max_speed = max(abs(ul)+cl, abs(ur)+cr, abs(us)+cs, abs(la), abs(rb))
-    assert 0.5*LENGTH > max_speed*DURATION
+    if min(jump_x, LENGTH-jump_x) <= max_speed*duration:
+        raise ValueError("The analytical waves may reach a boundary")
     region = np.array([la, lb, ra, rb])
     assert np.all(np.diff(region) >= 0)
 
@@ -86,7 +94,7 @@ def exact_cell_averages(case, n):
             return h, h*u
         return hr, hr*ur
 
-    edges = (np.linspace(0, LENGTH, n+1)-0.5*LENGTH)/DURATION
+    edges = (np.linspace(0, LENGTH, n+1)-jump_x)/duration
     ref = np.zeros((n, 2))
     for i, (left,right) in enumerate(zip(edges[:-1], edges[1:])):
         pieces = np.unique(np.r_[left, region[(left < region) & (region < right)], right])
@@ -94,9 +102,10 @@ def exact_cell_averages(case, n):
             mid, offset = (a+b)/2, (b-a)/math.sqrt(12)
             ref[i] += ((b-a)/(2*(right-left)) *
                        (np.array(evaluate(mid-offset)) + np.array(evaluate(mid+offset))))
-    balance = initial(case,n).mean(axis=0) + DURATION/LENGTH*(physical_flux(hl,ul)-physical_flux(hr,ur))
+    mean_initial = (jump_cell*np.array([hl, hl*ul]) + (n-jump_cell)*np.array([hr, hr*ur]))/n
+    balance = mean_initial + duration/LENGTH*(physical_flux(hl,ul)-physical_flux(hr,ur))
     np.testing.assert_allclose(ref.mean(axis=0), balance, rtol=5e-13, atol=5e-13)
-    return ref, math.ceil(DURATION*n*max_speed/(LENGTH*CFL))
+    return ref, math.ceil(duration*n*max_speed/(LENGTH*CFL))
 
 
 def compile_rollout(path):

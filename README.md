@@ -13,6 +13,9 @@ updates, fixed-coefficient integration and larger Godunov steps at matched physi
 The [shallow-water interface experiment](reports/shallow_water/README.md)
 compares neural and classical proposals for the middle water depth with the
 same absolute-error certificate and a safeguarded Newton correction.
+The [whole-field shallow-water experiment](reports/shallow_water_macro8/README.md)
+advances depth and discharge by eight reference steps in one learned update.
+Its empirical guard can rerun a rejected block with Godunov.
 
 The earlier Stage A/B work on certified Burgers fluxes and 0-D hydrogen
 autoignition is documented below.

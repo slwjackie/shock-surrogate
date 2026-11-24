@@ -1,0 +1,1986 @@
+{
+  "default_model_preselected": "onpolicy_uniform",
+  "frozen_weights": [
+    "original_hard",
+    "onpolicy_uniform",
+    "onpolicy_hard"
+  ],
+  "counts": 64,
+  "warmups": 2,
+  "rounds": 13,
+  "start_index": 320,
+  "cpu": 8,
+  "compiler_flags": [
+    "-std=c11",
+    "-O3",
+    "-march=native",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fPIC",
+    "-shared"
+  ],
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+  "thresholds": {
+    "0": 2.432701080411251,
+    "1": 2.440588867570567,
+    "2": 2.393566513298348
+  },
+  "calibration_sha256": "043375d9e609dffef64f392e9d494527ababb0b2742b29429dca3935640ab101",
+  "code_sha256": {
+    "macro8_replay_native.py": "f5d4562182f161ad290e1603097ebf9d737a8ecbc9251dc8dc7d069a3ac0e3cf",
+    "macro8_rollout_replay.py": "3cc55d3143802c4479213ff7a9fb5d62b7c82291332f1ed66cb35934fff7f7bd",
+    "macro8_predict.c": "b3074dcbf4c1ce0512087472d78d3fedef5ffb6c71354ca100549cae52e0b51c",
+    "macro8_guard.c": "4ff01d949773443e043e8d66536cbff24b37eac4935a7e11a49e3dbd514ef8be",
+    "macro8_classical.c": "d30fb8fb26d2e4b627615c6922ecdd979f65fdb111f3f2c32d6cd88bb6ecf3f9",
+    "macro8_workload.c": "3c35a153c78bfd952df634a439a45af340c5660d320ab016f11ff5bbf498c4ad",
+    "macro8_data.py": "95cb26c8ef473dac63d6bc745d28e1c550f34bd60af1af6d9ec58bbba1eac49b",
+    "rollout.c": "2c61706c66df784c99eec796da74f7f7121c365ae274d16f6a43fd1cce82f2e2",
+    "solver.c": "07ea1473a88f2fe0fb14377469c7e43bee599b706d51837c8aaf814192e486f7",
+    "macro8_replay_evaluation.py": "da7f9e435217f2f4d1e4b726abce5c78a367c771ca01c698da85805228274fe6"
+  },
+  "endpoint_budget": [
+    0.01,
+    0.04
+  ],
+  "pde_factor": 1.05,
+  "split_notes": "The case range starting at 320 was held out of all prior model training and development. Each profile is an independent initial condition.",
+  "pde_reference": "Cell averages from analytic Riemann solution for dams, fourfold-refined Godunov solution starting from the same supplied initial profile otherwise.",
+  "timing": "Single native batch; mean time per full initialized/output profile. Warmed, interleaved median across rounds.",
+  "splits": {
+    "test": {
+      "ids": [
+        "test-000320",
+        "test-000321",
+        "test-000322",
+        "test-000323",
+        "test-000324",
+        "test-000325",
+        "test-000326",
+        "test-000327",
+        "test-000328",
+        "test-000329",
+        "test-000330",
+        "test-000331",
+        "test-000332",
+        "test-000333",
+        "test-000334",
+        "test-000335",
+        "test-000336",
+        "test-000337",
+        "test-000338",
+        "test-000339",
+        "test-000340",
+        "test-000341",
+        "test-000342",
+        "test-000343",
+        "test-000344",
+        "test-000345",
+        "test-000346",
+        "test-000347",
+        "test-000348",
+        "test-000349",
+        "test-000350",
+        "test-000351",
+        "test-000352",
+        "test-000353",
+        "test-000354",
+        "test-000355",
+        "test-000356",
+        "test-000357",
+        "test-000358",
+        "test-000359",
+        "test-000360",
+        "test-000361",
+        "test-000362",
+        "test-000363",
+        "test-000364",
+        "test-000365",
+        "test-000366",
+        "test-000367",
+        "test-000368",
+        "test-000369",
+        "test-000370",
+        "test-000371",
+        "test-000372",
+        "test-000373",
+        "test-000374",
+        "test-000375",
+        "test-000376",
+        "test-000377",
+        "test-000378",
+        "test-000379",
+        "test-000380",
+        "test-000381",
+        "test-000382",
+        "test-000383"
+      ],
+      "families": [
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved"
+      ],
+      "input_sha256": "c0d37cb487f0d7ffd40b94be8b77bcc8e7adbc2b6edcb3cac24f204a584b5532",
+      "fine_reference_sha256": "0724df2848fa7ff53ae67d22266d7971cf598445b8747a541a9f24525e10c8f3",
+      "teacher_sha256": "a91c89cbfe8f21d6d95e05a74057fcfc9a45c5b0be93c2e5fbcb062217c8d688",
+      "pde_cohort_error_budgets": [
+        0.0021488851863092407,
+        0.008796375421803324
+      ],
+      "fastest_eligible": "rusanov_cfl",
+      "methods": {
+        "teacher8": {
+          "time_us": 64.5434375,
+          "timing_iqr_us": [
+            63.86853125,
+            66.43621875
+          ],
+          "timing_samples_us": [
+            69.688515625,
+            62.228453125,
+            64.4148125,
+            61.190828125,
+            66.43621875,
+            63.86853125,
+            82.508078125,
+            65.14384375,
+            64.5434375,
+            68.490359375,
+            63.89403125,
+            65.28921875,
+            63.639453125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0,
+              0.0
+            ],
+            "p95": [
+              0.0,
+              0.0
+            ],
+            "maximum": [
+              0.0,
+              0.0
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.002046557320294515,
+              0.00837750040171745
+            ],
+            "p95": [
+              0.005151034885375062,
+              0.022752842898726464
+            ],
+            "maximum": [
+              0.006749918378848009,
+              0.03284618336424734
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.03342839990530422,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "a91c89cbfe8f21d6d95e05a74057fcfc9a45c5b0be93c2e5fbcb062217c8d688"
+        },
+        "engineering8": {
+          "time_us": 44.77128125,
+          "timing_iqr_us": [
+            43.706265625,
+            48.18740625
+          ],
+          "timing_samples_us": [
+            42.2606875,
+            44.4856875,
+            44.77128125,
+            48.3571875,
+            48.18740625,
+            42.535625,
+            46.275515625,
+            41.633203125,
+            45.031640625,
+            43.706265625,
+            49.20453125,
+            43.87025,
+            52.080203125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              1.1482226532289396e-10,
+              7.803802331336027e-10
+            ],
+            "p95": [
+              2.834967413167105e-10,
+              2.0518279639979103e-09
+            ],
+            "maximum": [
+              3.804096725124051e-10,
+              2.6931531562149336e-09
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.00204655727599833,
+              0.008377500038166954
+            ],
+            "p95": [
+              0.005151034736559869,
+              0.022752841481268295
+            ],
+            "maximum": [
+              0.00674991819704569,
+              0.03284618205019509
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.03342840520389956,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "cb6eaf02dd441ae600c75580f7ac84d52eee5aa8c2eb045c589dbd242ff30852"
+        },
+        "engineering_cfl": {
+          "time_us": 20.8664375,
+          "timing_iqr_us": [
+            20.002359375,
+            23.103328125
+          ],
+          "timing_samples_us": [
+            68.882515625,
+            20.8664375,
+            23.1318125,
+            20.9421875,
+            23.103328125,
+            22.273828125,
+            19.752609375,
+            20.141609375,
+            36.54365625,
+            20.002359375,
+            20.180109375,
+            19.72521875,
+            19.9810625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.001069074191612566,
+              0.004660700723696678
+            ],
+            "p95": [
+              0.002444395794754216,
+              0.011638821255609725
+            ],
+            "maximum": [
+              0.0031330493315609685,
+              0.015757363702029334
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0010622069720660815,
+              0.004049831503696167
+            ],
+            "p95": [
+              0.0029560280531466987,
+              0.012429526353116277
+            ],
+            "maximum": [
+              0.003659129443866156,
+              0.017278737694646683
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.053580604739472015,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "9e83296f5fd7f5612357684169a6689597a180cda276d331bded9027f1507f57"
+        },
+        "godunov_cfl": {
+          "time_us": 25.107703125,
+          "timing_iqr_us": [
+            24.641234375,
+            27.936875
+          ],
+          "timing_samples_us": [
+            24.1041875,
+            24.27646875,
+            29.22159375,
+            24.23515625,
+            25.107703125,
+            26.02828125,
+            28.92975,
+            28.027796875,
+            24.86234375,
+            27.936875,
+            24.993625,
+            24.641234375,
+            25.110359375
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0010634919603610417,
+              0.0046310728985029
+            ],
+            "p95": [
+              0.0024313316945068163,
+              0.01144603700283671
+            ],
+            "maximum": [
+              0.003109793393754141,
+              0.015654881518855378
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0010682675558275712,
+              0.00408166509414387
+            ],
+            "p95": [
+              0.002965164964071998,
+              0.01245821367329643
+            ],
+            "maximum": [
+              0.003682363669755196,
+              0.017381132872858408
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.055588009867506116,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "c33d0befa7f26f249912c9354e9ad690a3e1d2c8a163e672c373edd112c0bfba"
+        },
+        "hlle8": {
+          "time_us": 14.878234375,
+          "timing_iqr_us": [
+            14.316140625,
+            15.20934375
+          ],
+          "timing_samples_us": [
+            15.20934375,
+            15.026890625,
+            14.2775,
+            14.04778125,
+            16.279515625,
+            16.172015625,
+            14.41378125,
+            14.00240625,
+            14.316140625,
+            14.878234375,
+            15.102625,
+            14.364484375,
+            17.556078125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.00021128293212477266,
+              0.0006483977665314964
+            ],
+            "p95": [
+              0.0007338228043422663,
+              0.002284863782479481
+            ],
+            "maximum": [
+              0.0009944624126977204,
+              0.002957868465373828
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021145317984368537,
+              0.00883086329352605
+            ],
+            "p95": [
+              0.00544136265082684,
+              0.024206876922154338
+            ],
+            "maximum": [
+              0.006857537019967536,
+              0.034471151213876124
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 44,
+          "mean_abs_shock_cells": 0.030169222011922514,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "b65e2324ac5222ea6873690ba20121df1ee9b5fea1d701cfdb6694444ecc9a65"
+        },
+        "hlle_cfl": {
+          "time_us": 8.4155625,
+          "timing_iqr_us": [
+            7.840640625,
+            8.58409375
+          ],
+          "timing_samples_us": [
+            9.8645625,
+            52.055609375,
+            7.665859375,
+            7.840640625,
+            7.8303125,
+            8.446375,
+            8.58409375,
+            8.450921875,
+            7.69934375,
+            7.89978125,
+            7.883359375,
+            9.194828125,
+            8.4155625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0011110621436415814,
+              0.004559402376545494
+            ],
+            "p95": [
+              0.0025883193951381253,
+              0.011246603382543328
+            ],
+            "maximum": [
+              0.003576261424666235,
+              0.017003692534141662
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.001217097751770198,
+              0.004711945037428577
+            ],
+            "p95": [
+              0.0033055914922316795,
+              0.014622011265392868
+            ],
+            "maximum": [
+              0.0042969394818087574,
+              0.020783675333295577
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.03531489560316459,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "67d5117a1a0788564b2ba43db8ec0ba89cda1bd2e841d57f948cd8b35c51996e"
+        },
+        "rusanov8": {
+          "time_us": 11.528421875,
+          "timing_iqr_us": [
+            10.846015625,
+            12.145125
+          ],
+          "timing_samples_us": [
+            12.17078125,
+            10.8795,
+            21.992171875,
+            11.43640625,
+            10.2224375,
+            11.528421875,
+            11.546265625,
+            14.594359375,
+            10.360921875,
+            11.722625,
+            12.145125,
+            10.820515625,
+            10.846015625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.000877502822241383,
+              0.003346640159040601
+            ],
+            "p95": [
+              0.0025089702425618375,
+              0.009196245350218625
+            ],
+            "maximum": [
+              0.003328064896187955,
+              0.010518972020441922
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.002661242356767114,
+              0.011282061438707826
+            ],
+            "p95": [
+              0.006544402445507146,
+              0.028587466504885427
+            ],
+            "maximum": [
+              0.007203429781927225,
+              0.03779757228304722
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 1,
+          "mean_abs_shock_cells": 0.025907694775066048,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "3518b55002d476a0b4a3b1cbd4387428213d8cd540769f259976a51eff0cd19b"
+        },
+        "rusanov_cfl": {
+          "time_us": 6.210265625,
+          "timing_iqr_us": [
+            5.794796875,
+            7.796828125
+          ],
+          "timing_samples_us": [
+            15.704125,
+            6.783140625,
+            6.507109375,
+            7.796828125,
+            6.210265625,
+            8.34246875,
+            5.794796875,
+            5.7165625,
+            5.744890625,
+            10.367640625,
+            5.79746875,
+            5.749109375,
+            6.089625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0012790466097903211,
+              0.004456391829290282
+            ],
+            "p95": [
+              0.0031214306819516797,
+              0.010491893454526034
+            ],
+            "maximum": [
+              0.003686575125757336,
+              0.014393736980287092
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0019936993584360415,
+              0.008117041969408705
+            ],
+            "p95": [
+              0.0055116097182488204,
+              0.021954796671363404
+            ],
+            "maximum": [
+              0.0059712313927154205,
+              0.028446730500742055
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 45,
+          "mean_abs_shock_cells": 0.1297272281491848,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "611458cc82b4667f7dda41ed6c078cb0fafcd12f663b846bea6d82a72a591a66"
+        },
+        "original_hard": {
+          "time_us": 6.297109375,
+          "timing_iqr_us": [
+            5.85365625,
+            6.59865625
+          ],
+          "timing_samples_us": [
+            9.915578125,
+            5.885875,
+            6.823984375,
+            6.33434375,
+            5.666015625,
+            6.05315625,
+            6.59865625,
+            5.85365625,
+            6.3136875,
+            7.164171875,
+            6.297109375,
+            5.746296875,
+            5.720328125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0005264431409838701,
+              0.004027453660068652
+            ],
+            "p95": [
+              0.001207670118946988,
+              0.008792020045475368
+            ],
+            "maximum": [
+              0.001515655167384126,
+              0.011853079480646653
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021637558174828135,
+              0.00987592244647021
+            ],
+            "p95": [
+              0.0054464031741659966,
+              0.02454089150011806
+            ],
+            "maximum": [
+              0.006655811687269506,
+              0.03086940428726577
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 14,
+          "mean_abs_shock_cells": 0.11040404876072962,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "159590e7156d2d2236cdee7693555f413e64ac0ecc471149097685ce6aaad4cb"
+        },
+        "routed_original_hard": {
+          "time_us": 7.701375,
+          "timing_iqr_us": [
+            6.710859375,
+            8.972625
+          ],
+          "timing_samples_us": [
+            9.17621875,
+            6.710859375,
+            8.972625,
+            7.2810625,
+            8.516640625,
+            10.74696875,
+            7.7240625,
+            6.64528125,
+            6.632921875,
+            9.472734375,
+            6.75465625,
+            7.701375,
+            6.6870625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0005264431409838701,
+              0.004027453660068652
+            ],
+            "p95": [
+              0.001207670118946988,
+              0.008792020045475368
+            ],
+            "maximum": [
+              0.001515655167384126,
+              0.011853079480646653
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021637558174828135,
+              0.00987592244647021
+            ],
+            "p95": [
+              0.0054464031741659966,
+              0.02454089150011806
+            ],
+            "maximum": [
+              0.006655811687269506,
+              0.03086940428726577
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 14,
+          "mean_abs_shock_cells": 0.11040404876072962,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "159590e7156d2d2236cdee7693555f413e64ac0ecc471149097685ce6aaad4cb",
+          "guard": {
+            "accepted": 64,
+            "fallback": 0,
+            "accepted_over_budget": 0,
+            "rejected_within_budget": 0
+          },
+          "accepted_error_ids": []
+        },
+        "onpolicy_uniform": {
+          "time_us": 6.058953125,
+          "timing_iqr_us": [
+            5.7916875,
+            6.3645625
+          ],
+          "timing_samples_us": [
+            8.0785,
+            5.7916875,
+            6.058953125,
+            6.3645625,
+            5.85959375,
+            5.75584375,
+            6.777203125,
+            6.415578125,
+            5.720328125,
+            6.192125,
+            6.145015625,
+            5.947375,
+            5.771171875
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.000446100861937445,
+              0.0034062016036195387
+            ],
+            "p95": [
+              0.000978891410504063,
+              0.00817398463069529
+            ],
+            "maximum": [
+              0.0015435264770728005,
+              0.012686284152268669
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021347764498869893,
+              0.009453306961994515
+            ],
+            "p95": [
+              0.0054043245654290814,
+              0.023967529267223744
+            ],
+            "maximum": [
+              0.006764808257741331,
+              0.0322029572740819
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 17,
+          "mean_abs_shock_cells": 0.0691099390294907,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "065b1795ebda394ccf7b7ff0d4492cfc0d05a5bea2ec06709795c7f2085f947b"
+        },
+        "routed_onpolicy_uniform": {
+          "time_us": 6.954171875,
+          "timing_iqr_us": [
+            6.914109375,
+            7.68165625
+          ],
+          "timing_samples_us": [
+            6.9468125,
+            7.108625,
+            6.914109375,
+            9.305453125,
+            7.68165625,
+            6.928671875,
+            6.62071875,
+            6.970453125,
+            6.906921875,
+            6.697390625,
+            8.011984375,
+            6.954171875,
+            9.8195
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.000446100861937445,
+              0.0034062016036195387
+            ],
+            "p95": [
+              0.000978891410504063,
+              0.00817398463069529
+            ],
+            "maximum": [
+              0.0015435264770728005,
+              0.012686284152268669
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021347764498869893,
+              0.009453306961994515
+            ],
+            "p95": [
+              0.0054043245654290814,
+              0.023967529267223744
+            ],
+            "maximum": [
+              0.006764808257741331,
+              0.0322029572740819
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 17,
+          "mean_abs_shock_cells": 0.0691099390294907,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "065b1795ebda394ccf7b7ff0d4492cfc0d05a5bea2ec06709795c7f2085f947b",
+          "guard": {
+            "accepted": 64,
+            "fallback": 0,
+            "accepted_over_budget": 0,
+            "rejected_within_budget": 0
+          },
+          "accepted_error_ids": []
+        },
+        "onpolicy_hard": {
+          "time_us": 6.172546875,
+          "timing_iqr_us": [
+            5.78196875,
+            8.17128125
+          ],
+          "timing_samples_us": [
+            8.17128125,
+            5.727828125,
+            6.05425,
+            5.672125,
+            6.172546875,
+            5.767421875,
+            8.270953125,
+            6.549515625,
+            5.78196875,
+            9.723421875,
+            10.02871875,
+            6.017640625,
+            7.84628125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.00045786609186474777,
+              0.0035342289015026463
+            ],
+            "p95": [
+              0.0010731068080985452,
+              0.007899018113736746
+            ],
+            "maximum": [
+              0.001442179067574368,
+              0.012881571088216203
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021664872722892536,
+              0.009361200967898343
+            ],
+            "p95": [
+              0.005341097796834449,
+              0.024563008874697596
+            ],
+            "maximum": [
+              0.006831846826168438,
+              0.03148521971122062
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 18,
+          "mean_abs_shock_cells": 0.0678455436480867,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "409933b06120e0042e8eb5edeb880e5dd2b480f23320de5d908bee6e17c7d921"
+        },
+        "routed_onpolicy_hard": {
+          "time_us": 6.861375,
+          "timing_iqr_us": [
+            6.7510625,
+            7.261984375
+          ],
+          "timing_samples_us": [
+            6.571265625,
+            7.55084375,
+            8.164078125,
+            6.620078125,
+            6.7510625,
+            6.77,
+            7.484015625,
+            6.861375,
+            6.919125,
+            6.632296875,
+            7.261984375,
+            7.164015625,
+            6.79346875
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.00045786609186474777,
+              0.0035342289015026463
+            ],
+            "p95": [
+              0.0010731068080985452,
+              0.007899018113736746
+            ],
+            "maximum": [
+              0.001442179067574368,
+              0.012881571088216203
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0021664872722892536,
+              0.009361200967898343
+            ],
+            "p95": [
+              0.005341097796834449,
+              0.024563008874697596
+            ],
+            "maximum": [
+              0.006831846826168438,
+              0.03148521971122062
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 18,
+          "mean_abs_shock_cells": 0.0678455436480867,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "409933b06120e0042e8eb5edeb880e5dd2b480f23320de5d908bee6e17c7d921",
+          "guard": {
+            "accepted": 64,
+            "fallback": 0,
+            "accepted_over_budget": 0,
+            "rejected_within_budget": 0
+          },
+          "accepted_error_ids": []
+        }
+      }
+    },
+    "shift": {
+      "ids": [
+        "shift-000320",
+        "shift-000321",
+        "shift-000322",
+        "shift-000323",
+        "shift-000324",
+        "shift-000325",
+        "shift-000326",
+        "shift-000327",
+        "shift-000328",
+        "shift-000329",
+        "shift-000330",
+        "shift-000331",
+        "shift-000332",
+        "shift-000333",
+        "shift-000334",
+        "shift-000335",
+        "shift-000336",
+        "shift-000337",
+        "shift-000338",
+        "shift-000339",
+        "shift-000340",
+        "shift-000341",
+        "shift-000342",
+        "shift-000343",
+        "shift-000344",
+        "shift-000345",
+        "shift-000346",
+        "shift-000347",
+        "shift-000348",
+        "shift-000349",
+        "shift-000350",
+        "shift-000351",
+        "shift-000352",
+        "shift-000353",
+        "shift-000354",
+        "shift-000355",
+        "shift-000356",
+        "shift-000357",
+        "shift-000358",
+        "shift-000359",
+        "shift-000360",
+        "shift-000361",
+        "shift-000362",
+        "shift-000363",
+        "shift-000364",
+        "shift-000365",
+        "shift-000366",
+        "shift-000367",
+        "shift-000368",
+        "shift-000369",
+        "shift-000370",
+        "shift-000371",
+        "shift-000372",
+        "shift-000373",
+        "shift-000374",
+        "shift-000375",
+        "shift-000376",
+        "shift-000377",
+        "shift-000378",
+        "shift-000379",
+        "shift-000380",
+        "shift-000381",
+        "shift-000382",
+        "shift-000383"
+      ],
+      "families": [
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved",
+        "smooth",
+        "dam",
+        "interacting",
+        "evolved"
+      ],
+      "input_sha256": "4e52c2f59c598ce9e4534927b6962443ad644b37681fc1b1754977eebfe6c595",
+      "fine_reference_sha256": "64ae3b1dacbb1f36b9bc10f916bbbfc30fd9f5082536b8761fe658190b3cb90a",
+      "teacher_sha256": "c08434ce89c9213c82ffdc8b21e2924c67282b8cd48d759031b787bf1a9822f1",
+      "pde_cohort_error_budgets": [
+        0.0037111073070118794,
+        0.013384204635064189
+      ],
+      "fastest_eligible": "hlle_cfl",
+      "methods": {
+        "teacher8": {
+          "time_us": 67.797453125,
+          "timing_iqr_us": [
+            64.827140625,
+            81.193484375
+          ],
+          "timing_samples_us": [
+            64.62778125,
+            64.298390625,
+            69.83703125,
+            94.7435,
+            95.055375,
+            79.046875,
+            163.45903125,
+            67.797453125,
+            81.193484375,
+            66.84496875,
+            64.46784375,
+            66.294609375,
+            64.827140625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0,
+              0.0
+            ],
+            "p95": [
+              0.0,
+              0.0
+            ],
+            "maximum": [
+              0.0,
+              0.0
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.003534387911439885,
+              0.01274686155720399
+            ],
+            "p95": [
+              0.00710302785518443,
+              0.02773100785098608
+            ],
+            "maximum": [
+              0.008423641107553064,
+              0.0293348878063949
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.054308459047433644,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "c08434ce89c9213c82ffdc8b21e2924c67282b8cd48d759031b787bf1a9822f1"
+        },
+        "engineering8": {
+          "time_us": 46.205890625,
+          "timing_iqr_us": [
+            44.702109375,
+            48.243734375
+          ],
+          "timing_samples_us": [
+            47.19328125,
+            45.1945625,
+            55.827203125,
+            86.285390625,
+            40.9080625,
+            47.319234375,
+            43.99871875,
+            48.243734375,
+            44.702109375,
+            44.001078125,
+            46.205890625,
+            48.290828125,
+            45.294390625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              2.515896263226964e-10,
+              1.685478162394581e-09
+            ],
+            "p95": [
+              5.101167467385854e-10,
+              3.0508467004403164e-09
+            ],
+            "maximum": [
+              8.523872311108627e-10,
+              5.00701184008058e-09
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0035343877704189265,
+              0.012746860722739966
+            ],
+            "p95": [
+              0.007103027793509292,
+              0.02773100734494902
+            ],
+            "maximum": [
+              0.008423640892432057,
+              0.029334887721029504
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.05430845080599633,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "20affd38ca17d1b51cb2d1e60588370dbb42807ce74fee93d59237797f7c61b9"
+        },
+        "engineering_cfl": {
+          "time_us": 25.60953125,
+          "timing_iqr_us": [
+            24.41903125,
+            33.831359375
+          ],
+          "timing_samples_us": [
+            24.41903125,
+            25.758515625,
+            24.1968125,
+            23.42959375,
+            34.15834375,
+            58.876625,
+            55.587875,
+            27.12740625,
+            25.60953125,
+            25.342109375,
+            33.831359375,
+            23.2740625,
+            24.73715625
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0011712729927134853,
+              0.004647622554140645
+            ],
+            "p95": [
+              0.0028544287470707408,
+              0.011464333318364349
+            ],
+            "maximum": [
+              0.0036699189203235746,
+              0.019617030842222567
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0024459226941929155,
+              0.00850182118747839
+            ],
+            "p95": [
+              0.006161872297443395,
+              0.02462237448238883
+            ],
+            "maximum": [
+              0.007137353245048932,
+              0.02907283511054347
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.0544052192047757,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "3c5ad389a45e966e8b431ec0ca802e2fceed48808d8d2a66f1dc60a3bed5041e"
+        },
+        "godunov_cfl": {
+          "time_us": 32.298015625,
+          "timing_iqr_us": [
+            29.73359375,
+            36.48653125
+          ],
+          "timing_samples_us": [
+            27.369328125,
+            29.73359375,
+            74.42553125,
+            72.939890625,
+            27.476828125,
+            50.375546875,
+            36.48653125,
+            32.298015625,
+            29.014875,
+            33.253953125,
+            31.994421875,
+            34.587328125,
+            30.1575
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0011640267247183748,
+              0.004621316981744482
+            ],
+            "p95": [
+              0.0028137586211758846,
+              0.011273779872175085
+            ],
+            "maximum": [
+              0.0036052571690824414,
+              0.019626472715439117
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.002457863045482678,
+              0.00856025392864838
+            ],
+            "p95": [
+              0.006169005301778587,
+              0.02485788770667139
+            ],
+            "maximum": [
+              0.007161637086319479,
+              0.02920805239644873
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 64,
+          "mean_abs_shock_cells": 0.056659140756849524,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "bfe09a0c38f6024dafd687d648826b67acc9de0e4d4fc9d85a17e161a60bd7ba"
+        },
+        "hlle8": {
+          "time_us": 15.8964375,
+          "timing_iqr_us": [
+            15.5634375,
+            18.20109375
+          ],
+          "timing_samples_us": [
+            18.872234375,
+            20.356,
+            15.5634375,
+            14.81765625,
+            14.03525,
+            17.771859375,
+            62.243015625,
+            15.68659375,
+            18.20109375,
+            15.8964375,
+            18.1208125,
+            14.984,
+            15.7423125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.00100214527921994,
+              0.0023984286765444587
+            ],
+            "p95": [
+              0.0037427115908550924,
+              0.008442740083643673
+            ],
+            "maximum": [
+              0.004677320489467583,
+              0.010158951086417092
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0037546774961137105,
+              0.013945035563022873
+            ],
+            "p95": [
+              0.007819364866320873,
+              0.030720979977692797
+            ],
+            "maximum": [
+              0.009274735235108252,
+              0.03536453032173273
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 30,
+          "mean_abs_shock_cells": 0.019400190431881903,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "6ca2d9a9e88cdfff65094390b972c768938aa27405069922d8300599c3b998a5"
+        },
+        "hlle_cfl": {
+          "time_us": 10.001953125,
+          "timing_iqr_us": [
+            9.463828125,
+            11.19309375
+          ],
+          "timing_samples_us": [
+            11.770671875,
+            10.001953125,
+            9.8999375,
+            9.45990625,
+            9.280109375,
+            10.22415625,
+            16.44209375,
+            11.19309375,
+            9.463828125,
+            10.469671875,
+            12.441640625,
+            9.809328125,
+            9.07278125
+          ],
+          "endpoint_budget_pass": 64,
+          "coarse_mae": {
+            "mean": [
+              0.0019713678770972146,
+              0.0058840910894721755
+            ],
+            "p95": [
+              0.005191089668177069,
+              0.013399856372699179
+            ],
+            "maximum": [
+              0.007470462707270561,
+              0.021279230574827387
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0028585942438142816,
+              0.009953590996969509
+            ],
+            "p95": [
+              0.007442736156598596,
+              0.029097457193796843
+            ],
+            "maximum": [
+              0.008089203676900835,
+              0.03180570518461271
+            ]
+          },
+          "meets_cohort_pde_target": true,
+          "within_casewise_pde_target": 54,
+          "mean_abs_shock_cells": 0.022226640814409837,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "271ad27351e49f51ff944da492451b1fc4bd79fea395740bf1651d2d77fa7633"
+        },
+        "rusanov8": {
+          "time_us": 10.891703125,
+          "timing_iqr_us": [
+            10.28846875,
+            12.599390625
+          ],
+          "timing_samples_us": [
+            17.20696875,
+            10.28846875,
+            13.29275,
+            10.891703125,
+            9.98865625,
+            30.06690625,
+            10.227140625,
+            10.106484375,
+            10.7294375,
+            11.46725,
+            10.406296875,
+            12.599390625,
+            11.330171875
+          ],
+          "endpoint_budget_pass": 63,
+          "coarse_mae": {
+            "mean": [
+              0.0028275730958392206,
+              0.008571527471268055
+            ],
+            "p95": [
+              0.008006716227786814,
+              0.02341292224024836
+            ],
+            "maximum": [
+              0.01106430716777513,
+              0.027593009737748225
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.005381365545087482,
+              0.01968914937569378
+            ],
+            "p95": [
+              0.013013793978386583,
+              0.04569459457739769
+            ],
+            "maximum": [
+              0.01553962580376047,
+              0.04911052714531608
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 0,
+          "mean_abs_shock_cells": 0.03627820714221297,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "7baa16aae6e969c656ab7a4ee7397567f430084dfab5b52d5f33bc84e664a31f"
+        },
+        "rusanov_cfl": {
+          "time_us": 8.9114375,
+          "timing_iqr_us": [
+            7.76725,
+            9.32971875
+          ],
+          "timing_samples_us": [
+            7.735484375,
+            9.32971875,
+            11.3899375,
+            7.76725,
+            7.04821875,
+            8.9114375,
+            20.321109375,
+            9.0003125,
+            9.78225,
+            9.00925,
+            7.180140625,
+            8.00103125,
+            8.0465625
+          ],
+          "endpoint_budget_pass": 62,
+          "coarse_mae": {
+            "mean": [
+              0.0033111227265411537,
+              0.009378917239087093
+            ],
+            "p95": [
+              0.008771489856343809,
+              0.02274665226309396
+            ],
+            "maximum": [
+              0.010740974518597972,
+              0.02387038373048258
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.00478906517588144,
+              0.016698977878767212
+            ],
+            "p95": [
+              0.012004623348350918,
+              0.04144633101697958
+            ],
+            "maximum": [
+              0.01514015792867888,
+              0.04619877471748771
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 25,
+          "mean_abs_shock_cells": 0.13120808162991748,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "bc68b3d250d382e36599b4b939c782aa5b3d23f589d046fe242c71c4cf2c915b"
+        },
+        "original_hard": {
+          "time_us": 6.487390625,
+          "timing_iqr_us": [
+            5.7743125,
+            6.98375
+          ],
+          "timing_samples_us": [
+            6.5851875,
+            6.487390625,
+            5.706859375,
+            5.597171875,
+            5.553984375,
+            38.079359375,
+            14.931265625,
+            6.484421875,
+            6.98375,
+            6.038125,
+            6.933359375,
+            5.7743125,
+            6.995796875
+          ],
+          "endpoint_budget_pass": 55,
+          "coarse_mae": {
+            "mean": [
+              0.002790695588533091,
+              0.020460890551374507
+            ],
+            "p95": [
+              0.007690664957919652,
+              0.05516617697654456
+            ],
+            "maximum": [
+              0.01444470108320959,
+              0.09791371411244064
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.00453001008443024,
+              0.026793414545926642
+            ],
+            "p95": [
+              0.01253254921968141,
+              0.061469355861636606
+            ],
+            "maximum": [
+              0.017157554603892712,
+              0.10200819557755682
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 0,
+          "mean_abs_shock_cells": 0.202315782953149,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "69f519a730a3d7ae8b03abc7d1b1d1f1013c9c2282325e5caef1db48f4f90dfc"
+        },
+        "routed_original_hard": {
+          "time_us": 11.058515625,
+          "timing_iqr_us": [
+            10.660109375,
+            12.345875
+          ],
+          "timing_samples_us": [
+            10.378921875,
+            10.660109375,
+            12.987625,
+            11.04615625,
+            10.39690625,
+            10.756203125,
+            11.36225,
+            11.7295,
+            14.53475,
+            10.259359375,
+            11.058515625,
+            15.479578125,
+            12.345875
+          ],
+          "endpoint_budget_pass": 62,
+          "coarse_mae": {
+            "mean": [
+              0.001679841991109845,
+              0.012091209707598647
+            ],
+            "p95": [
+              0.00493364523214945,
+              0.037147960712345565
+            ],
+            "maximum": [
+              0.007774914789193935,
+              0.05419774717388213
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.003982946308445419,
+              0.020737680104041385
+            ],
+            "p95": [
+              0.007729127905632436,
+              0.04355070697074315
+            ],
+            "maximum": [
+              0.010287572356514275,
+              0.06524232064829784
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 10,
+          "mean_abs_shock_cells": 0.190829268672414,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "2f3703b7af11828855ad7939da6d0a0799c7825735cbd780e1deaba881a9232d",
+          "guard": {
+            "accepted": 54,
+            "fallback": 10,
+            "accepted_over_budget": 2,
+            "rejected_within_budget": 3
+          },
+          "accepted_error_ids": [
+            "shift-000335",
+            "shift-000374"
+          ]
+        },
+        "onpolicy_uniform": {
+          "time_us": 5.979765625,
+          "timing_iqr_us": [
+            5.70059375,
+            6.422140625
+          ],
+          "timing_samples_us": [
+            5.58215625,
+            8.6213125,
+            6.037671875,
+            5.979765625,
+            6.1421875,
+            5.8184375,
+            18.835,
+            6.537625,
+            6.422140625,
+            5.70059375,
+            5.952375,
+            5.595921875,
+            5.59059375
+          ],
+          "endpoint_budget_pass": 57,
+          "coarse_mae": {
+            "mean": [
+              0.002588792254260139,
+              0.0181095893349187
+            ],
+            "p95": [
+              0.007913730520560179,
+              0.05483145606162014
+            ],
+            "maximum": [
+              0.014927223301633333,
+              0.10352479968071683
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.004480070600577736,
+              0.02453870614632161
+            ],
+            "p95": [
+              0.012705465417379394,
+              0.059427570023378166
+            ],
+            "maximum": [
+              0.0171667830049518,
+              0.10388239679692425
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 0,
+          "mean_abs_shock_cells": 0.16678184122073425,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "b546068cdc1a4c2dffc9a1e5da4f75e645bd0750db3bf69a025819622c942786"
+        },
+        "routed_onpolicy_uniform": {
+          "time_us": 9.377765625,
+          "timing_iqr_us": [
+            9.196875,
+            10.03434375
+          ],
+          "timing_samples_us": [
+            9.274328125,
+            9.238640625,
+            9.4600625,
+            9.196875,
+            9.072453125,
+            8.965421875,
+            9.719984375,
+            8.819734375,
+            10.83834375,
+            10.629609375,
+            10.03434375,
+            10.95084375,
+            9.377765625
+          ],
+          "endpoint_budget_pass": 62,
+          "coarse_mae": {
+            "mean": [
+              0.0017484052104700647,
+              0.012600443040964956
+            ],
+            "p95": [
+              0.004740450754693382,
+              0.035544762664200674
+            ],
+            "maximum": [
+              0.007615233280908864,
+              0.055555819862914996
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.003978798499189624,
+              0.0206567674790486
+            ],
+            "p95": [
+              0.007873186069309108,
+              0.04631559214250397
+            ],
+            "maximum": [
+              0.010560090869957548,
+              0.0666958318673471
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 7,
+          "mean_abs_shock_cells": 0.15650697326483076,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "bce2e37bb93fe75bb54f1e93bcb981102c4b921248e795b8d4e8ea4fd13e26ad",
+          "guard": {
+            "accepted": 57,
+            "fallback": 7,
+            "accepted_over_budget": 2,
+            "rejected_within_budget": 2
+          },
+          "accepted_error_ids": [
+            "shift-000338",
+            "shift-000374"
+          ]
+        },
+        "onpolicy_hard": {
+          "time_us": 6.51478125,
+          "timing_iqr_us": [
+            6.307140625,
+            7.455859375
+          ],
+          "timing_samples_us": [
+            6.310734375,
+            5.73315625,
+            6.307140625,
+            5.646609375,
+            6.312453125,
+            5.749734375,
+            6.51478125,
+            6.755921875,
+            7.36665625,
+            7.455859375,
+            7.708265625,
+            7.978828125,
+            10.4759375
+          ],
+          "endpoint_budget_pass": 59,
+          "coarse_mae": {
+            "mean": [
+              0.0025588653294124106,
+              0.017569426022135157
+            ],
+            "p95": [
+              0.007404298760321277,
+              0.04486624280705622
+            ],
+            "maximum": [
+              0.013225503469825798,
+              0.09725823880686126
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.0043990946683155506,
+              0.024267293343979087
+            ],
+            "p95": [
+              0.012291422858092553,
+              0.06045881163446893
+            ],
+            "maximum": [
+              0.015612858103826335,
+              0.10596066000216481
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 0,
+          "mean_abs_shock_cells": 0.1830474560142914,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "a307fbd6904f9bd520d558d875faba3efc9d32019aefc25d5edcd9973dee31b7"
+        },
+        "routed_onpolicy_hard": {
+          "time_us": 10.153125,
+          "timing_iqr_us": [
+            9.18715625,
+            11.485546875
+          ],
+          "timing_samples_us": [
+            10.493,
+            13.92259375,
+            10.153125,
+            23.693890625,
+            8.7269375,
+            9.024578125,
+            9.18715625,
+            12.82425,
+            11.485546875,
+            11.36178125,
+            9.8154375,
+            9.237703125,
+            9.14771875
+          ],
+          "endpoint_budget_pass": 62,
+          "coarse_mae": {
+            "mean": [
+              0.0019151631472097413,
+              0.012965980685660202
+            ],
+            "p95": [
+              0.005435663695390572,
+              0.035375651704862364
+            ],
+            "maximum": [
+              0.013225503469825798,
+              0.049965535296184964
+            ]
+          },
+          "pde_mae": {
+            "mean": [
+              0.004092163225480953,
+              0.020910271646190866
+            ],
+            "p95": [
+              0.008313104616670156,
+              0.04262699873987488
+            ],
+            "maximum": [
+              0.015612858103826335,
+              0.06061574129835684
+            ]
+          },
+          "meets_cohort_pde_target": false,
+          "within_casewise_pde_target": 6,
+          "mean_abs_shock_cells": 0.1830474560142914,
+          "dams_located": 16,
+          "input_count": 64,
+          "output_sha256": "1525dc1fd2014afd78a910d6b5defc14ac9bd304d2226a8dc19a16fa1e193174",
+          "guard": {
+            "accepted": 58,
+            "fallback": 6,
+            "accepted_over_budget": 2,
+            "rejected_within_budget": 3
+          },
+          "accepted_error_ids": [
+            "shift-000350",
+            "shift-000374"
+          ]
+        }
+      }
+    }
+  }
+}
