@@ -1,0 +1,135 @@
+{
+  "seed": 9702,
+  "n": 128,
+  "refined_cells": 10,
+  "step_index": 0,
+  "description": "Snapshot optimum with hindsight access to every local bound.",
+  "results": [
+    {
+      "ic": 0,
+      "kind": "smooth",
+      "total_budget": 0.02071688701081855,
+      "step_excess_allowance": 0.00034528145017965323,
+      "trusted_faces": {
+        "table": 1,
+        "top_table": 6,
+        "oracle": 26,
+        "full_anchor": 79,
+        "block": 16
+      }
+    },
+    {
+      "ic": 1,
+      "kind": "shocked",
+      "total_budget": 0.00681603581873834,
+      "step_excess_allowance": 0.00011360059697831641,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 6,
+        "oracle": 13,
+        "full_anchor": 47,
+        "block": 11
+      }
+    },
+    {
+      "ic": 2,
+      "kind": "riemann",
+      "total_budget": 0.0037372156858930163,
+      "step_excess_allowance": 6.228692809756102e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 128,
+        "oracle": 128,
+        "full_anchor": 128,
+        "block": 128
+      }
+    },
+    {
+      "ic": 3,
+      "kind": "smooth",
+      "total_budget": 0.01557970957763043,
+      "step_excess_allowance": 0.0002596618262931846,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 7,
+        "oracle": 23,
+        "full_anchor": 73,
+        "block": 16
+      }
+    },
+    {
+      "ic": 4,
+      "kind": "shocked",
+      "total_budget": 0.002902855365883298,
+      "step_excess_allowance": 4.8380922764065714e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 5,
+        "oracle": 16,
+        "full_anchor": 34,
+        "block": 10
+      }
+    },
+    {
+      "ic": 5,
+      "kind": "riemann",
+      "total_budget": 0.0030219686630385636,
+      "step_excess_allowance": 5.0366144383320145e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 128,
+        "oracle": 128,
+        "full_anchor": 128,
+        "block": 128
+      }
+    },
+    {
+      "ic": 6,
+      "kind": "smooth",
+      "total_budget": 0.019429117599024916,
+      "step_excess_allowance": 0.0003238186266497593,
+      "trusted_faces": {
+        "table": 1,
+        "top_table": 4,
+        "oracle": 23,
+        "full_anchor": 62,
+        "block": 16
+      }
+    },
+    {
+      "ic": 7,
+      "kind": "shocked",
+      "total_budget": 0.006879918319047762,
+      "step_excess_allowance": 0.00011466530531680678,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 6,
+        "oracle": 13,
+        "full_anchor": 40,
+        "block": 8
+      }
+    },
+    {
+      "ic": 8,
+      "kind": "riemann",
+      "total_budget": 0.0018366598286323579,
+      "step_excess_allowance": 3.061099714321672e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 127,
+        "oracle": 127,
+        "full_anchor": 127,
+        "block": 127
+      }
+    }
+  ],
+  "anchor_bins": 128,
+  "model_hash": "7d4e792d06102919fab8eec7e430c1d6536a5233eabde45c48650c36130c03fb",
+  "neural_fraction": {
+    "table": 0.001736111111111111,
+    "top_table": 0.3619791666666667,
+    "oracle": 0.4314236111111111,
+    "full_anchor": 0.6232638888888888,
+    "block": 0.3993055555555556
+  }
+}

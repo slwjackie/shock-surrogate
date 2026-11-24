@@ -358,7 +358,41 @@ re-certified (Theorem 4.1) and charged an upper bound (Theorem 4.2).
 **Proposition 7.3 (routing needs no solver call).** The pattern and its certificate are functions of the current state,
 the offline tables and the network weights only. The Godunov flux is evaluated only on faces with $s_f=0$ of the executed
 step, and no exact oracle is called (tested with a monkeypatched oracle). In `table` mode the verifier uses table
-look-ups only; in `local` mode it evaluates interval extensions of the network at every face (cost measured in E5).
+look-ups and interval arithmetic. In `local` mode it evaluates interval extensions of the network and the
+Godunov formula at every face (cost measured in E5). The selective replay experiment additionally previews
+the actual frozen neural output on inspected faces, which must be counted as verification work.
+
+**Signed endpoints for an inspected row.** Let $I_f$ contain the signed error
+$\hat F(x_f)-G(x_f)$ of the deployed binary64 network. For a cell with neural fluxes on
+both faces, $\sup\{|z|: z\in I_i-I_{i-1}\}$ bounds its contribution before scaling.
+Interval subtraction rounds outward. For mixed patterns only the neural face uses this
+enclosure, and the Godunov face retains its roundoff bound from Lemma 3.4. Taking the
+minimum with an existing upper bound preserves each inequality in Theorem 4.1.
+This argument requires enclosures at the two current inputs. It makes no assumption
+about the ReLU patterns between those inputs.
+
+The `selective_point` mode constructs the signed intervals by subtracting outward point
+enclosures of the two fluxes. The `selective_replay` mode uses a singleton for the
+frozen neural output. Replay requires the bitwise batch-independent row evaluation in
+`FrozenFlux.predict`. Both modes use the pointwise Godunov formula on inspected faces.
+
+**Offline anchor construction.** Let $D=F_{\rm real}-G$. In each input bin $B$, choose a
+representable center $c\in B$ and enclose $D(c)$ in $A_B$. Store interval bounds
+$J_{B,1},J_{B,2}$ on the two real derivative components over the closed bin, with
+all possible ReLU and Godunov branches included. For $x\in B$ the segment from $c$
+to $x$ stays inside $B$. The same segment integration as in Theorem 5.3 gives
+
+$$
+\hat F(x)-G(x)\in A_B + J_{B,1}(x_1-c_1) + J_{B,2}(x_2-c_2)
+             + [-\varepsilon_{\rm fp},\varepsilon_{\rm fp}].
+$$
+
+Here $\varepsilon_{\rm fp}$ is the largest verified forward-error bound in the base
+partition of the input domain. The offline build folds this term into the stored
+center interval. Online lookup uses outward arithmetic and the model fingerprint.
+The `anchor_then_point` mode applies this enclosure everywhere, and intersects the
+resulting cost upper bounds with additional point-check bounds on the selected rows.
+The location policy receives no authority over the certified costs or the budget.
 
 **Remark (why partial trust is cheap where it helps).** Under the local certificate, the cost of a pattern is
 $\sum_{\text{interior of neural blocks}}\Delta_i+\sum_{\text{block interfaces}}(\delta_f+\varepsilon_G)$: every

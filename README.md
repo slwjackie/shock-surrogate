@@ -1,7 +1,13 @@
-# `certified-stage-ab-h2` branch
+# Allocating verification work in a certified Burgers solver
 
-This branch extends `certified-burgers-poc` with certified Burgers fluxes and
-0-D hydrogen autoignition. See the Stage A/B section below.
+The active Stage A2 experiment asks where to spend a limited number of fine
+checks to certify more neural face decisions under a fixed cumulative error
+budget. It compares the number of checks, measured verification time and
+certified coverage. The reference trajectory is same-grid Godunov.
+See the [experiment, results and reproduction commands](reports/verifier_allocation/README.md).
+
+The earlier Stage A/B work on certified Burgers fluxes and 0-D hydrogen
+autoignition is documented below.
 
 ## Preserved Burgers PoC
 

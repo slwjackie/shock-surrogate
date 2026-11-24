@@ -1,0 +1,1858 @@
+{
+  "config": {
+    "setup": {
+      "table_s": 1.5255655590008246,
+      "anchor_s": 0.9756874220001919,
+      "anchor_bytes": 788488,
+      "anchor_bins": 128,
+      "confirmation_calibration_s": 9.274097593002807
+    },
+    "N": 128,
+    "steps": 60,
+    "lam": 0.2,
+    "bins": 16,
+    "model_hash": "7d4e792d06102919fab8eec7e430c1d6536a5233eabde45c48650c36130c03fb",
+    "budget_sources": {
+      "confirmation": "30% of all-trust, full-local rollout; seed 241124"
+    },
+    "budget_fraction": 0.3,
+    "policy": "pacing",
+    "methods": {
+      "selective_anchor/all/128": {
+        "mode": "selective_anchor",
+        "rule": "all",
+        "count": 128
+      },
+      "anchor_then_point/top/10": {
+        "mode": "anchor_then_point",
+        "rule": "top",
+        "count": 10
+      },
+      "anchor_then_point/block/4": {
+        "mode": "anchor_then_point",
+        "rule": "block",
+        "count": 4
+      },
+      "anchor_then_point/block/10": {
+        "mode": "anchor_then_point",
+        "rule": "block",
+        "count": 10
+      },
+      "anchor_then_point/block/20": {
+        "mode": "anchor_then_point",
+        "rule": "block",
+        "count": 20
+      },
+      "anchor_then_point/uncertainty/10": {
+        "mode": "anchor_then_point",
+        "rule": "uncertainty",
+        "count": 10
+      },
+      "selective_point/all/128": {
+        "mode": "selective_point",
+        "rule": "all",
+        "count": 128
+      }
+    },
+    "repeats": 2,
+    "case_count_per_split": 9,
+    "splits": [
+      "confirmation"
+    ],
+    "schedule_seed": 4401,
+    "python": "3.12.14",
+    "numpy": "2.5.5",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "threads_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  },
+  "results": [
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "selective_anchor/all/128",
+      "accepted": 4831,
+      "spent": 0.014538745001506613,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3010262919997331,
+        0.3034731199986709
+      ],
+      "certificate_s": [
+        0.06341440900359885,
+        0.06597678798061679
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "anchor_then_point/top/10",
+      "accepted": 4864,
+      "spent": 0.014532046603232903,
+      "unique_faces": 1049,
+      "anchor_faces": 7680,
+      "point_faces": 1049,
+      "wall_s": [
+        0.440599117999227,
+        0.43635229900246486
+      ],
+      "certificate_s": [
+        0.19800713398944936,
+        0.19403808898641728
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "anchor_then_point/block/4",
+      "accepted": 4847,
+      "spent": 0.014534457576480187,
+      "unique_faces": 411,
+      "anchor_faces": 7680,
+      "point_faces": 411,
+      "wall_s": [
+        0.4630211190014961,
+        0.46703314799742657
+      ],
+      "certificate_s": [
+        0.22140046899949084,
+        0.22049816901926533
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "anchor_then_point/block/10",
+      "accepted": 4880,
+      "spent": 0.014533041191625436,
+      "unique_faces": 913,
+      "anchor_faces": 7680,
+      "point_faces": 913,
+      "wall_s": [
+        0.4638156790024368,
+        0.4771042310021585
+      ],
+      "certificate_s": [
+        0.22445952101406874,
+        0.23344656601693714
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "anchor_then_point/block/20",
+      "accepted": 4922,
+      "spent": 0.014528769292843509,
+      "unique_faces": 1694,
+      "anchor_faces": 7680,
+      "point_faces": 1694,
+      "wall_s": [
+        0.4774064940029348,
+        0.46007915800146293
+      ],
+      "certificate_s": [
+        0.2340501130092889,
+        0.22094385800301097
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 4917,
+      "spent": 0.014528458610182926,
+      "unique_faces": 805,
+      "anchor_faces": 7680,
+      "point_faces": 805,
+      "wall_s": [
+        0.4910306950005179,
+        0.4923437149991514
+      ],
+      "certificate_s": [
+        0.2488884990052611,
+        0.24402952800301136
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5798872840970825,
+        "offset": -0.11411148345688465,
+        "phase": 6.139153073094615,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01501213735835569,
+      "method": "selective_point/all/128",
+      "accepted": 5707,
+      "spent": 0.014449948680237733,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5835497839980235,
+        0.4889635690014984
+      ],
+      "certificate_s": [
+        0.31098086999190855,
+        0.25280748901423067
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "selective_anchor/all/128",
+      "accepted": 2665,
+      "spent": 0.004996532524891268,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.29631220499868505,
+        0.2717747290007537
+      ],
+      "certificate_s": [
+        0.06692386201029876,
+        0.06074258201260818
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "anchor_then_point/top/10",
+      "accepted": 2670,
+      "spent": 0.004994436424527274,
+      "unique_faces": 1062,
+      "anchor_faces": 7680,
+      "point_faces": 1062,
+      "wall_s": [
+        0.4429502279999724,
+        0.4308418149994395
+      ],
+      "certificate_s": [
+        0.20012307800425333,
+        0.1853144459928444
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "anchor_then_point/block/4",
+      "accepted": 2676,
+      "spent": 0.004995099573108405,
+      "unique_faces": 416,
+      "anchor_faces": 7680,
+      "point_faces": 416,
+      "wall_s": [
+        0.480225770999823,
+        0.44721002699952805
+      ],
+      "certificate_s": [
+        0.2298912080041191,
+        0.21712490298887133
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "anchor_then_point/block/10",
+      "accepted": 2799,
+      "spent": 0.004992717723186661,
+      "unique_faces": 917,
+      "anchor_faces": 7680,
+      "point_faces": 917,
+      "wall_s": [
+        0.46688943299886887,
+        0.4040547200020228
+      ],
+      "certificate_s": [
+        0.23027593299048021,
+        0.1930660159960098
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "anchor_then_point/block/20",
+      "accepted": 2830,
+      "spent": 0.00499075898044955,
+      "unique_faces": 1514,
+      "anchor_faces": 7680,
+      "point_faces": 1514,
+      "wall_s": [
+        0.4753392739985429,
+        0.43907371800014516
+      ],
+      "certificate_s": [
+        0.2314674310036935,
+        0.21722062398475828
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 2824,
+      "spent": 0.00499048844077092,
+      "unique_faces": 803,
+      "anchor_faces": 7680,
+      "point_faces": 803,
+      "wall_s": [
+        0.4989120800019009,
+        0.4589015399978962
+      ],
+      "certificate_s": [
+        0.25148579599772347,
+        0.23123902599763824
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.699946162453246,
+        "offset": -0.015560824867967143,
+        "phase": 5.432403455243783,
+        "mode": 1,
+        "t": 0.4201677362980445
+      },
+      "budget": 0.005085692878097603,
+      "method": "selective_point/all/128",
+      "accepted": 5031,
+      "spent": 0.004918172604974014,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.4796687500020198,
+        0.46315691000199877
+      ],
+      "certificate_s": [
+        0.24299965299724136,
+        0.2380915149988141
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "selective_anchor/all/128",
+      "accepted": 6981,
+      "spent": 0.002205244747718586,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.26761971799714956,
+        0.2750437789982243
+      ],
+      "certificate_s": [
+        0.058068537997314706,
+        0.059944523996819044
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "anchor_then_point/top/10",
+      "accepted": 7218,
+      "spent": 0.002200043701197145,
+      "unique_faces": 779,
+      "anchor_faces": 7680,
+      "point_faces": 779,
+      "wall_s": [
+        0.3726314490013465,
+        0.3831685510012903
+      ],
+      "certificate_s": [
+        0.16324555698156473,
+        0.17296389398325118
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "anchor_then_point/block/4",
+      "accepted": 7134,
+      "spent": 0.0022002912075581222,
+      "unique_faces": 385,
+      "anchor_faces": 7680,
+      "point_faces": 385,
+      "wall_s": [
+        0.4087755450018449,
+        0.3898542749993794
+      ],
+      "certificate_s": [
+        0.18957093601420638,
+        0.1785220069832576
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "anchor_then_point/block/10",
+      "accepted": 7241,
+      "spent": 0.002197667552834768,
+      "unique_faces": 774,
+      "anchor_faces": 7680,
+      "point_faces": 774,
+      "wall_s": [
+        0.40262381000138703,
+        0.38246147999961977
+      ],
+      "certificate_s": [
+        0.1805131430082838,
+        0.17151412099337904
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "anchor_then_point/block/20",
+      "accepted": 7385,
+      "spent": 0.002198637126506424,
+      "unique_faces": 1328,
+      "anchor_faces": 7680,
+      "point_faces": 1328,
+      "wall_s": [
+        0.3874742710031569,
+        0.3866315150007722
+      ],
+      "certificate_s": [
+        0.17492632999710622,
+        0.17478501101504662
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 7249,
+      "spent": 0.0021988164859570686,
+      "unique_faces": 775,
+      "anchor_faces": 7680,
+      "point_faces": 775,
+      "wall_s": [
+        0.4120311299993773,
+        0.40890449399739737
+      ],
+      "certificate_s": [
+        0.20308147601463133,
+        0.20240162399568362
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.1905321244591638,
+        "right": 0.49710212917470464,
+        "loc": 0.36586331060198496
+      },
+      "budget": 0.002310576526720942,
+      "method": "selective_point/all/128",
+      "accepted": 7415,
+      "spent": 0.00219741806159021,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.44322339199788985,
+        0.4424335789990437
+      ],
+      "certificate_s": [
+        0.2277811290041427,
+        0.2246569220078527
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "selective_anchor/all/128",
+      "accepted": 4568,
+      "spent": 0.01973046494067933,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.30369548199814744,
+        0.2785631270016893
+      ],
+      "certificate_s": [
+        0.060943017982936,
+        0.06381471100030467
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "anchor_then_point/top/10",
+      "accepted": 4650,
+      "spent": 0.019719616317349142,
+      "unique_faces": 1101,
+      "anchor_faces": 7680,
+      "point_faces": 1101,
+      "wall_s": [
+        0.3844982530026755,
+        0.3847206729988102
+      ],
+      "certificate_s": [
+        0.1720668850102811,
+        0.16774193799938075
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "anchor_then_point/block/4",
+      "accepted": 4623,
+      "spent": 0.0197233717092934,
+      "unique_faces": 442,
+      "anchor_faces": 7680,
+      "point_faces": 442,
+      "wall_s": [
+        0.40867046600033063,
+        0.39855208299923106
+      ],
+      "certificate_s": [
+        0.19297428500431124,
+        0.18834953699843027
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "anchor_then_point/block/10",
+      "accepted": 4714,
+      "spent": 0.019711163574175416,
+      "unique_faces": 1024,
+      "anchor_faces": 7680,
+      "point_faces": 1024,
+      "wall_s": [
+        0.422751285997947,
+        0.40165192099811975
+      ],
+      "certificate_s": [
+        0.20300624300944037,
+        0.19246078102150932
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "anchor_then_point/block/20",
+      "accepted": 4900,
+      "spent": 0.019686742022942027,
+      "unique_faces": 1875,
+      "anchor_faces": 7680,
+      "point_faces": 1875,
+      "wall_s": [
+        0.4173262300028,
+        0.4011673349996272
+      ],
+      "certificate_s": [
+        0.20249000299008912,
+        0.1947294189922104
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 4841,
+      "spent": 0.019687865072031723,
+      "unique_faces": 902,
+      "anchor_faces": 7680,
+      "point_faces": 902,
+      "wall_s": [
+        0.4410942150025221,
+        0.4167388519999804
+      ],
+      "certificate_s": [
+        0.22121258798870258,
+        0.20948156901067705
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8710816016233978,
+        "offset": -0.019427243494859053,
+        "phase": 3.009332285691919,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.020335949244903243,
+      "method": "selective_point/all/128",
+      "accepted": 6311,
+      "spent": 0.01949577784838894,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.4836592940009723,
+        0.5368266080004105
+      ],
+      "certificate_s": [
+        0.25586393500634586,
+        0.26747119401261443
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "selective_anchor/all/128",
+      "accepted": 2081,
+      "spent": 0.0059729132651771,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.2619690210012777,
+        0.256951454000955
+      ],
+      "certificate_s": [
+        0.05531252999571734,
+        0.0541180229956808
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "anchor_then_point/top/10",
+      "accepted": 2087,
+      "spent": 0.005970634906444319,
+      "unique_faces": 1086,
+      "anchor_faces": 7680,
+      "point_faces": 1086,
+      "wall_s": [
+        0.37564238300183206,
+        0.38142136999886134
+      ],
+      "certificate_s": [
+        0.17038309899362503,
+        0.1721709840130643
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "anchor_then_point/block/4",
+      "accepted": 2164,
+      "spent": 0.0059702431608217804,
+      "unique_faces": 385,
+      "anchor_faces": 7680,
+      "point_faces": 385,
+      "wall_s": [
+        0.39587692900022375,
+        0.3969500009989133
+      ],
+      "certificate_s": [
+        0.18792150499575655,
+        0.1900099500126089
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "anchor_then_point/block/10",
+      "accepted": 2202,
+      "spent": 0.005968871534278047,
+      "unique_faces": 822,
+      "anchor_faces": 7680,
+      "point_faces": 822,
+      "wall_s": [
+        0.4037278729992977,
+        0.3973742480011424
+      ],
+      "certificate_s": [
+        0.197653587001696,
+        0.1914265339873964
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "anchor_then_point/block/20",
+      "accepted": 2593,
+      "spent": 0.005953410277918559,
+      "unique_faces": 1544,
+      "anchor_faces": 7680,
+      "point_faces": 1544,
+      "wall_s": [
+        0.41416961700087995,
+        0.4081320160003088
+      ],
+      "certificate_s": [
+        0.20261692499843775,
+        0.20032847802576725
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 2405,
+      "spent": 0.0059571983357128875,
+      "unique_faces": 851,
+      "anchor_faces": 7680,
+      "point_faces": 851,
+      "wall_s": [
+        0.4399177699997381,
+        0.43077141899993876
+      ],
+      "certificate_s": [
+        0.2272219509977731,
+        0.2152185170125449
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.44643034938859527,
+        "offset": 0.05894233326896828,
+        "phase": 5.585672418900943,
+        "mode": 2,
+        "t": 0.3565457987200826
+      },
+      "budget": 0.006055750878074999,
+      "method": "selective_point/all/128",
+      "accepted": 5003,
+      "spent": 0.00585771060009759,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.4233123539997905,
+        0.43420989100195584
+      ],
+      "certificate_s": [
+        0.21989042600762332,
+        0.22007610201399075
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "selective_anchor/all/128",
+      "accepted": 7041,
+      "spent": 0.0034057962429081836,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.281867408000835,
+        0.27100922699901275
+      ],
+      "certificate_s": [
+        0.0682895830104826,
+        0.05858384399471106
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "anchor_then_point/top/10",
+      "accepted": 7185,
+      "spent": 0.003406948912585049,
+      "unique_faces": 799,
+      "anchor_faces": 7680,
+      "point_faces": 799,
+      "wall_s": [
+        0.3778277279998292,
+        0.42328205200101365
+      ],
+      "certificate_s": [
+        0.16700798901365488,
+        0.19622623403483885
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "anchor_then_point/block/4",
+      "accepted": 7127,
+      "spent": 0.0034033220224375296,
+      "unique_faces": 347,
+      "anchor_faces": 7680,
+      "point_faces": 347,
+      "wall_s": [
+        0.3944169979986327,
+        0.471812523999688
+      ],
+      "certificate_s": [
+        0.17586291901170625,
+        0.17676230199504062
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "anchor_then_point/block/10",
+      "accepted": 7221,
+      "spent": 0.003398308374498364,
+      "unique_faces": 778,
+      "anchor_faces": 7680,
+      "point_faces": 778,
+      "wall_s": [
+        0.39367954199769883,
+        0.38349805699908757
+      ],
+      "certificate_s": [
+        0.180072076003853,
+        0.1726294690161012
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "anchor_then_point/block/20",
+      "accepted": 7392,
+      "spent": 0.003400735524772923,
+      "unique_faces": 1363,
+      "anchor_faces": 7680,
+      "point_faces": 1363,
+      "wall_s": [
+        0.3963074650018825,
+        0.40317215300092357
+      ],
+      "certificate_s": [
+        0.17729885796507006,
+        0.18213533098241896
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 7151,
+      "spent": 0.0034008196028114234,
+      "unique_faces": 764,
+      "anchor_faces": 7680,
+      "point_faces": 764,
+      "wall_s": [
+        0.4112560450012097,
+        0.4255041290016379
+      ],
+      "certificate_s": [
+        0.20119307199274772,
+        0.2099862419963756
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.03210031128997537,
+        "right": 0.8460236462985298,
+        "loc": 0.5571646061102548
+      },
+      "budget": 0.0035743978722829616,
+      "method": "selective_point/all/128",
+      "accepted": 7441,
+      "spent": 0.0033958052758573903,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.43420175299979746,
+        0.4485254859973793
+      ],
+      "certificate_s": [
+        0.2199208649835782,
+        0.23158612200495554
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "selective_anchor/all/128",
+      "accepted": 4513,
+      "spent": 0.01891151303085009,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.2619719209978939,
+        0.25966659899859224
+      ],
+      "certificate_s": [
+        0.05471558699355228,
+        0.054525616997125326
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "anchor_then_point/top/10",
+      "accepted": 4568,
+      "spent": 0.018905878298566506,
+      "unique_faces": 1130,
+      "anchor_faces": 7680,
+      "point_faces": 1130,
+      "wall_s": [
+        0.37965269800042734,
+        0.453156058996683
+      ],
+      "certificate_s": [
+        0.16964652700335137,
+        0.20883030498225708
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "anchor_then_point/block/4",
+      "accepted": 4553,
+      "spent": 0.01890993560871447,
+      "unique_faces": 445,
+      "anchor_faces": 7680,
+      "point_faces": 445,
+      "wall_s": [
+        0.3973204169997189,
+        0.3928693529996963
+      ],
+      "certificate_s": [
+        0.18784032101757475,
+        0.18468988400127273
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "anchor_then_point/block/10",
+      "accepted": 4597,
+      "spent": 0.018905099300736927,
+      "unique_faces": 1020,
+      "anchor_faces": 7680,
+      "point_faces": 1020,
+      "wall_s": [
+        0.39929169900278794,
+        0.39757131900114473
+      ],
+      "certificate_s": [
+        0.19183167600931483,
+        0.19002022499989835
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "anchor_then_point/block/20",
+      "accepted": 4729,
+      "spent": 0.01888532903549108,
+      "unique_faces": 1884,
+      "anchor_faces": 7680,
+      "point_faces": 1884,
+      "wall_s": [
+        0.40695460899951286,
+        0.4199116240015428
+      ],
+      "certificate_s": [
+        0.1982693370009656,
+        0.205327537998528
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 4760,
+      "spent": 0.018883118231329522,
+      "unique_faces": 886,
+      "anchor_faces": 7680,
+      "point_faces": 886,
+      "wall_s": [
+        0.4212719930001185,
+        0.42386050799905206
+      ],
+      "certificate_s": [
+        0.21380569800749072,
+        0.21177868500672048
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.8635944642743747,
+        "offset": -0.07990425519782432,
+        "phase": 2.1830811766887233,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019490792253567917,
+      "method": "selective_point/all/128",
+      "accepted": 6153,
+      "spent": 0.01870499032688633,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.436028724998323,
+        0.45485002900022664
+      ],
+      "certificate_s": [
+        0.2204950900268159,
+        0.23688565699922037
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "selective_anchor/all/128",
+      "accepted": 2741,
+      "spent": 0.004861658887326258,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.2661502039991319,
+        0.2625049919988669
+      ],
+      "certificate_s": [
+        0.05737601399596315,
+        0.056509468995500356
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "anchor_then_point/top/10",
+      "accepted": 2742,
+      "spent": 0.004862408026664048,
+      "unique_faces": 1029,
+      "anchor_faces": 7680,
+      "point_faces": 1029,
+      "wall_s": [
+        0.3745315039996058,
+        0.3692914390012447
+      ],
+      "certificate_s": [
+        0.16680908600028488,
+        0.16507713302780758
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "anchor_then_point/block/4",
+      "accepted": 2747,
+      "spent": 0.004860648861159456,
+      "unique_faces": 445,
+      "anchor_faces": 7680,
+      "point_faces": 445,
+      "wall_s": [
+        0.40898937599922647,
+        0.43586766000225907
+      ],
+      "certificate_s": [
+        0.19264008599566296,
+        0.20710110398795223
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "anchor_then_point/block/10",
+      "accepted": 2836,
+      "spent": 0.004857207902943121,
+      "unique_faces": 933,
+      "anchor_faces": 7680,
+      "point_faces": 933,
+      "wall_s": [
+        0.4126199150014145,
+        0.4090430659998674
+      ],
+      "certificate_s": [
+        0.19810079098897404,
+        0.19639374600592419
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "anchor_then_point/block/20",
+      "accepted": 2918,
+      "spent": 0.004855075801702259,
+      "unique_faces": 1557,
+      "anchor_faces": 7680,
+      "point_faces": 1557,
+      "wall_s": [
+        0.4081643499994243,
+        0.4149614970010589
+      ],
+      "certificate_s": [
+        0.1986710020028113,
+        0.20691036601783708
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 2888,
+      "spent": 0.0048555786516088,
+      "unique_faces": 957,
+      "anchor_faces": 7680,
+      "point_faces": 957,
+      "wall_s": [
+        0.41986689000259503,
+        0.422928543001035
+      ],
+      "certificate_s": [
+        0.21045378100825474,
+        0.21297431601487915
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.7692959350857418,
+        "offset": 0.05625199788315716,
+        "phase": 6.19302634354273,
+        "mode": 1,
+        "t": 0.458388606983623
+      },
+      "budget": 0.004951350503371474,
+      "method": "selective_point/all/128",
+      "accepted": 5123,
+      "spent": 0.004784675467450849,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.43039410399796907,
+        0.4377718329997151
+      ],
+      "certificate_s": [
+        0.21993361401109723,
+        0.2260024760144006
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "selective_anchor/all/128",
+      "accepted": 2826,
+      "spent": 0.003190145919729894,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.2628615650028223,
+        0.2636581560000195
+      ],
+      "certificate_s": [
+        0.05594566502622911,
+        0.05775821801216807
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "anchor_then_point/top/10",
+      "accepted": 4455,
+      "spent": 0.0031571437234243086,
+      "unique_faces": 838,
+      "anchor_faces": 7680,
+      "point_faces": 838,
+      "wall_s": [
+        0.3910732510012167,
+        0.3703120689970092
+      ],
+      "certificate_s": [
+        0.17358265199072775,
+        0.1651622210010828
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "anchor_then_point/block/4",
+      "accepted": 4065,
+      "spent": 0.003162897100339401,
+      "unique_faces": 404,
+      "anchor_faces": 7680,
+      "point_faces": 404,
+      "wall_s": [
+        0.3884754229984537,
+        0.3931310679981834
+      ],
+      "certificate_s": [
+        0.17830832598701818,
+        0.18550281201896723
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "anchor_then_point/block/10",
+      "accepted": 4721,
+      "spent": 0.0031486698175668187,
+      "unique_faces": 775,
+      "anchor_faces": 7680,
+      "point_faces": 775,
+      "wall_s": [
+        0.4046309939985804,
+        0.38349337599720457
+      ],
+      "certificate_s": [
+        0.18531894200350507,
+        0.1774334470028407
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "anchor_then_point/block/20",
+      "accepted": 5811,
+      "spent": 0.0031252336639713877,
+      "unique_faces": 1374,
+      "anchor_faces": 7680,
+      "point_faces": 1374,
+      "wall_s": [
+        0.4185057050017349,
+        0.39199033999830135
+      ],
+      "certificate_s": [
+        0.19279064798320178,
+        0.18183745500209625
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "anchor_then_point/uncertainty/10",
+      "accepted": 4384,
+      "spent": 0.0031579048381647906,
+      "unique_faces": 791,
+      "anchor_faces": 7680,
+      "point_faces": 791,
+      "wall_s": [
+        0.4280333120004798,
+        0.41404575599881355
+      ],
+      "certificate_s": [
+        0.20945881000443478,
+        0.206661420979799
+      ]
+    },
+    {
+      "split": "confirmation",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": 0.8097536188598975,
+        "right": 0.20975361885989752,
+        "loc": 0.6351992334519478
+      },
+      "budget": 0.0032515676712419786,
+      "method": "selective_point/all/128",
+      "accepted": 7066,
+      "spent": 0.0031016003207554516,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.42843444400205044,
+        0.43537033699976746
+      ],
+      "certificate_s": [
+        0.22050704701177892,
+        0.22482068000681465
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "split": "confirmation",
+      "index": 0,
+      "method": "anchor_then_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "confirmation",
+      "index": 0,
+      "method": "anchor_then_point/uncertainty/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "method": "anchor_then_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "confirmation",
+      "index": 1,
+      "method": "anchor_then_point/uncertainty/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "method": "anchor_then_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "confirmation",
+      "index": 2,
+      "method": "anchor_then_point/uncertainty/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    }
+  ],
+  "summary": {
+    "confirmation": {
+      "selective_anchor/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.5533420138888889,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.27478438883291445,
+        "certificate_s": 0.05960905455564595,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "anchor_then_point/top/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.5850549768518518,
+        "unique_faces_per_step": 16.43148148148148,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 16.43148148148148,
+        "wall_s": 0.3984418299446083,
+        "certificate_s": 0.17824429172267425,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "anchor_then_point/block/4": {
+        "n_cases": 9,
+        "neural_fraction": 0.5777777777777778,
+        "unique_faces_per_step": 6.814814814814815,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 6.814814814814815,
+        "wall_s": 0.4188362323885586,
+        "certificate_s": 0.19472059572419514,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "anchor_then_point/block/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.5962239583333333,
+        "unique_faces_per_step": 14.733333333333333,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 14.733333333333333,
+        "wall_s": 0.41146014716671037,
+        "certificate_s": 0.19497904539275623,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "anchor_then_point/block/20": {
+        "n_cases": 9,
+        "neural_fraction": 0.6290509259259259,
+        "unique_faces_per_step": 26.17222222222222,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 26.17222222222222,
+        "wall_s": 0.41815374283416734,
+        "certificate_s": 0.19982215149846322,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "anchor_then_point/uncertainty/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.5992332175925926,
+        "unique_faces_per_step": 13.95185185185185,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 13.95185185185185,
+        "wall_s": 0.436522949222409,
+        "certificate_s": 0.21836514439079716,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.7993344907407407,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 128.0,
+        "wall_s": 0.46025449122215734,
+        "certificate_s": 0.23670948811741255,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      }
+    }
+  }
+}

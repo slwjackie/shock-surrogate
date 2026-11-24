@@ -58,3 +58,20 @@ def test_selector_roundtrip_preserves_deterministic_inspection_count(tmp_path):
     for count in (-1, n+1):
         with pytest.raises(ValueError):
             restored.select(state, table, count, allowance=allowance)
+
+
+def test_uncertainty_skips_large_already_precise_costs():
+    from stage_ab.refinement_learning import select_anchor_uncertainty, select_table_block
+    from stage_ab.vinterval import VI
+
+    # Cells 0 and 1 have large, exactly pinned differences. Only cells 2
+    # and 3 (incident to the wide error interval on face 2) admit improvement.
+    v = np.arange(4.)
+    bounds = VI(np.array([0., 10., 7., 10.]), np.array([0., 10., 13., 10.]))
+    costs = np.zeros((4, 2, 2))
+    costs[:, 0, 1] = bounds.abs_upper()
+    costs[:, 1, 0] = np.roll(bounds.abs_upper(), 1)
+    costs[:, 1, 1] = [10., 10., 3., 3.]
+
+    assert select_table_block(v, costs, 1, allowance=100).tolist() == [0]
+    assert select_anchor_uncertainty(v, costs, 1, allowance=100, face_errors=bounds).tolist() == [2]

@@ -5,8 +5,8 @@ with a two-input ReLU numerical flux.  All claims are relative to the SAME-GRID,
 EXACT-ARITHMETIC Godunov map S (never to the PDE solution); see
 ``docs/stage_a2_theory.md`` for the statements and proofs referenced below.
 
-Pipeline for one time step (all certificate inputs are functions of the state
-only, so routing is decided BEFORE any flux is evaluated):
+Pipeline for one time step (the optional replay certificate previews the frozen
+neural flux on inspected faces before routing):
 
 1. per-face bounds  eps_N(f) >= |F_fp(x_f) - G(x_f)|        (table, Lemma A5)
                     eps_G     >= |G_fp(x_f) - G(x_f)|        (Lemma F2)
@@ -15,8 +15,8 @@ only, so routing is decided BEFORE any flux is evaluated):
 3. per-cell costs kappa_i(s_(i-1), s_i) for the four trust patterns
 4. exact trust frontier C(k) = min certified cost with k neural faces (DP on
    the cycle, Theorem R1)
-5. an online budget policy picks k; NN is evaluated only on trusted faces and
-   Godunov only on the others; floating update; clip to [-M, M]
+5. an online budget policy picks k; the update uses NN on trusted faces and
+   Godunov on the others; floating update; clip to [-M, M]
 6. certified step bound  eta = lam*h*sum_i kappa_i + rho_upd  (Theorem M1)
 """
 from __future__ import annotations
@@ -339,7 +339,7 @@ def local_regularity(model: CertifiedFlux, v):
 
 
 def cell_costs(model: CertifiedFlux, tables: CertificateTables, consts: FPConstants, v,
-               *, mode="both", refiner=None):
+               *, mode="both", refiner=None, anchor=None):
     """kappa[i, s_left, s_right] >= |etilde_i - etilde_(i-1)| for each trust pattern.
 
     Face f is (v_f, v_(f+1)); cell i has left face i-1 and right face i.
@@ -349,14 +349,32 @@ def cell_costs(model: CertifiedFlux, tables: CertificateTables, consts: FPConsta
     'table', 'local' or 'both' (see face_bounds and difference_bounds). In
     'selective' mode, refiner(state, table_costs) chooses distinct cell indices.
     Only those rows receive 'both' bounds; other rows retain their table bounds.
+    'selective_point' uses signed endpoint intervals on the same selected
+    rows, avoiding local interval derivatives. 'selective_replay' obtains the
+    neural endpoints by explicitly evaluating the frozen FP64 flux. Both
+    endpoint modes enclose the pointwise Godunov reference on inspected faces.
+    'selective_anchor' looks up signed error intervals from an offline anchor
+    table, using no online flux or neural-interval evaluations.
+    'anchor_then_point' first tightens every row with the anchor table and
+    then passes those certified costs to the selector. Only its selected
+    rows receive pointwise neural and Godunov interval evaluations.
     """
-    if mode not in ("separable", "table", "local", "both", "selective"):
+    selective = mode in ("selective", "selective_point", "selective_replay", "selective_anchor",
+                         "anchor_then_point")
+    if not selective and mode not in ("separable", "table", "local", "both"):
         raise ValueError("Unknown certificate mode")
-    if mode == "selective" and not callable(refiner):
+    if selective and not callable(refiner):
         raise ValueError("Selective mode requires a callable refiner")
-    if mode != "selective" and refiner is not None:
+    if not selective and refiner is not None:
         raise ValueError("A refiner requires selective mode")
-    base_mode = "table" if mode == "selective" else mode
+    if mode in ("selective_anchor", "anchor_then_point"):
+        from .anchor_refinement import AnchorTable
+        if not isinstance(anchor, AnchorTable):
+            raise ValueError("Selective anchor mode requires an AnchorTable")
+        anchor.check_contract(model, tables)
+    elif anchor is not None:
+        raise ValueError("An anchor table requires selective_anchor or anchor_then_point mode")
+    base_mode = "table" if selective else mode
     v = np.asarray(v, dtype=np.float64)
     delta_face = face_bounds(model, tables, v, mode=base_mode)
     dl, dr = np.roll(delta_face, 1), delta_face
@@ -371,12 +389,18 @@ def cell_costs(model: CertifiedFlux, tables: CertificateTables, consts: FPConsta
         k[:, 1, 1] = sep
     else:
         k[:, 1, 1] = np.minimum(sep, difference_bounds(model, tables, v, mode=base_mode))
-    if mode == "selective":
-        _refine_selected_cells(model, tables, consts, v, delta_face, k, refiner)
+    if selective:
+        if mode == "anchor_then_point":
+            _refine_selected_cells(model, tables, consts, v, delta_face, k,
+                                   np.arange(n), "selective_anchor", anchor)
+            mode = "selective_point"
+        centers = _inspection_indices(v, k, refiner)
+        if centers.size:
+            _refine_selected_cells(model, tables, consts, v, delta_face, k, centers, mode, anchor)
     return k
 
 
-def _refine_selected_cells(model, tables, consts, v, delta_face, k, refiner):
+def _inspection_indices(v, k, refiner):
     # A selector can propose indices only. Keep its arrays separate from both
     # the current state and the table certificate used by the downstream DP.
     state_input, cost_input = v.copy(), k.copy()
@@ -386,23 +410,45 @@ def _refine_selected_cells(model, tables, consts, v, delta_face, k, refiner):
     if centers.ndim != 1:
         raise ValueError("Refiner must return a one-dimensional array of cell indices")
     if centers.size == 0:
-        return
+        return np.empty(0, dtype=np.intp)
     if centers.dtype.kind not in "iu" or np.any(centers < 0) or np.any(centers >= len(v)):
         raise ValueError("Refiner must return integer cell indices within the grid")
     centers = centers.astype(np.intp, copy=False)
     if np.unique(centers).size != centers.size:
         raise ValueError("Refiner must return distinct cell indices")
+    return centers
 
-    left, right = (centers - 1) % len(v), (centers + 1) % len(v)
+
+def _refine_selected_cells(model, tables, consts, v, delta_face, k, centers, mode, anchor):
+    left = (centers - 1) % len(v)
     faces, inverse = np.unique(np.concatenate((left, centers)), return_inverse=True)
-    delta = np.minimum(delta_face[faces], _local_face_bounds(model, v[faces], v[(faces+1) % len(v)]))
+    a, b = v[faces], v[(faces + 1) % len(v)]
+    if mode == "selective":
+        delta = np.minimum(delta_face[faces], _local_face_bounds(model, a, b))
+        right = (centers + 1) % len(v)
+        bins = tables.bin_index(v)
+        local_difference = _difference_bounds_on_stencils(
+            model, tables, (v[left], v[centers], v[right]),
+            (bins[left], bins[centers], bins[right]), "local")
+    else:
+        if mode == "selective_anchor":
+            error = anchor.signed_errors(a, b)
+        else:
+            a_box, b_box = VI.point(a), VI.point(b)
+            if mode == "selective_point":
+                neural = network_value_enclosure(model.layers, a_box, b_box)
+            else:
+                # FrozenFlux.predict uses a fixed per-row order, independent of
+                # batch membership. The same face receives this exact FP64 value
+                # if mixed_step later routes it to the network.
+                neural = VI.point(model.predict(np.column_stack((a, b))))
+            error = neural - godunov_value_enclosure(a_box, b_box)
+        delta = np.minimum(delta_face[faces], error.abs_upper())
+        left_slot, right_slot = np.split(inverse, 2)
+        local_difference = (error[right_slot] - error[left_slot]).abs_upper()
     dl, dr = np.split(delta[inverse], 2)
-    bins = tables.bin_index(v)
-    local_difference = _difference_bounds_on_stencils(
-        model, tables, (v[left], v[centers], v[right]),
-        (bins[left], bins[centers], bins[right]), "local")
-    k[centers, 1, 0] = up(dl + consts.eps_godunov)
-    k[centers, 0, 1] = up(dr + consts.eps_godunov)
+    k[centers, 1, 0] = np.minimum(k[centers, 1, 0], up(dl + consts.eps_godunov))
+    k[centers, 0, 1] = np.minimum(k[centers, 0, 1], up(dr + consts.eps_godunov))
     k[centers, 1, 1] = np.minimum(k[centers, 1, 1], np.minimum(up(dl + dr), local_difference))
 
 
@@ -595,8 +641,8 @@ def budget_parameters(tables: CertificateTables, lam, n_cells, steps, total_budg
 
 def certified_rollout_a2(model: CertifiedFlux, tables: CertificateTables, v0, *, steps, lam,
                          total_budget, policy, mode="both", cmin_fraction=0.05,
-                         audit=False, record=True, refiner=None):
-    """Face-selective certified rollout.
+                         audit=False, record=True, refiner=None, anchor=None, record_masks=False):
+    """Face-selective certified rollout. Set record_masks to trace accepted face indices.
 
     Guarantee (Theorem M2): for every n, ||v_n - u_n||_(1,h) <= spent_n <= total_budget,
     where u_n is the exact-arithmetic same-grid Godunov trajectory from v0.
@@ -630,7 +676,7 @@ def certified_rollout_a2(model: CertifiedFlux, tables: CertificateTables, v0, *,
     timing = {"certificate": 0.0, "frontier": 0.0, "policy": 0.0, "flux_update": 0.0}
     for step in range(steps):
         t0 = time.perf_counter()
-        costs = cell_costs(model, tables, consts, v, mode=mode, refiner=refiner)
+        costs = cell_costs(model, tables, consts, v, mode=mode, refiner=refiner, anchor=anchor)
         t1 = time.perf_counter()
         fr = trust_frontier(costs)
         cbar = frontier_upper(fr, lam, n)
@@ -667,6 +713,8 @@ def certified_rollout_a2(model: CertifiedFlux, tables: CertificateTables, v0, *,
         row = {"step": step, "trusted": int(j), "fraction": j/n, "cost": float(cost),
                "budget_override": bool(overridden),
                "rho": float(rho), "eta": up_float(eta), "spent": up_float(spent)}
+        if record_masks:
+            row["trust_mask"] = trust.copy()
         if audit:
             actual = exact_step_error(v, new, lam)
             ref_new, ref_rho, _, _ = mixed_step(model, consts, ref, np.zeros(n, dtype=bool))

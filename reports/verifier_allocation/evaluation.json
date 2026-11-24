@@ -1,0 +1,5420 @@
+{
+  "config": {
+    "setup": {
+      "table_s": 1.5215049460020964,
+      "anchor_s": 0.9559528850004426,
+      "anchor_bytes": 788488,
+      "anchor_bins": 128
+    },
+    "N": 128,
+    "steps": 60,
+    "lam": 0.2,
+    "bins": 16,
+    "model_hash": "7d4e792d06102919fab8eec7e430c1d6536a5233eabde45c48650c36130c03fb",
+    "budget_sources": {
+      "fresh": "reports/selective_refinement/evaluation.json"
+    },
+    "budget_fraction": 0.3,
+    "policy": "pacing",
+    "methods": {
+      "table/none/0": {
+        "mode": "table",
+        "rule": "none",
+        "count": 0
+      },
+      "local/all/128": {
+        "mode": "local",
+        "rule": "all",
+        "count": 128
+      },
+      "selective/top/10": {
+        "mode": "selective",
+        "rule": "top",
+        "count": 10
+      },
+      "selective/block/10": {
+        "mode": "selective",
+        "rule": "block",
+        "count": 10
+      },
+      "selective_point/top/4": {
+        "mode": "selective_point",
+        "rule": "top",
+        "count": 4
+      },
+      "selective_point/block/4": {
+        "mode": "selective_point",
+        "rule": "block",
+        "count": 4
+      },
+      "selective_point/top/10": {
+        "mode": "selective_point",
+        "rule": "top",
+        "count": 10
+      },
+      "selective_point/block/10": {
+        "mode": "selective_point",
+        "rule": "block",
+        "count": 10
+      },
+      "selective_point/top/20": {
+        "mode": "selective_point",
+        "rule": "top",
+        "count": 20
+      },
+      "selective_point/block/20": {
+        "mode": "selective_point",
+        "rule": "block",
+        "count": 20
+      },
+      "selective_point/all/128": {
+        "mode": "selective_point",
+        "rule": "all",
+        "count": 128
+      },
+      "selective_replay/top/10": {
+        "mode": "selective_replay",
+        "rule": "top",
+        "count": 10
+      },
+      "selective_replay/block/10": {
+        "mode": "selective_replay",
+        "rule": "block",
+        "count": 10
+      },
+      "selective_replay/all/128": {
+        "mode": "selective_replay",
+        "rule": "all",
+        "count": 128
+      },
+      "selective_anchor/top/4": {
+        "mode": "selective_anchor",
+        "rule": "top",
+        "count": 4
+      },
+      "selective_anchor/block/4": {
+        "mode": "selective_anchor",
+        "rule": "block",
+        "count": 4
+      },
+      "selective_anchor/top/10": {
+        "mode": "selective_anchor",
+        "rule": "top",
+        "count": 10
+      },
+      "selective_anchor/block/10": {
+        "mode": "selective_anchor",
+        "rule": "block",
+        "count": 10
+      },
+      "selective_anchor/top/20": {
+        "mode": "selective_anchor",
+        "rule": "top",
+        "count": 20
+      },
+      "selective_anchor/block/20": {
+        "mode": "selective_anchor",
+        "rule": "block",
+        "count": 20
+      },
+      "selective_anchor/all/128": {
+        "mode": "selective_anchor",
+        "rule": "all",
+        "count": 128
+      }
+    },
+    "repeats": 2,
+    "case_count_per_split": 9,
+    "splits": [
+      "fresh"
+    ],
+    "schedule_seed": 4401,
+    "python": "3.12.14",
+    "numpy": "2.5.5",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "threads_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  },
+  "results": [
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "table/none/0",
+      "accepted": 101,
+      "spent": 0.02064697335772001,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.26996431400039,
+        0.2627055869998003
+      ],
+      "certificate_s": [
+        0.034319049012992764,
+        0.03354344999752357
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "local/all/128",
+      "accepted": 4883,
+      "spent": 0.02005764627369122,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.0160556499977247,
+        1.0362880550019327
+      ],
+      "certificate_s": [
+        0.775208304021362,
+        0.8032833999968716
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective/top/10",
+      "accepted": 512,
+      "spent": 0.02063890866006934,
+      "unique_faces": 795,
+      "anchor_faces": 0,
+      "point_faces": 795,
+      "wall_s": [
+        0.7149835899981554,
+        0.7246342219987127
+      ],
+      "certificate_s": [
+        0.4780861860126606,
+        0.489006732001144
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective/block/10",
+      "accepted": 1098,
+      "spent": 0.020527464531806903,
+      "unique_faces": 737,
+      "anchor_faces": 0,
+      "point_faces": 737,
+      "wall_s": [
+        0.7571778419987822,
+        0.76661305000016
+      ],
+      "certificate_s": [
+        0.5176144209835911,
+        0.5287492289971851
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/top/4",
+      "accepted": 180,
+      "spent": 0.020685819999881883,
+      "unique_faces": 410,
+      "anchor_faces": 0,
+      "point_faces": 410,
+      "wall_s": [
+        0.3936697370008915,
+        0.3778986069992243
+      ],
+      "certificate_s": [
+        0.1550567320045957,
+        0.15063707901208545
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/block/4",
+      "accepted": 697,
+      "spent": 0.020605097859653462,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.4251178220001748,
+        0.4688140590005787
+      ],
+      "certificate_s": [
+        0.1906087890311028,
+        0.2155844850021822
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/top/10",
+      "accepted": 519,
+      "spent": 0.020603580858070732,
+      "unique_faces": 794,
+      "anchor_faces": 0,
+      "point_faces": 794,
+      "wall_s": [
+        0.3834408440015977,
+        0.3967368340017856
+      ],
+      "certificate_s": [
+        0.15929610400053207,
+        0.16253331501502544
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/block/10",
+      "accepted": 1107,
+      "spent": 0.020517789855069662,
+      "unique_faces": 737,
+      "anchor_faces": 0,
+      "point_faces": 737,
+      "wall_s": [
+        0.4236441350003588,
+        0.4282876670004043
+      ],
+      "certificate_s": [
+        0.1940004299976863,
+        0.1998433940098039
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/top/20",
+      "accepted": 979,
+      "spent": 0.02056493872764544,
+      "unique_faces": 1586,
+      "anchor_faces": 0,
+      "point_faces": 1586,
+      "wall_s": [
+        0.3966635850010789,
+        0.3963603949996468
+      ],
+      "certificate_s": [
+        0.16499611000472214,
+        0.16920210501120891
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/block/20",
+      "accepted": 1818,
+      "spent": 0.0204196036621456,
+      "unique_faces": 1370,
+      "anchor_faces": 0,
+      "point_faces": 1370,
+      "wall_s": [
+        0.4329754110003705,
+        0.4435547159991984
+      ],
+      "certificate_s": [
+        0.2013527780000004,
+        0.20662463200642378
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_point/all/128",
+      "accepted": 6281,
+      "spent": 0.019869176831639194,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.471495136996964,
+        0.5299758559995098
+      ],
+      "certificate_s": [
+        0.23669861100279377,
+        0.27796997099358123
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_replay/top/10",
+      "accepted": 519,
+      "spent": 0.020605248133367487,
+      "unique_faces": 794,
+      "anchor_faces": 0,
+      "point_faces": 794,
+      "wall_s": [
+        0.29781916700085276,
+        0.30773562700051116
+      ],
+      "certificate_s": [
+        0.06700857000032556,
+        0.06979928399960045
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_replay/block/10",
+      "accepted": 1102,
+      "spent": 0.020566834568246938,
+      "unique_faces": 736,
+      "anchor_faces": 0,
+      "point_faces": 736,
+      "wall_s": [
+        0.33960352500071167,
+        0.3335207509990141
+      ],
+      "certificate_s": [
+        0.10383502701370162,
+        0.10374008999497164
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_replay/all/128",
+      "accepted": 6281,
+      "spent": 0.019869176831588866,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.3025228229998902,
+        0.31268065800031764
+      ],
+      "certificate_s": [
+        0.0682597440063546,
+        0.072328460013523
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/top/4",
+      "accepted": 180,
+      "spent": 0.02066834068693782,
+      "unique_faces": 410,
+      "anchor_faces": 410,
+      "point_faces": 0,
+      "wall_s": [
+        0.29470926499925554,
+        0.29449115200259257
+      ],
+      "certificate_s": [
+        0.06038312398959533,
+        0.06070235998049611
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/block/4",
+      "accepted": 695,
+      "spent": 0.020590101793867645,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.3298718160003773,
+        0.36082252400228754
+      ],
+      "certificate_s": [
+        0.10282437198475236,
+        0.11647375800384907
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/top/10",
+      "accepted": 512,
+      "spent": 0.020638843954606835,
+      "unique_faces": 795,
+      "anchor_faces": 795,
+      "point_faces": 0,
+      "wall_s": [
+        0.2890114719994017,
+        0.28948154899990186
+      ],
+      "certificate_s": [
+        0.06262275499466341,
+        0.0628855639770336
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/block/10",
+      "accepted": 1105,
+      "spent": 0.020548545948293827,
+      "unique_faces": 737,
+      "anchor_faces": 737,
+      "point_faces": 0,
+      "wall_s": [
+        0.32952854899849626,
+        0.3452987929995288
+      ],
+      "certificate_s": [
+        0.10212130599393276,
+        0.10232462201020098
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/top/20",
+      "accepted": 954,
+      "spent": 0.02058326723301064,
+      "unique_faces": 1583,
+      "anchor_faces": 1583,
+      "point_faces": 0,
+      "wall_s": [
+        0.29155522500150255,
+        0.2877090229994792
+      ],
+      "certificate_s": [
+        0.06316720401810016,
+        0.06069758798912517
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/block/20",
+      "accepted": 1735,
+      "spent": 0.020224745486847547,
+      "unique_faces": 1370,
+      "anchor_faces": 1370,
+      "point_faces": 0,
+      "wall_s": [
+        0.33958847500252887,
+        0.3259168349977699
+      ],
+      "certificate_s": [
+        0.10274123201452312,
+        0.096027833995322
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.978857954837402,
+        "offset": 0.029557899755554007,
+        "phase": 5.7797134696440695,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.02071688701081855,
+      "method": "selective_anchor/all/128",
+      "accepted": 5017,
+      "spent": 0.020036960466314514,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3045504549991165,
+        0.3017222629969183
+      ],
+      "certificate_s": [
+        0.06941326198648312,
+        0.0650977550103562
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "table/none/0",
+      "accepted": 25,
+      "spent": 0.00680331064317477,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.28205336799874203,
+        0.26321567600098206
+      ],
+      "certificate_s": [
+        0.03598410599806812,
+        0.03380738998748711
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "local/all/128",
+      "accepted": 4419,
+      "spent": 0.00661956421374909,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.064490411998122,
+        1.065824089000671
+      ],
+      "certificate_s": [
+        0.8252809029945638,
+        0.8221292039888795
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective/top/10",
+      "accepted": 363,
+      "spent": 0.0067971129782653196,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.7892682460005744,
+        0.7324021539971
+      ],
+      "certificate_s": [
+        0.5376023859826091,
+        0.4932274439779576
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective/block/10",
+      "accepted": 866,
+      "spent": 0.0067730300606146055,
+      "unique_faces": 765,
+      "anchor_faces": 0,
+      "point_faces": 765,
+      "wall_s": [
+        0.7648571979989356,
+        0.7793655969981046
+      ],
+      "certificate_s": [
+        0.5313256029985496,
+        0.5325519149882894
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/top/4",
+      "accepted": 154,
+      "spent": 0.006801524518299515,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.4009541099985654,
+        0.378980853001849
+      ],
+      "certificate_s": [
+        0.15715688498676172,
+        0.15039104799870984
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/block/4",
+      "accepted": 604,
+      "spent": 0.0067782291945599205,
+      "unique_faces": 404,
+      "anchor_faces": 0,
+      "point_faces": 404,
+      "wall_s": [
+        0.442786559000524,
+        0.45066433000101824
+      ],
+      "certificate_s": [
+        0.20603075198596343,
+        0.20288062399049522
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/top/10",
+      "accepted": 376,
+      "spent": 0.0067861299310881815,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.4137444490006601,
+        0.42084350700315554
+      ],
+      "certificate_s": [
+        0.16379659996528062,
+        0.17062017300486332
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/block/10",
+      "accepted": 888,
+      "spent": 0.006762755268193162,
+      "unique_faces": 755,
+      "anchor_faces": 0,
+      "point_faces": 755,
+      "wall_s": [
+        0.44830757700037793,
+        0.5237516569977743
+      ],
+      "certificate_s": [
+        0.21205942200685968,
+        0.22983022098924266
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/top/20",
+      "accepted": 654,
+      "spent": 0.006781905915163231,
+      "unique_faces": 1694,
+      "anchor_faces": 0,
+      "point_faces": 1694,
+      "wall_s": [
+        0.40403488900119555,
+        0.41013271199699375
+      ],
+      "certificate_s": [
+        0.17024856599164195,
+        0.17217348799749743
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/block/20",
+      "accepted": 1400,
+      "spent": 0.006745061769488387,
+      "unique_faces": 1324,
+      "anchor_faces": 0,
+      "point_faces": 1324,
+      "wall_s": [
+        0.43895714900281746,
+        0.464210390997323
+      ],
+      "certificate_s": [
+        0.20994154801155673,
+        0.22034182700008387
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_point/all/128",
+      "accepted": 5068,
+      "spent": 0.006589575452208771,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.49185399199996027,
+        0.4706414060019597
+      ],
+      "certificate_s": [
+        0.2520551380039251,
+        0.23759289000736317
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_replay/top/10",
+      "accepted": 376,
+      "spent": 0.006786129931086874,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.3084511430024577,
+        0.2899519880011212
+      ],
+      "certificate_s": [
+        0.06810291100191534,
+        0.06414308398234425
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_replay/block/10",
+      "accepted": 888,
+      "spent": 0.00676275526819141,
+      "unique_faces": 755,
+      "anchor_faces": 0,
+      "point_faces": 755,
+      "wall_s": [
+        0.3487838529981673,
+        0.3439691799976572
+      ],
+      "certificate_s": [
+        0.10781451598450076,
+        0.10666914101238945
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_replay/all/128",
+      "accepted": 5068,
+      "spent": 0.006589575452190186,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.3021013400029915,
+        0.31311836099848733
+      ],
+      "certificate_s": [
+        0.07235879098880105,
+        0.0744737559944042
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/top/4",
+      "accepted": 149,
+      "spent": 0.006796968285036459,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.2928825790004339,
+        0.3029774099995848
+      ],
+      "certificate_s": [
+        0.06020034200992086,
+        0.06313333901562146
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/block/4",
+      "accepted": 533,
+      "spent": 0.006777349601439361,
+      "unique_faces": 405,
+      "anchor_faces": 405,
+      "point_faces": 0,
+      "wall_s": [
+        0.34250485499796923,
+        0.36302510799941956
+      ],
+      "certificate_s": [
+        0.10928261899243807,
+        0.11601636001796578
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/top/10",
+      "accepted": 372,
+      "spent": 0.006791884118457468,
+      "unique_faces": 840,
+      "anchor_faces": 840,
+      "point_faces": 0,
+      "wall_s": [
+        0.28932931699819164,
+        0.3066230180011189
+      ],
+      "certificate_s": [
+        0.058099577010580106,
+        0.06419630899108597
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/block/10",
+      "accepted": 648,
+      "spent": 0.006778645663416278,
+      "unique_faces": 780,
+      "anchor_faces": 780,
+      "point_faces": 0,
+      "wall_s": [
+        0.33958923099999083,
+        0.3532813409983646
+      ],
+      "certificate_s": [
+        0.10747484699822962,
+        0.10858082901540911
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/top/20",
+      "accepted": 615,
+      "spent": 0.0067516040131300305,
+      "unique_faces": 1740,
+      "anchor_faces": 1740,
+      "point_faces": 0,
+      "wall_s": [
+        0.33294458399905125,
+        0.2948310259998834
+      ],
+      "certificate_s": [
+        0.07156848400700255,
+        0.06282269402072416
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/block/20",
+      "accepted": 1062,
+      "spent": 0.006762608181159937,
+      "unique_faces": 1429,
+      "anchor_faces": 1429,
+      "point_faces": 0,
+      "wall_s": [
+        0.32893815499846824,
+        0.3563519660019665
+      ],
+      "certificate_s": [
+        0.09832539800845552,
+        0.10797298499164754
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.5137950118222957,
+        "offset": -0.053087993135865,
+        "phase": 5.157145565610431,
+        "mode": 2,
+        "t": 0.3894013312331635
+      },
+      "budget": 0.00681603581873834,
+      "method": "selective_anchor/all/128",
+      "accepted": 2961,
+      "spent": 0.006684347297972164,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.306939694997709,
+        0.3414382570008456
+      ],
+      "certificate_s": [
+        0.06472768698949949,
+        0.07769993100737338
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "table/none/0",
+      "accepted": 13,
+      "spent": 0.003647693362174888,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.2513016000011703,
+        0.24275965400011046
+      ],
+      "certificate_s": [
+        0.03482375898238388,
+        0.03508171398061677
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "local/all/128",
+      "accepted": 7233,
+      "spent": 0.003557387722707032,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.0233976159979647,
+        0.9523106790002203
+      ],
+      "certificate_s": [
+        0.7945686519997253,
+        0.732284203004383
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective/top/10",
+      "accepted": 1709,
+      "spent": 0.0036788777762317955,
+      "unique_faces": 755,
+      "anchor_faces": 0,
+      "point_faces": 755,
+      "wall_s": [
+        0.7576956000011705,
+        0.6542448479995073
+      ],
+      "certificate_s": [
+        0.515119597013836,
+        0.4369707529876905
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective/block/10",
+      "accepted": 5694,
+      "spent": 0.0035687986464851573,
+      "unique_faces": 812,
+      "anchor_faces": 0,
+      "point_faces": 812,
+      "wall_s": [
+        0.7380755070007581,
+        0.678631316000974
+      ],
+      "certificate_s": [
+        0.5048830879786692,
+        0.4608690300010494
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/top/4",
+      "accepted": 251,
+      "spent": 0.00365445589465985,
+      "unique_faces": 365,
+      "anchor_faces": 0,
+      "point_faces": 365,
+      "wall_s": [
+        0.3798379379986727,
+        0.3555583480010682
+      ],
+      "certificate_s": [
+        0.15095280700916192,
+        0.14178410499880556
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/block/4",
+      "accepted": 2925,
+      "spent": 0.0035180849722636215,
+      "unique_faces": 395,
+      "anchor_faces": 0,
+      "point_faces": 395,
+      "wall_s": [
+        0.4244055640010629,
+        0.45715813700007857
+      ],
+      "certificate_s": [
+        0.19078299800821696,
+        0.20250857000428368
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/top/10",
+      "accepted": 1753,
+      "spent": 0.0036693857794340367,
+      "unique_faces": 754,
+      "anchor_faces": 0,
+      "point_faces": 754,
+      "wall_s": [
+        0.3922006530010549,
+        0.3771543990005739
+      ],
+      "certificate_s": [
+        0.16218406699044863,
+        0.15614042700326536
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/block/10",
+      "accepted": 5717,
+      "spent": 0.0035760611429402306,
+      "unique_faces": 814,
+      "anchor_faces": 0,
+      "point_faces": 814,
+      "wall_s": [
+        0.4114461669996672,
+        0.3856011249990843
+      ],
+      "certificate_s": [
+        0.18209093699988443,
+        0.16757319999305764
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/top/20",
+      "accepted": 4859,
+      "spent": 0.0036153268784960783,
+      "unique_faces": 1320,
+      "anchor_faces": 0,
+      "point_faces": 1320,
+      "wall_s": [
+        0.4141160020008101,
+        0.37586574200031464
+      ],
+      "certificate_s": [
+        0.17735960799836903,
+        0.15628672999082482
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/block/20",
+      "accepted": 6498,
+      "spent": 0.0035754909076366518,
+      "unique_faces": 1364,
+      "anchor_faces": 0,
+      "point_faces": 1364,
+      "wall_s": [
+        0.39101854800173896,
+        0.3965716220009199
+      ],
+      "certificate_s": [
+        0.16775743700418388,
+        0.16910131901749992
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_point/all/128",
+      "accepted": 7367,
+      "spent": 0.0035519960250238636,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.4609804530009569,
+        0.45581336099712644
+      ],
+      "certificate_s": [
+        0.23185844299950986,
+        0.23243407498375745
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_replay/top/10",
+      "accepted": 1753,
+      "spent": 0.0036693857794316935,
+      "unique_faces": 754,
+      "anchor_faces": 0,
+      "point_faces": 754,
+      "wall_s": [
+        0.28423087099872646,
+        0.2883252600004198
+      ],
+      "certificate_s": [
+        0.06372061299043708,
+        0.06462355600524461
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_replay/block/10",
+      "accepted": 5717,
+      "spent": 0.0035760611429355906,
+      "unique_faces": 814,
+      "anchor_faces": 0,
+      "point_faces": 814,
+      "wall_s": [
+        0.31782815200131154,
+        0.2980185230007919
+      ],
+      "certificate_s": [
+        0.08195181798873818,
+        0.0785885509903892
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_replay/all/128",
+      "accepted": 7367,
+      "spent": 0.003551996024957679,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.3253948829988076,
+        0.2817526660001022
+      ],
+      "certificate_s": [
+        0.08081438301087474,
+        0.06600589200752438
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/top/4",
+      "accepted": 248,
+      "spent": 0.00358347955876007,
+      "unique_faces": 365,
+      "anchor_faces": 365,
+      "point_faces": 0,
+      "wall_s": [
+        0.2800919680012157,
+        0.27883282999755465
+      ],
+      "certificate_s": [
+        0.059013648988184286,
+        0.06117969499246101
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/block/4",
+      "accepted": 2924,
+      "spent": 0.003602498153911568,
+      "unique_faces": 397,
+      "anchor_faces": 397,
+      "point_faces": 0,
+      "wall_s": [
+        0.34206148800149094,
+        0.29583980899769813
+      ],
+      "certificate_s": [
+        0.09287059599228087,
+        0.0824166350030282
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/top/10",
+      "accepted": 1661,
+      "spent": 0.003695521005808595,
+      "unique_faces": 754,
+      "anchor_faces": 754,
+      "point_faces": 0,
+      "wall_s": [
+        0.29523841500122217,
+        0.29241604400158394
+      ],
+      "certificate_s": [
+        0.06218659901060164,
+        0.0665337430073123
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/block/10",
+      "accepted": 5682,
+      "spent": 0.0034729990074366095,
+      "unique_faces": 812,
+      "anchor_faces": 812,
+      "point_faces": 0,
+      "wall_s": [
+        0.2997666749979544,
+        0.30075554099676083
+      ],
+      "certificate_s": [
+        0.07642988900624914,
+        0.07601096301004873
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/top/20",
+      "accepted": 4896,
+      "spent": 0.003606863666326151,
+      "unique_faces": 1320,
+      "anchor_faces": 1320,
+      "point_faces": 0,
+      "wall_s": [
+        0.30875657299839077,
+        0.2756731299996318
+      ],
+      "certificate_s": [
+        0.06803806799143786,
+        0.05778595701849554
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/block/20",
+      "accepted": 6325,
+      "spent": 0.003515998719114629,
+      "unique_faces": 1363,
+      "anchor_faces": 1363,
+      "point_faces": 0,
+      "wall_s": [
+        0.3068481320005958,
+        0.29019480499846395
+      ],
+      "certificate_s": [
+        0.07440917599888053,
+        0.0675980899904971
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.9799503550222282,
+        "right": 0.5171538138267864,
+        "loc": 0.5108274275379862
+      },
+      "budget": 0.0037372156858930163,
+      "method": "selective_anchor/all/128",
+      "accepted": 7027,
+      "spent": 0.0035622205130691116,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.2784743289994367,
+        0.2754046800000651
+      ],
+      "certificate_s": [
+        0.06114028899901314,
+        0.059077917987451656
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "table/none/0",
+      "accepted": 57,
+      "spent": 0.01555753216353659,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.27853890000187675,
+        0.24830341000051703
+      ],
+      "certificate_s": [
+        0.0371334690025833,
+        0.032269096012896625
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "local/all/128",
+      "accepted": 4469,
+      "spent": 0.015122386183057446,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.107562687000609,
+        1.0844448280004144
+      ],
+      "certificate_s": [
+        0.8435250819893554,
+        0.826670384973113
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective/top/10",
+      "accepted": 459,
+      "spent": 0.015511388632605995,
+      "unique_faces": 886,
+      "anchor_faces": 0,
+      "point_faces": 886,
+      "wall_s": [
+        0.7469412970021949,
+        0.6672907089996443
+      ],
+      "certificate_s": [
+        0.5011229879746679,
+        0.44522117000451544
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective/block/10",
+      "accepted": 971,
+      "spent": 0.015467119214678868,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.8069492779977736,
+        0.8442102429980878
+      ],
+      "certificate_s": [
+        0.5546236800219049,
+        0.5841951019974658
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/top/4",
+      "accepted": 215,
+      "spent": 0.015541259107739291,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.4125205569980608,
+        0.4303408119994856
+      ],
+      "certificate_s": [
+        0.16445228099473752,
+        0.16642083500119043
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/block/4",
+      "accepted": 680,
+      "spent": 0.015473554784800506,
+      "unique_faces": 380,
+      "anchor_faces": 0,
+      "point_faces": 380,
+      "wall_s": [
+        0.49317437099671224,
+        0.460305458997027
+      ],
+      "certificate_s": [
+        0.24267944500024896,
+        0.20864598300249781
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/top/10",
+      "accepted": 462,
+      "spent": 0.015507948057681239,
+      "unique_faces": 886,
+      "anchor_faces": 0,
+      "point_faces": 886,
+      "wall_s": [
+        0.4274219760009146,
+        0.41459221900004195
+      ],
+      "certificate_s": [
+        0.172567273988534,
+        0.16819134097750066
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/block/10",
+      "accepted": 985,
+      "spent": 0.015449955733012883,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.4795500149994041,
+        0.46517675100039924
+      ],
+      "certificate_s": [
+        0.21773190698877443,
+        0.20904588399571367
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/top/20",
+      "accepted": 850,
+      "spent": 0.015472612308324937,
+      "unique_faces": 1667,
+      "anchor_faces": 0,
+      "point_faces": 1667,
+      "wall_s": [
+        0.43409214100029203,
+        0.4399773919976724
+      ],
+      "certificate_s": [
+        0.18747482198523358,
+        0.18977712399646407
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/block/20",
+      "accepted": 1693,
+      "spent": 0.015327541438174948,
+      "unique_faces": 1358,
+      "anchor_faces": 0,
+      "point_faces": 1358,
+      "wall_s": [
+        0.48256391500035534,
+        0.502240271998744
+      ],
+      "certificate_s": [
+        0.2305448139886721,
+        0.23215828500542557
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_point/all/128",
+      "accepted": 5551,
+      "spent": 0.015013529501428825,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5697560279986646,
+        0.5209595269989222
+      ],
+      "certificate_s": [
+        0.2815857310051797,
+        0.26523109998743166
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_replay/top/10",
+      "accepted": 462,
+      "spent": 0.015507548348178109,
+      "unique_faces": 886,
+      "anchor_faces": 0,
+      "point_faces": 886,
+      "wall_s": [
+        0.32532181800343096,
+        0.27970505700068315
+      ],
+      "certificate_s": [
+        0.07368549699094729,
+        0.05918468401796417
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_replay/block/10",
+      "accepted": 985,
+      "spent": 0.015449955733009174,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.3622895509979571,
+        0.3257803119995515
+      ],
+      "certificate_s": [
+        0.11289208901143866,
+        0.10175985599926207
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_replay/all/128",
+      "accepted": 5551,
+      "spent": 0.015013482482746298,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.33127596100166556,
+        0.2925152879979578
+      ],
+      "certificate_s": [
+        0.0797200389970385,
+        0.06905514900063281
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/top/4",
+      "accepted": 207,
+      "spent": 0.015538409024659576,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.3296377359984035,
+        0.30817517000105
+      ],
+      "certificate_s": [
+        0.07019474900880596,
+        0.06343494600514532
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/block/4",
+      "accepted": 680,
+      "spent": 0.015483881952489183,
+      "unique_faces": 380,
+      "anchor_faces": 380,
+      "point_faces": 0,
+      "wall_s": [
+        0.379605841000739,
+        0.3319866940000793
+      ],
+      "certificate_s": [
+        0.12040499499562429,
+        0.10178916600125376
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/top/10",
+      "accepted": 445,
+      "spent": 0.015521589975285974,
+      "unique_faces": 886,
+      "anchor_faces": 886,
+      "point_faces": 0,
+      "wall_s": [
+        0.30854627099688514,
+        0.3179138029991009
+      ],
+      "certificate_s": [
+        0.06564067900399095,
+        0.0664680810077698
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/block/10",
+      "accepted": 973,
+      "spent": 0.0154678271693288,
+      "unique_faces": 720,
+      "anchor_faces": 720,
+      "point_faces": 0,
+      "wall_s": [
+        0.35270255000068573,
+        0.31810388099984266
+      ],
+      "certificate_s": [
+        0.1118270340084564,
+        0.09761214500394999
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/top/20",
+      "accepted": 821,
+      "spent": 0.015481777524534421,
+      "unique_faces": 1666,
+      "anchor_faces": 1666,
+      "point_faces": 0,
+      "wall_s": [
+        0.32728936599960434,
+        0.318375909999304
+      ],
+      "certificate_s": [
+        0.07036601499930839,
+        0.06694974001220544
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/block/20",
+      "accepted": 1568,
+      "spent": 0.015416156681881852,
+      "unique_faces": 1358,
+      "anchor_faces": 1358,
+      "point_faces": 0,
+      "wall_s": [
+        0.349827877998905,
+        0.3575864099984756
+      ],
+      "certificate_s": [
+        0.1054230000008829,
+        0.1113587340041704
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 3,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.5978976954900918,
+        "offset": -0.08170598898607956,
+        "phase": 4.344886221145397,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.01557970957763043,
+      "method": "selective_anchor/all/128",
+      "accepted": 4336,
+      "spent": 0.015136260045142772,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3147204890010471,
+        0.31938056699800654
+      ],
+      "certificate_s": [
+        0.06665193600201746,
+        0.07161231900317944
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "table/none/0",
+      "accepted": 14,
+      "spent": 0.002900285643795664,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.22527064200039604,
+        0.28393620399947395
+      ],
+      "certificate_s": [
+        0.02902510901549249,
+        0.038230245001614094
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "local/all/128",
+      "accepted": 3943,
+      "spent": 0.0028271486836510817,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.8206716249987949,
+        1.110671270002058
+      ],
+      "certificate_s": [
+        1.430795943011617,
+        0.8512558979855385
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective/top/10",
+      "accepted": 299,
+      "spent": 0.0028966598037200478,
+      "unique_faces": 888,
+      "anchor_faces": 0,
+      "point_faces": 888,
+      "wall_s": [
+        0.6667266549993656,
+        0.7953351699979976
+      ],
+      "certificate_s": [
+        0.440005600987206,
+        0.5408414350022213
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective/block/10",
+      "accepted": 853,
+      "spent": 0.0028711603362492643,
+      "unique_faces": 816,
+      "anchor_faces": 0,
+      "point_faces": 816,
+      "wall_s": [
+        0.7253633410000475,
+        0.82266163100212
+      ],
+      "certificate_s": [
+        0.49314793297526194,
+        0.5701564750124817
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/top/4",
+      "accepted": 148,
+      "spent": 0.0028988660898080867,
+      "unique_faces": 344,
+      "anchor_faces": 0,
+      "point_faces": 344,
+      "wall_s": [
+        0.33997693700075615,
+        0.41949348200068926
+      ],
+      "certificate_s": [
+        0.13410958600070444,
+        0.16918060798343504
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/block/4",
+      "accepted": 653,
+      "spent": 0.0028021658048752894,
+      "unique_faces": 386,
+      "anchor_faces": 0,
+      "point_faces": 386,
+      "wall_s": [
+        0.47150502600197797,
+        0.48695440699884784
+      ],
+      "certificate_s": [
+        0.2157869250186195,
+        0.2251363129944366
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/top/10",
+      "accepted": 386,
+      "spent": 0.0028899982556144965,
+      "unique_faces": 886,
+      "anchor_faces": 0,
+      "point_faces": 886,
+      "wall_s": [
+        0.37249875699853874,
+        0.42673006500263
+      ],
+      "certificate_s": [
+        0.1500536139938049,
+        0.16904452600647346
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/block/10",
+      "accepted": 906,
+      "spent": 0.0028286239161840854,
+      "unique_faces": 818,
+      "anchor_faces": 0,
+      "point_faces": 818,
+      "wall_s": [
+        0.45842957299828413,
+        0.4831132420003996
+      ],
+      "certificate_s": [
+        0.21587210999859963,
+        0.22430815600819187
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/top/20",
+      "accepted": 704,
+      "spent": 0.0028874743204046547,
+      "unique_faces": 1624,
+      "anchor_faces": 0,
+      "point_faces": 1624,
+      "wall_s": [
+        0.4488793969976541,
+        0.430236326999875
+      ],
+      "certificate_s": [
+        0.19049593001545873,
+        0.18462530400574906
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/block/20",
+      "accepted": 1287,
+      "spent": 0.0028774759815366037,
+      "unique_faces": 1403,
+      "anchor_faces": 0,
+      "point_faces": 1403,
+      "wall_s": [
+        0.5651957059999404,
+        0.48634849399968516
+      ],
+      "certificate_s": [
+        0.2614776590016845,
+        0.22140612200746546
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_point/all/128",
+      "accepted": 4797,
+      "spent": 0.0028115296685106254,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5080163439997705,
+        0.5620663310000964
+      ],
+      "certificate_s": [
+        0.2575289660017006,
+        0.28837955903145485
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_replay/top/10",
+      "accepted": 386,
+      "spent": 0.0028899982556132133,
+      "unique_faces": 886,
+      "anchor_faces": 0,
+      "point_faces": 886,
+      "wall_s": [
+        0.30905761999747483,
+        0.35275337799976114
+      ],
+      "certificate_s": [
+        0.06672112701198785,
+        0.07475589699606644
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_replay/block/10",
+      "accepted": 906,
+      "spent": 0.002828623916182098,
+      "unique_faces": 818,
+      "anchor_faces": 0,
+      "point_faces": 818,
+      "wall_s": [
+        0.5565695490004146,
+        0.37690350399861927
+      ],
+      "certificate_s": [
+        0.16296377600519918,
+        0.1187313780283148
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_replay/all/128",
+      "accepted": 4797,
+      "spent": 0.002811530155538996,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.32447140099975513,
+        0.3746269039984327
+      ],
+      "certificate_s": [
+        0.07649496602607542,
+        0.0842349079939595
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/top/4",
+      "accepted": 147,
+      "spent": 0.002899264323382561,
+      "unique_faces": 344,
+      "anchor_faces": 344,
+      "point_faces": 0,
+      "wall_s": [
+        0.3274741789973632,
+        0.32253264999962994
+      ],
+      "certificate_s": [
+        0.06929568400300923,
+        0.06724563398893224
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/block/4",
+      "accepted": 569,
+      "spent": 0.0027372353407624675,
+      "unique_faces": 406,
+      "anchor_faces": 406,
+      "point_faces": 0,
+      "wall_s": [
+        0.3033704930021486,
+        0.3587415809997765
+      ],
+      "certificate_s": [
+        0.08939657496739528,
+        0.11632332699446124
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/top/10",
+      "accepted": 339,
+      "spent": 0.002798011379713763,
+      "unique_faces": 890,
+      "anchor_faces": 890,
+      "point_faces": 0,
+      "wall_s": [
+        0.4494053599992185,
+        0.31878087500081165
+      ],
+      "certificate_s": [
+        0.10579814899028861,
+        0.07056410900622723
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/block/10",
+      "accepted": 637,
+      "spent": 0.002889696794095082,
+      "unique_faces": 816,
+      "anchor_faces": 816,
+      "point_faces": 0,
+      "wall_s": [
+        0.38371683299919823,
+        0.3717991269986669
+      ],
+      "certificate_s": [
+        0.11821850300839287,
+        0.11427696999817272
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/top/20",
+      "accepted": 542,
+      "spent": 0.0028911899566901357,
+      "unique_faces": 1641,
+      "anchor_faces": 1641,
+      "point_faces": 0,
+      "wall_s": [
+        0.4208702140022069,
+        0.3191033829971275
+      ],
+      "certificate_s": [
+        0.07678639199730242,
+        0.06935362800868461
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/block/20",
+      "accepted": 960,
+      "spent": 0.002884509601260755,
+      "unique_faces": 1423,
+      "anchor_faces": 1423,
+      "point_faces": 0,
+      "wall_s": [
+        0.3288949509988015,
+        0.3575118049993762
+      ],
+      "certificate_s": [
+        0.09375898999132914,
+        0.10822583299886901
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 4,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4082261285015445,
+        "offset": -0.008070284672786254,
+        "phase": 0.5630045160901813,
+        "mode": 1,
+        "t": 0.48247513645012813
+      },
+      "budget": 0.002902855365883298,
+      "method": "selective_anchor/all/128",
+      "accepted": 1989,
+      "spent": 0.0028643775920548626,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3225574999996752,
+        0.3140690430009272
+      ],
+      "certificate_s": [
+        0.06829105200449703,
+        0.06568363899714313
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "table/none/0",
+      "accepted": 712,
+      "spent": 0.0029315315381077136,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.28846302699821535,
+        0.30714274999991176
+      ],
+      "certificate_s": [
+        0.04064368301987997,
+        0.04531483600658248
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "local/all/128",
+      "accepted": 7327,
+      "spent": 0.002872880789537888,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.1323648350007716,
+        1.1921242630014603
+      ],
+      "certificate_s": [
+        0.861875210001017,
+        0.9157205740229983
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective/top/10",
+      "accepted": 3027,
+      "spent": 0.0029459044745992363,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.744729976002418,
+        0.7833817669998098
+      ],
+      "certificate_s": [
+        0.5083736540145765,
+        0.5264092860197707
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective/block/10",
+      "accepted": 5806,
+      "spent": 0.0028968120472010446,
+      "unique_faces": 759,
+      "anchor_faces": 0,
+      "point_faces": 759,
+      "wall_s": [
+        0.8282039500008977,
+        0.83766849499807
+      ],
+      "certificate_s": [
+        0.5528354169946397,
+        0.5672198809770634
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/top/4",
+      "accepted": 531,
+      "spent": 0.0029464958054696002,
+      "unique_faces": 342,
+      "anchor_faces": 0,
+      "point_faces": 342,
+      "wall_s": [
+        0.414155603000836,
+        0.42139149799913866
+      ],
+      "certificate_s": [
+        0.16100221898886957,
+        0.1730190130074334
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/block/4",
+      "accepted": 5445,
+      "spent": 0.0026862164771176175,
+      "unique_faces": 367,
+      "anchor_faces": 0,
+      "point_faces": 367,
+      "wall_s": [
+        0.4514457590012171,
+        0.4477406890000566
+      ],
+      "certificate_s": [
+        0.19357509701148956,
+        0.1944567860045936
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/top/10",
+      "accepted": 2952,
+      "spent": 0.0029638643801279383,
+      "unique_faces": 721,
+      "anchor_faces": 0,
+      "point_faces": 721,
+      "wall_s": [
+        0.4333965830010129,
+        0.43797206999806804
+      ],
+      "certificate_s": [
+        0.1762090310039639,
+        0.17823046000557952
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/block/10",
+      "accepted": 5856,
+      "spent": 0.002872416732698539,
+      "unique_faces": 752,
+      "anchor_faces": 0,
+      "point_faces": 752,
+      "wall_s": [
+        0.4723383670025214,
+        0.45744931800072663
+      ],
+      "certificate_s": [
+        0.20137463201172068,
+        0.20285788999899523
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/top/20",
+      "accepted": 7308,
+      "spent": 0.0028776544524589647,
+      "unique_faces": 1320,
+      "anchor_faces": 0,
+      "point_faces": 1320,
+      "wall_s": [
+        0.46890435199748026,
+        0.43547425999713596
+      ],
+      "certificate_s": [
+        0.19988372401348897,
+        0.1828472050037817
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/block/20",
+      "accepted": 7263,
+      "spent": 0.0028758048871208746,
+      "unique_faces": 1320,
+      "anchor_faces": 0,
+      "point_faces": 1320,
+      "wall_s": [
+        0.4351848810001684,
+        0.457184277001943
+      ],
+      "certificate_s": [
+        0.179832058998727,
+        0.19019404799109907
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_point/all/128",
+      "accepted": 7424,
+      "spent": 0.0028739892248622763,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5434949919981591,
+        0.5140961690012773
+      ],
+      "certificate_s": [
+        0.28372996699545183,
+        0.2632720029869233
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_replay/top/10",
+      "accepted": 2952,
+      "spent": 0.0029638643801259976,
+      "unique_faces": 721,
+      "anchor_faces": 0,
+      "point_faces": 721,
+      "wall_s": [
+        0.3204075260000536,
+        0.3378084790019784
+      ],
+      "certificate_s": [
+        0.07661522498892737,
+        0.07412840600227355
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_replay/block/10",
+      "accepted": 5856,
+      "spent": 0.002872416732696036,
+      "unique_faces": 752,
+      "anchor_faces": 0,
+      "point_faces": 752,
+      "wall_s": [
+        0.346115563002968,
+        0.34665567399861175
+      ],
+      "certificate_s": [
+        0.08914000800723443,
+        0.0904067190058413
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_replay/all/128",
+      "accepted": 7424,
+      "spent": 0.0028739892248233873,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.32788393499868107,
+        0.36612783100281376
+      ],
+      "certificate_s": [
+        0.07908307599063846,
+        0.0834882850140275
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/top/4",
+      "accepted": 528,
+      "spent": 0.0030005404299015947,
+      "unique_faces": 342,
+      "anchor_faces": 342,
+      "point_faces": 0,
+      "wall_s": [
+        0.3704438900022069,
+        0.31915010699958657
+      ],
+      "certificate_s": [
+        0.07969152499936172,
+        0.07057404600345762
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/block/4",
+      "accepted": 5441,
+      "spent": 0.002710194642111735,
+      "unique_faces": 367,
+      "anchor_faces": 367,
+      "point_faces": 0,
+      "wall_s": [
+        0.3762497630013968,
+        0.3602440460017533
+      ],
+      "certificate_s": [
+        0.09872268401886686,
+        0.09278112000902183
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/top/10",
+      "accepted": 2824,
+      "spent": 0.0029626094270008116,
+      "unique_faces": 720,
+      "anchor_faces": 720,
+      "point_faces": 0,
+      "wall_s": [
+        0.31237822699768003,
+        0.33497829499901854
+      ],
+      "certificate_s": [
+        0.06849743500424665,
+        0.07444147700152826
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/block/10",
+      "accepted": 5815,
+      "spent": 0.002777641090495688,
+      "unique_faces": 766,
+      "anchor_faces": 766,
+      "point_faces": 0,
+      "wall_s": [
+        0.34604812800171203,
+        0.3484138679996249
+      ],
+      "certificate_s": [
+        0.0896084390078613,
+        0.09030751498721656
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/top/20",
+      "accepted": 6933,
+      "spent": 0.0028845237190769533,
+      "unique_faces": 1320,
+      "anchor_faces": 1320,
+      "point_faces": 0,
+      "wall_s": [
+        0.32836338199922466,
+        0.3814371150001534
+      ],
+      "certificate_s": [
+        0.0707996729943261,
+        0.0869810980038892
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/block/20",
+      "accepted": 6929,
+      "spent": 0.002882891446099318,
+      "unique_faces": 1320,
+      "anchor_faces": 1320,
+      "point_faces": 0,
+      "wall_s": [
+        0.33421601699956227,
+        0.3196874700006447
+      ],
+      "certificate_s": [
+        0.07474488301522797,
+        0.06935705200157827
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 5,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.7724049419328207,
+        "right": -0.17240494193282074,
+        "loc": 0.25156258606497156
+      },
+      "budget": 0.0030219686630385636,
+      "method": "selective_anchor/all/128",
+      "accepted": 7199,
+      "spent": 0.002879310636676538,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3214173470005335,
+        0.32138064799801214
+      ],
+      "certificate_s": [
+        0.07302291499945568,
+        0.0709946640090493
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "table/none/0",
+      "accepted": 88,
+      "spent": 0.019387423634821523,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.2906028589968628,
+        0.2960507229981886
+      ],
+      "certificate_s": [
+        0.03635302899056114,
+        0.039722954999888316
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "local/all/128",
+      "accepted": 3784,
+      "spent": 0.018949529993981713,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.1310470260032162,
+        1.1634786309987248
+      ],
+      "certificate_s": [
+        0.8724663589819102,
+        0.9068392549925193
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective/top/10",
+      "accepted": 531,
+      "spent": 0.019357365609095414,
+      "unique_faces": 810,
+      "anchor_faces": 0,
+      "point_faces": 810,
+      "wall_s": [
+        0.8843760560012015,
+        0.8000836249993881
+      ],
+      "certificate_s": [
+        0.5859591130029003,
+        0.5333243289933307
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective/block/10",
+      "accepted": 994,
+      "spent": 0.019303259343539693,
+      "unique_faces": 725,
+      "anchor_faces": 0,
+      "point_faces": 725,
+      "wall_s": [
+        0.8090838879979856,
+        0.8106735840010515
+      ],
+      "certificate_s": [
+        0.5560675359884044,
+        0.5565844779994222
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/top/4",
+      "accepted": 236,
+      "spent": 0.01939712804744694,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.4762172900009318,
+        0.4475100220006425
+      ],
+      "certificate_s": [
+        0.18663755399757065,
+        0.18053005400361144
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/block/4",
+      "accepted": 694,
+      "spent": 0.019339202714916702,
+      "unique_faces": 363,
+      "anchor_faces": 0,
+      "point_faces": 363,
+      "wall_s": [
+        0.46547589100009645,
+        0.5215685570001369
+      ],
+      "certificate_s": [
+        0.21356821999506792,
+        0.23135360801097704
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/top/10",
+      "accepted": 537,
+      "spent": 0.019348142503197146,
+      "unique_faces": 810,
+      "anchor_faces": 0,
+      "point_faces": 810,
+      "wall_s": [
+        0.4650549610014423,
+        0.4395296689981478
+      ],
+      "certificate_s": [
+        0.1944487179898715,
+        0.17399328000101377
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/block/10",
+      "accepted": 1001,
+      "spent": 0.01926728430749828,
+      "unique_faces": 722,
+      "anchor_faces": 0,
+      "point_faces": 722,
+      "wall_s": [
+        0.4895833480004512,
+        0.5102530510012002
+      ],
+      "certificate_s": [
+        0.22800687598646618,
+        0.2278544310174766
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/top/20",
+      "accepted": 926,
+      "spent": 0.019281509886260158,
+      "unique_faces": 1619,
+      "anchor_faces": 0,
+      "point_faces": 1619,
+      "wall_s": [
+        0.469386526998278,
+        0.4436115740027162
+      ],
+      "certificate_s": [
+        0.19856237001295085,
+        0.18352094902365934
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/block/20",
+      "accepted": 1734,
+      "spent": 0.019199986501054637,
+      "unique_faces": 1366,
+      "anchor_faces": 0,
+      "point_faces": 1366,
+      "wall_s": [
+        0.48117332800029544,
+        0.4652393470023526
+      ],
+      "certificate_s": [
+        0.22794169000553666,
+        0.21638736199383857
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_point/all/128",
+      "accepted": 5605,
+      "spent": 0.018717914006446994,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5714391920009803,
+        0.5113529930022196
+      ],
+      "certificate_s": [
+        0.2964907460154791,
+        0.2644551480152586
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_replay/top/10",
+      "accepted": 537,
+      "spent": 0.019347269656308706,
+      "unique_faces": 810,
+      "anchor_faces": 0,
+      "point_faces": 810,
+      "wall_s": [
+        0.35419433399874833,
+        0.3175388340023346
+      ],
+      "certificate_s": [
+        0.07728595399748883,
+        0.07042946300498443
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_replay/block/10",
+      "accepted": 999,
+      "spent": 0.01927285373052318,
+      "unique_faces": 725,
+      "anchor_faces": 0,
+      "point_faces": 725,
+      "wall_s": [
+        0.3733533680024266,
+        0.3675685250018432
+      ],
+      "certificate_s": [
+        0.1195018680045905,
+        0.11728547001257539
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_replay/all/128",
+      "accepted": 5606,
+      "spent": 0.01871745455378861,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.33448198700352805,
+        0.3522018740004569
+      ],
+      "certificate_s": [
+        0.07636959201772697,
+        0.08076341300329659
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/top/4",
+      "accepted": 233,
+      "spent": 0.019386735092813974,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.3404607099982968,
+        0.3170031840018055
+      ],
+      "certificate_s": [
+        0.07121315098629566,
+        0.06667686599394074
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/block/4",
+      "accepted": 689,
+      "spent": 0.019324382060521297,
+      "unique_faces": 363,
+      "anchor_faces": 363,
+      "point_faces": 0,
+      "wall_s": [
+        0.40023047700015013,
+        0.4069533629990474
+      ],
+      "certificate_s": [
+        0.1300252540204383,
+        0.12902235602450673
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/top/10",
+      "accepted": 530,
+      "spent": 0.019344853350557308,
+      "unique_faces": 810,
+      "anchor_faces": 810,
+      "point_faces": 0,
+      "wall_s": [
+        0.3272830910027551,
+        0.31975192800018704
+      ],
+      "certificate_s": [
+        0.07124453499636729,
+        0.06708107699887478
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/block/10",
+      "accepted": 995,
+      "spent": 0.01928740484833692,
+      "unique_faces": 724,
+      "anchor_faces": 724,
+      "point_faces": 0,
+      "wall_s": [
+        0.3705710510002973,
+        0.3731742790005228
+      ],
+      "certificate_s": [
+        0.11244979798721033,
+        0.11893810199035215
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/top/20",
+      "accepted": 905,
+      "spent": 0.0193034948992214,
+      "unique_faces": 1619,
+      "anchor_faces": 1619,
+      "point_faces": 0,
+      "wall_s": [
+        0.31926404100158834,
+        0.3142589870003576
+      ],
+      "certificate_s": [
+        0.06933937001304002,
+        0.06879357199431979
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/block/20",
+      "accepted": 1640,
+      "spent": 0.01911461870730432,
+      "unique_faces": 1364,
+      "anchor_faces": 1364,
+      "point_faces": 0,
+      "wall_s": [
+        0.3681256609997945,
+        0.36660617499728687
+      ],
+      "certificate_s": [
+        0.11069035400578286,
+        0.11008354699879419
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 6,
+      "ic": {
+        "kind": "smooth",
+        "amp": 0.7035338206320627,
+        "offset": 0.09836562449287317,
+        "phase": 1.6830286006212312,
+        "mode": 2,
+        "t": 0.0
+      },
+      "budget": 0.019429117599024916,
+      "method": "selective_anchor/all/128",
+      "accepted": 3559,
+      "spent": 0.018973944198895334,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.37247143000058713,
+        0.3413829290002468
+      ],
+      "certificate_s": [
+        0.08278465200419305,
+        0.07448175000536139
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "table/none/0",
+      "accepted": 27,
+      "spent": 0.006878473406497303,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.29369455999767524,
+        0.2801607520013931
+      ],
+      "certificate_s": [
+        0.04056152898920118,
+        0.03903550400355016
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "local/all/128",
+      "accepted": 3794,
+      "spent": 0.0067094262039225205,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.1310206559974176,
+        1.1310728829994332
+      ],
+      "certificate_s": [
+        0.8686734810071357,
+        0.8661381790079759
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective/top/10",
+      "accepted": 393,
+      "spent": 0.00685957694061634,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.7852703589996963,
+        0.7912674110011721
+      ],
+      "certificate_s": [
+        0.5299991730134934,
+        0.5295702489893301
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective/block/10",
+      "accepted": 870,
+      "spent": 0.0068331887320896584,
+      "unique_faces": 774,
+      "anchor_faces": 0,
+      "point_faces": 774,
+      "wall_s": [
+        0.8638213869999163,
+        0.80307480600095
+      ],
+      "certificate_s": [
+        0.6084205870065489,
+        0.5542480259791773
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/top/4",
+      "accepted": 155,
+      "spent": 0.006869824240264122,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.4527683359992807,
+        0.40550206700208946
+      ],
+      "certificate_s": [
+        0.18226506299834,
+        0.1586060600093333
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/block/4",
+      "accepted": 611,
+      "spent": 0.006838726009048649,
+      "unique_faces": 388,
+      "anchor_faces": 0,
+      "point_faces": 388,
+      "wall_s": [
+        0.4797382290016685,
+        0.4832487409985333
+      ],
+      "certificate_s": [
+        0.22234444500645623,
+        0.2247011200124689
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/top/10",
+      "accepted": 403,
+      "spent": 0.006850200001922209,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.4289225329994224,
+        0.41868461500052945
+      ],
+      "certificate_s": [
+        0.17759566501626978,
+        0.17148870501478086
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/block/10",
+      "accepted": 872,
+      "spent": 0.00680250857892287,
+      "unique_faces": 755,
+      "anchor_faces": 0,
+      "point_faces": 755,
+      "wall_s": [
+        0.47882711400234257,
+        0.4715584209989174
+      ],
+      "certificate_s": [
+        0.22327986899472307,
+        0.2181881569849793
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/top/20",
+      "accepted": 756,
+      "spent": 0.006845138906713217,
+      "unique_faces": 1691,
+      "anchor_faces": 0,
+      "point_faces": 1691,
+      "wall_s": [
+        0.608537776999583,
+        0.4261834450007882
+      ],
+      "certificate_s": [
+        0.26196940499721677,
+        0.18277681300969562
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/block/20",
+      "accepted": 1394,
+      "spent": 0.006811693862822498,
+      "unique_faces": 1335,
+      "anchor_faces": 0,
+      "point_faces": 1335,
+      "wall_s": [
+        0.47099405599874444,
+        0.4837598239973886
+      ],
+      "certificate_s": [
+        0.22059576197352726,
+        0.23108766299992567
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_point/all/128",
+      "accepted": 5015,
+      "spent": 0.0066545701296494095,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.519783992000157,
+        0.5128145439994114
+      ],
+      "certificate_s": [
+        0.26187899200158427,
+        0.2599031119971187
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_replay/top/10",
+      "accepted": 403,
+      "spent": 0.006850200001921018,
+      "unique_faces": 840,
+      "anchor_faces": 0,
+      "point_faces": 840,
+      "wall_s": [
+        0.3319851230007771,
+        0.31862740499855136
+      ],
+      "certificate_s": [
+        0.07407969198175124,
+        0.07033555300949956
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_replay/block/10",
+      "accepted": 872,
+      "spent": 0.006802508578921095,
+      "unique_faces": 755,
+      "anchor_faces": 0,
+      "point_faces": 755,
+      "wall_s": [
+        0.38435239599857596,
+        0.3575980560017342
+      ],
+      "certificate_s": [
+        0.12343843701819424,
+        0.11343477898481069
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_replay/all/128",
+      "accepted": 5015,
+      "spent": 0.006654570129631257,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.33597899500091444,
+        0.37963892499828944
+      ],
+      "certificate_s": [
+        0.08209542603071895,
+        0.08491843499723473
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/top/4",
+      "accepted": 142,
+      "spent": 0.006863594207627802,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.31269833400074276,
+        0.3116340409978875
+      ],
+      "certificate_s": [
+        0.06476877899694955,
+        0.06667131599169807
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/block/4",
+      "accepted": 542,
+      "spent": 0.006852520303807157,
+      "unique_faces": 400,
+      "anchor_faces": 400,
+      "point_faces": 0,
+      "wall_s": [
+        0.3675676810016739,
+        0.3715498599995044
+      ],
+      "certificate_s": [
+        0.11722713598646806,
+        0.11840425901391427
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/top/10",
+      "accepted": 395,
+      "spent": 0.006849881973738299,
+      "unique_faces": 840,
+      "anchor_faces": 840,
+      "point_faces": 0,
+      "wall_s": [
+        0.3431781540020893,
+        0.325292494999303
+      ],
+      "certificate_s": [
+        0.07550200299738208,
+        0.06676322899511433
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/block/10",
+      "accepted": 681,
+      "spent": 0.006848022532669022,
+      "unique_faces": 815,
+      "anchor_faces": 815,
+      "point_faces": 0,
+      "wall_s": [
+        0.38522400799774914,
+        0.3551585389977845
+      ],
+      "certificate_s": [
+        0.12597499300682102,
+        0.10984976099643973
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/top/20",
+      "accepted": 675,
+      "spent": 0.006839624216174392,
+      "unique_faces": 1696,
+      "anchor_faces": 1696,
+      "point_faces": 0,
+      "wall_s": [
+        0.3750151310014189,
+        0.30833093900218955
+      ],
+      "certificate_s": [
+        0.07950516799246543,
+        0.06651430398778757
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/block/20",
+      "accepted": 1053,
+      "spent": 0.006822296577662377,
+      "unique_faces": 1413,
+      "anchor_faces": 1413,
+      "point_faces": 0,
+      "wall_s": [
+        0.36517362000085996,
+        0.3752104200029862
+      ],
+      "certificate_s": [
+        0.11147801698825788,
+        0.11193926397390896
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 7,
+      "ic": {
+        "kind": "shocked",
+        "amp": 0.4453646377894065,
+        "offset": 0.030623470979379813,
+        "phase": 1.2953711472005771,
+        "mode": 2,
+        "t": 0.37061795513659723
+      },
+      "budget": 0.006879918319047762,
+      "method": "selective_anchor/all/128",
+      "accepted": 2253,
+      "spent": 0.006778297879455182,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.3195561930006079,
+        0.31206851300157723
+      ],
+      "certificate_s": [
+        0.06903340098142507,
+        0.07069545198464766
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "table/none/0",
+      "accepted": 152,
+      "spent": 0.001802921464749876,
+      "unique_faces": 0,
+      "anchor_faces": 0,
+      "point_faces": 0,
+      "wall_s": [
+        0.27217224199921475,
+        0.28732301399941207
+      ],
+      "certificate_s": [
+        0.03750932500770432,
+        0.04005756900005508
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "local/all/128",
+      "accepted": 7336,
+      "spent": 0.0017474353363882813,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        1.1000914969990845,
+        1.1404320980000193
+      ],
+      "certificate_s": [
+        0.8406945050119248,
+        0.8778776429862774
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective/top/10",
+      "accepted": 4389,
+      "spent": 0.0017836644585881934,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.8304660680005327,
+        0.7846461330009333
+      ],
+      "certificate_s": [
+        0.5547676989990578,
+        0.5224305080082559
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective/block/10",
+      "accepted": 5867,
+      "spent": 0.0017608619632130092,
+      "unique_faces": 781,
+      "anchor_faces": 0,
+      "point_faces": 781,
+      "wall_s": [
+        0.8115626260005229,
+        0.7876650439975492
+      ],
+      "certificate_s": [
+        0.5514921830144885,
+        0.5328934280114481
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/top/4",
+      "accepted": 393,
+      "spent": 0.0018287147678228363,
+      "unique_faces": 360,
+      "anchor_faces": 0,
+      "point_faces": 360,
+      "wall_s": [
+        0.41580259400143404,
+        0.5149855660019966
+      ],
+      "certificate_s": [
+        0.17009763600799488,
+        0.20904314899962628
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/block/4",
+      "accepted": 3924,
+      "spent": 0.0016371269209581145,
+      "unique_faces": 378,
+      "anchor_faces": 0,
+      "point_faces": 378,
+      "wall_s": [
+        0.444100189000892,
+        0.4695430760002637
+      ],
+      "certificate_s": [
+        0.193217784002627,
+        0.20894616299119662
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/top/10",
+      "accepted": 5251,
+      "spent": 0.0017681658627936964,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.43621067400090396,
+        0.44223928900100873
+      ],
+      "certificate_s": [
+        0.17821141699459986,
+        0.18189449001147295
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/block/10",
+      "accepted": 6041,
+      "spent": 0.0016889721980486638,
+      "unique_faces": 774,
+      "anchor_faces": 0,
+      "point_faces": 774,
+      "wall_s": [
+        0.4540637659993081,
+        0.44864863899783813
+      ],
+      "certificate_s": [
+        0.19850414098254987,
+        0.18824708399915835
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/top/20",
+      "accepted": 7447,
+      "spent": 0.001747541231058293,
+      "unique_faces": 1320,
+      "anchor_faces": 0,
+      "point_faces": 1320,
+      "wall_s": [
+        0.4505587120002019,
+        0.42937095999877783
+      ],
+      "certificate_s": [
+        0.19109030700928997,
+        0.18354738699417794
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/block/20",
+      "accepted": 7447,
+      "spent": 0.001747541231058293,
+      "unique_faces": 1320,
+      "anchor_faces": 0,
+      "point_faces": 1320,
+      "wall_s": [
+        0.43574758599788765,
+        0.4406966509995982
+      ],
+      "certificate_s": [
+        0.183154825004749,
+        0.1870341679896228
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_point/all/128",
+      "accepted": 7460,
+      "spent": 0.0017461201192927568,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.5305896780009789,
+        0.5373443589996896
+      ],
+      "certificate_s": [
+        0.2710661500132119,
+        0.27335577299891156
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_replay/top/10",
+      "accepted": 5251,
+      "spent": 0.0017681658627922503,
+      "unique_faces": 720,
+      "anchor_faces": 0,
+      "point_faces": 720,
+      "wall_s": [
+        0.3428366089974588,
+        0.3267581660002179
+      ],
+      "certificate_s": [
+        0.07918115801658132,
+        0.07296823398792185
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_replay/block/10",
+      "accepted": 6041,
+      "spent": 0.0016889721980465745,
+      "unique_faces": 774,
+      "anchor_faces": 0,
+      "point_faces": 774,
+      "wall_s": [
+        0.35527896100029466,
+        0.34203326599890715
+      ],
+      "certificate_s": [
+        0.09600022999802604,
+        0.09079529198788805
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_replay/all/128",
+      "accepted": 7460,
+      "spent": 0.0017461201192645708,
+      "unique_faces": 7680,
+      "anchor_faces": 0,
+      "point_faces": 7680,
+      "wall_s": [
+        0.3345858619977662,
+        0.32945540199943935
+      ],
+      "certificate_s": [
+        0.07820817800893565,
+        0.08105974598947796
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/top/4",
+      "accepted": 531,
+      "spent": 0.0018264100497513785,
+      "unique_faces": 360,
+      "anchor_faces": 360,
+      "point_faces": 0,
+      "wall_s": [
+        0.3293054489986389,
+        0.3585595740005374
+      ],
+      "certificate_s": [
+        0.07300090200442355,
+        0.08255401000133133
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/block/4",
+      "accepted": 3521,
+      "spent": 0.0017868799965227464,
+      "unique_faces": 399,
+      "anchor_faces": 399,
+      "point_faces": 0,
+      "wall_s": [
+        0.3471996289990784,
+        0.3595181969976693
+      ],
+      "certificate_s": [
+        0.09499210800277069,
+        0.10174667902538204
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/top/10",
+      "accepted": 4480,
+      "spent": 0.0017800428437206005,
+      "unique_faces": 720,
+      "anchor_faces": 720,
+      "point_faces": 0,
+      "wall_s": [
+        0.3278949619998457,
+        0.3226782630008529
+      ],
+      "certificate_s": [
+        0.07055510299323942,
+        0.07122333000734216
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/block/10",
+      "accepted": 5509,
+      "spent": 0.001768979633355983,
+      "unique_faces": 764,
+      "anchor_faces": 764,
+      "point_faces": 0,
+      "wall_s": [
+        0.35190366900133085,
+        0.3419022540001606
+      ],
+      "certificate_s": [
+        0.08704738799497136,
+        0.0845993959956104
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/top/20",
+      "accepted": 6931,
+      "spent": 0.001747752696480488,
+      "unique_faces": 1332,
+      "anchor_faces": 1332,
+      "point_faces": 0,
+      "wall_s": [
+        0.3741246259996842,
+        0.32616447399777826
+      ],
+      "certificate_s": [
+        0.08019020699066459,
+        0.07133742200676352
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/block/20",
+      "accepted": 6931,
+      "spent": 0.001747752696480488,
+      "unique_faces": 1332,
+      "anchor_faces": 1332,
+      "point_faces": 0,
+      "wall_s": [
+        0.3281704319997516,
+        0.3354149820006569
+      ],
+      "certificate_s": [
+        0.07279280600414495,
+        0.07649050299005467
+      ]
+    },
+    {
+      "split": "fresh",
+      "index": 8,
+      "ic": {
+        "kind": "riemann",
+        "left": -0.0015855251249827784,
+        "right": 0.5345207652083137,
+        "loc": 0.6278947054360535
+      },
+      "budget": 0.0018366598286323579,
+      "method": "selective_anchor/all/128",
+      "accepted": 7002,
+      "spent": 0.0017521127451979833,
+      "unique_faces": 7680,
+      "anchor_faces": 7680,
+      "point_faces": 0,
+      "wall_s": [
+        0.4000234500017541,
+        0.33364795400120784
+      ],
+      "certificate_s": [
+        0.09882583798025735,
+        0.07297350600492791
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "split": "fresh",
+      "index": 0,
+      "method": "selective_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "method": "selective_replay/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 0,
+      "method": "selective_anchor/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "method": "selective_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "method": "selective_replay/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 1,
+      "method": "selective_anchor/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "method": "selective_point/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "method": "selective_replay/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    },
+    {
+      "split": "fresh",
+      "index": 2,
+      "method": "selective_anchor/block/10",
+      "steps": 60,
+      "one_step_and_cumulative_checks_passed": true
+    }
+  ],
+  "summary": {
+    "fresh": {
+      "table/none/0": {
+        "n_cases": 9,
+        "neural_fraction": 0.01720196759259259,
+        "unique_faces_per_step": 0.0,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.27353662677746293,
+        "certificate_s": 0.0368564342782823,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "local/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.6826967592592592,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 128.0,
+        "wall_s": 1.1335193777777022,
+        "certificate_s": 0.8730715099987315,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective/top/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.16901041666666666,
+        "unique_faces_per_step": 13.433333333333334,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 13.433333333333334,
+        "wall_s": 0.7585413269999763,
+        "certificate_s": 0.5093354612769568,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective/block/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.3330295138888889,
+        "unique_faces_per_step": 12.757407407407408,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 12.757407407407408,
+        "wall_s": 0.7908699323884826,
+        "certificate_s": 0.5421043339958689,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/top/4": {
+        "n_cases": 9,
+        "neural_fraction": 0.032740162037037036,
+        "unique_faces_per_step": 6.038888888888889,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 6.038888888888889,
+        "wall_s": 0.4131980198336451,
+        "certificate_s": 0.1645190396668315,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/block/4": {
+        "n_cases": 9,
+        "neural_fraction": 0.23485243055555555,
+        "unique_faces_per_step": 6.3351851851851855,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 6.3351851851851855,
+        "wall_s": 0.46354149250004817,
+        "certificate_s": 0.2101560059484958,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/top/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.18285590277777777,
+        "unique_faces_per_step": 13.427777777777777,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 13.427777777777777,
+        "wall_s": 0.4181874498339716,
+        "certificate_s": 0.1703610670546267,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/block/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.33815104166666665,
+        "unique_faces_per_step": 12.67962962962963,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 12.67962962962963,
+        "wall_s": 0.46055721849997,
+        "certificate_s": 0.2078149300535491,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/top/20": {
+        "n_cases": 9,
+        "neural_fraction": 0.35421006944444444,
+        "unique_faces_per_step": 25.631481481481483,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 25.631481481481483,
+        "wall_s": 0.43791034383280525,
+        "certificate_s": 0.18593544150341282,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/block/20": {
+        "n_cases": 9,
+        "neural_fraction": 0.4417534722222222,
+        "unique_faces_per_step": 22.51851851851852,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 22.51851851851852,
+        "wall_s": 0.4596453429999706,
+        "certificate_s": 0.20871855544444567,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_point/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.7894675925925926,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 128.0,
+        "wall_s": 0.5156930196664891,
+        "certificate_s": 0.26308257639114646,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_replay/top/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.18285590277777777,
+        "unique_faces_per_step": 13.427777777777777,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 13.427777777777777,
+        "wall_s": 0.31630602250030887,
+        "certificate_s": 0.07037605044368117,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": false
+      },
+      "selective_replay/block/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.33804976851851853,
+        "unique_faces_per_step": 12.683333333333334,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 12.683333333333334,
+        "wall_s": 0.3597901504999754,
+        "certificate_s": 0.10660828028044812,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_replay/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.7894820601851852,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 0.0,
+        "point_faces_per_step": 128.0,
+        "wall_s": 0.3289341720000165,
+        "certificate_s": 0.07720734661618028,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "selective_anchor/top/4": {
+        "n_cases": 9,
+        "neural_fraction": 0.03421585648148148,
+        "unique_faces_per_step": 6.038888888888889,
+        "anchor_faces_per_step": 6.038888888888889,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.31617001266648814,
+        "certificate_s": 0.06721856205331278,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      },
+      "selective_anchor/block/4": {
+        "n_cases": 9,
+        "neural_fraction": 0.22560763888888888,
+        "unique_faces_per_step": 6.438888888888889,
+        "anchor_faces_per_step": 6.438888888888889,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.35540795694457,
+        "certificate_s": 0.10726222216968988,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_anchor/top/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.1672164351851852,
+        "unique_faces_per_step": 13.435185185185185,
+        "anchor_faces_per_step": 13.435185185185185,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.32056564105550933,
+        "certificate_s": 0.0694613196663138,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": true
+      },
+      "selective_anchor/block/10": {
+        "n_cases": 9,
+        "neural_fraction": 0.3189380787037037,
+        "unique_faces_per_step": 12.84074074074074,
+        "anchor_faces_per_step": 12.84074074074074,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.348163239832704,
+        "certificate_s": 0.10186958333441806,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_anchor/top/20": {
+        "n_cases": 9,
+        "neural_fraction": 0.3366898148148148,
+        "unique_faces_per_step": 25.772222222222222,
+        "anchor_faces_per_step": 25.772222222222222,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.32800372938880984,
+        "certificate_s": 0.07005536578031347,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": true
+      },
+      "selective_anchor/block/20": {
+        "n_cases": 9,
+        "neural_fraction": 0.4080295138888889,
+        "unique_faces_per_step": 22.91111111111111,
+        "anchor_faces_per_step": 22.91111111111111,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.3407924549442719,
+        "certificate_s": 0.09463431655401816,
+        "pareto_wall_s": false,
+        "pareto_certificate_s": false
+      },
+      "selective_anchor/all/128": {
+        "n_cases": 9,
+        "neural_fraction": 0.5981336805555555,
+        "unique_faces_per_step": 128.0,
+        "anchor_faces_per_step": 128.0,
+        "point_faces_per_step": 0.0,
+        "wall_s": 0.322289207888793,
+        "certificate_s": 0.07123377588646286,
+        "pareto_wall_s": true,
+        "pareto_certificate_s": true
+      }
+    }
+  }
+}

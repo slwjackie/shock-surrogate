@@ -142,6 +142,29 @@ def select_table_block(v, table_costs, count, *, allowance=None):
     return _choose_run(table_costs, zero, zero, zero, count, allowance)
 
 
+def select_anchor_uncertainty(v, table_costs, count, *, allowance=None, anchor=None, face_errors=None):
+    """Choose point queries by the room between certified upper and optimistic lower costs.
+
+    Signed error intervals come from the offline anchor table. The lowest
+    possible magnitude is the distance from zero to the interval. A narrow
+    interval away from zero leaves little room for refinement even when its
+    upper bound is large. Lower endpoints guide selection only.
+    """
+    if face_errors is None:
+        face_errors = anchor.signed_errors(v, np.roll(v, -1))
+    lo, hi = face_errors.lo, face_errors.hi
+    if lo.shape != (len(v),) or hi.shape != lo.shape:
+        raise ValueError("Expected one signed error interval per periodic face")
+    # 00 bounds two Godunov roundoff errors; it also bounds a single one.
+    face_min = np.maximum(0., np.maximum(lo, -hi))
+    one = np.maximum(0., np.nextafter(face_min - table_costs[:, 0, 0], -np.inf))
+    # Lower bound on |e_right - e_left| given independent certified face intervals.
+    forward = np.nextafter(lo - np.roll(hi, 1), -np.inf)
+    backward = np.nextafter(np.roll(lo, 1) - hi, -np.inf)
+    both = np.maximum(0., np.maximum(forward, backward))
+    return _choose_run(table_costs, one, np.roll(one, 1), both, count, allowance)
+
+
 class RefinementSelector:
     def __init__(self, training_count=10):
         self.face = _CostRatio()
