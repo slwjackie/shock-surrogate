@@ -1,0 +1,117 @@
+{
+  "seed": 300,
+  "n": 128,
+  "refined_cells": 10,
+  "step_index": 0,
+  "description": "Snapshot optimum with hindsight access to every local bound.",
+  "results": [
+    {
+      "ic": 0,
+      "kind": "smooth",
+      "total_budget": 0.019262788473211882,
+      "step_excess_allowance": 0.0003210464745528754,
+      "trusted_faces": {
+        "table": 1,
+        "top_table": 6,
+        "oracle": 24,
+        "full_local": 73
+      }
+    },
+    {
+      "ic": 1,
+      "kind": "shocked",
+      "total_budget": 0.005555587428848804,
+      "step_excess_allowance": 9.259312381349083e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 5,
+        "oracle": 14,
+        "full_local": 68
+      }
+    },
+    {
+      "ic": 2,
+      "kind": "riemann",
+      "total_budget": 0.0016922472232614822,
+      "step_excess_allowance": 2.8204120387035457e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 127,
+        "oracle": 127,
+        "full_local": 127
+      }
+    },
+    {
+      "ic": 3,
+      "kind": "smooth",
+      "total_budget": 0.018492956116744893,
+      "step_excess_allowance": 0.0003082159352784256,
+      "trusted_faces": {
+        "table": 1,
+        "top_table": 4,
+        "oracle": 22,
+        "full_local": 56
+      }
+    },
+    {
+      "ic": 4,
+      "kind": "shocked",
+      "total_budget": 0.005081437551672512,
+      "step_excess_allowance": 8.469062586055261e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 5,
+        "oracle": 23,
+        "full_local": 74
+      }
+    },
+    {
+      "ic": 5,
+      "kind": "riemann",
+      "total_budget": 0.0022328117040395622,
+      "step_excess_allowance": 3.721352840000346e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 128,
+        "oracle": 128,
+        "full_local": 128
+      }
+    },
+    {
+      "ic": 6,
+      "kind": "smooth",
+      "total_budget": 0.020644800404889214,
+      "step_excess_allowance": 0.0003440800067474976,
+      "trusted_faces": {
+        "table": 1,
+        "top_table": 6,
+        "oracle": 31,
+        "full_local": 74
+      }
+    },
+    {
+      "ic": 7,
+      "kind": "shocked",
+      "total_budget": 0.003900818927575266,
+      "step_excess_allowance": 6.501364879226519e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 5,
+        "oracle": 14,
+        "full_local": 72
+      }
+    },
+    {
+      "ic": 8,
+      "kind": "riemann",
+      "total_budget": 0.0022543782923225538,
+      "step_excess_allowance": 3.7572971538053314e-05,
+      "trusted_faces": {
+        "table": 0,
+        "top_table": 127,
+        "oracle": 127,
+        "full_local": 127
+      }
+    }
+  ]
+}

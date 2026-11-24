@@ -35,7 +35,7 @@ from .interval import Interval as I
 from .vinterval import (VI, U, up, up_float, rigorous_nonneg_sum,
                         network_value_enclosure, network_value_and_gradient,
                         godunov_value_enclosure, godunov_gradient_cases,
-                        hidden_slopes_degenerate)
+                        hidden_slopes_degenerate, difference_enclosure)
 
 ARITHMETIC = "numpy-float64-separate-multiply-add-v1"
 
@@ -269,12 +269,16 @@ def difference_bounds(model: CertifiedFlux, tables: CertificateTables, v, *, mod
     interval AD on hull(x_(i-1), x_i)), or 'both' (elementwise minimum).
     """
     v = np.asarray(v, dtype=np.float64)
-    vm, vp = np.roll(v, 1), np.roll(v, -1)
-    da, db = _interval_diff(vm, v), _interval_diff(v, vp)
     idx = tables.bin_index(v)
-    im, ip = np.roll(idx, 1), np.roll(idx, -1)
-    eps_face = tables.eps_fp[idx, ip]                  # face i   = (v_i, v_(i+1))
-    eps_left = np.roll(eps_face, 1)                    # face i-1 = (v_(i-1), v_i)
+    return _difference_bounds_on_stencils(
+        model, tables, (np.roll(v, 1), v, np.roll(v, -1)),
+        (np.roll(idx, 1), idx, np.roll(idx, -1)), mode)
+
+
+def _difference_bounds_on_stencils(model, tables, states, bins, mode):
+    vm, v, vp = states
+    im, idx, ip = bins
+    da, db = _interval_diff(vm, v), _interval_diff(v, vp)
     out = []
     if mode in ("table", "both"):
         if tables.grad_fa is None:
@@ -287,17 +291,12 @@ def difference_bounds(model: CertifiedFlux, tables: CertificateTables, v, *, mod
         J = _hull_branches(tables.has_p[sel], jp, tables.has_q[sel], jq)
         out.append(J.abs_upper())
     if mode in ("local", "both"):
-        A = VI(np.minimum(vm, v), np.maximum(vm, v))
-        B = VI(np.minimum(v, vp), np.maximum(v, vp))
-        _, gfa, gfb = network_value_and_gradient(model.layers, A, B)
-        has_p, gpa, has_q, gqb = godunov_gradient_cases(A, B)
-        jp = (gfa - gpa)*da + gfb*db
-        jq = gfa*da + (gfb - gqb)*db
-        out.append(_hull_branches(has_p, jp, has_q, jq).abs_upper())
+        A, B = VI.hull_of(vm, v), VI.hull_of(v, vp)
+        out.append(difference_enclosure(model.layers, A, B, da, db).abs_upper())
     if not out:
         raise ValueError("mode must be 'table', 'local' or 'both'")
     j = out[0] if len(out) == 1 else np.minimum(out[0], out[1])
-    return up(up(j + eps_left) + eps_face)
+    return up(up(j + tables.eps_fp[im, idx]) + tables.eps_fp[idx, ip])
 
 
 def face_bounds(model: CertifiedFlux, tables: CertificateTables, v, *, mode="both"):
@@ -312,11 +311,15 @@ def face_bounds(model: CertifiedFlux, tables: CertificateTables, v, *, mode="bot
     idx = tables.bin_index(v)
     delta = tables.delta[idx, np.roll(idx, -1)]
     if mode in ("local", "both"):
-        a, b = VI.point(v), VI.point(np.roll(v, -1))
-        val = network_value_enclosure(model.layers, a, b)
-        g = godunov_value_enclosure(a, b)
-        delta = np.minimum(delta, np.maximum(up(val.hi - g.lo), up(g.hi - val.lo)))
+        delta = np.minimum(delta, _local_face_bounds(model, v, np.roll(v, -1)))
     return delta
+
+
+def _local_face_bounds(model, left, right):
+    a, b = VI.point(left), VI.point(right)
+    val = network_value_enclosure(model.layers, a, b)
+    g = godunov_value_enclosure(a, b)
+    return np.maximum(up(val.hi - g.lo), up(g.hi - val.lo))
 
 
 def local_regularity(model: CertifiedFlux, v):
@@ -336,19 +339,26 @@ def local_regularity(model: CertifiedFlux, v):
 
 
 def cell_costs(model: CertifiedFlux, tables: CertificateTables, consts: FPConstants, v,
-               *, mode="both"):
+               *, mode="both", refiner=None):
     """kappa[i, s_left, s_right] >= |etilde_i - etilde_(i-1)| for each trust pattern.
 
     Face f is (v_f, v_(f+1)); cell i has left face i-1 and right face i.
     Returns an (N, 2, 2) float array; every entry is an upper bound of the
     real quantity (all additions are rounded upward).
     mode: 'separable' (original Stage A certificate: table face bounds only),
-    'table', 'local' or 'both' (see face_bounds and difference_bounds).
+    'table', 'local' or 'both' (see face_bounds and difference_bounds). In
+    'selective' mode, refiner(state, table_costs) chooses distinct cell indices.
+    Only those rows receive 'both' bounds; other rows retain their table bounds.
     """
-    if mode not in ("separable", "table", "local", "both"):
+    if mode not in ("separable", "table", "local", "both", "selective"):
         raise ValueError("Unknown certificate mode")
+    if mode == "selective" and not callable(refiner):
+        raise ValueError("Selective mode requires a callable refiner")
+    if mode != "selective" and refiner is not None:
+        raise ValueError("A refiner requires selective mode")
+    base_mode = "table" if mode == "selective" else mode
     v = np.asarray(v, dtype=np.float64)
-    delta_face = face_bounds(model, tables, v, mode=mode)
+    delta_face = face_bounds(model, tables, v, mode=base_mode)
     dl, dr = np.roll(delta_face, 1), delta_face
     g = consts.eps_godunov
     n = len(v)
@@ -360,8 +370,40 @@ def cell_costs(model: CertifiedFlux, tables: CertificateTables, consts: FPConsta
     if mode == "separable":
         k[:, 1, 1] = sep
     else:
-        k[:, 1, 1] = np.minimum(sep, difference_bounds(model, tables, v, mode=mode))
+        k[:, 1, 1] = np.minimum(sep, difference_bounds(model, tables, v, mode=base_mode))
+    if mode == "selective":
+        _refine_selected_cells(model, tables, consts, v, delta_face, k, refiner)
     return k
+
+
+def _refine_selected_cells(model, tables, consts, v, delta_face, k, refiner):
+    # A selector can propose indices only. Keep its arrays separate from both
+    # the current state and the table certificate used by the downstream DP.
+    state_input, cost_input = v.copy(), k.copy()
+    state_input.setflags(write=False)
+    cost_input.setflags(write=False)
+    centers = np.asarray(refiner(state_input, cost_input))
+    if centers.ndim != 1:
+        raise ValueError("Refiner must return a one-dimensional array of cell indices")
+    if centers.size == 0:
+        return
+    if centers.dtype.kind not in "iu" or np.any(centers < 0) or np.any(centers >= len(v)):
+        raise ValueError("Refiner must return integer cell indices within the grid")
+    centers = centers.astype(np.intp, copy=False)
+    if np.unique(centers).size != centers.size:
+        raise ValueError("Refiner must return distinct cell indices")
+
+    left, right = (centers - 1) % len(v), (centers + 1) % len(v)
+    faces, inverse = np.unique(np.concatenate((left, centers)), return_inverse=True)
+    delta = np.minimum(delta_face[faces], _local_face_bounds(model, v[faces], v[(faces+1) % len(v)]))
+    dl, dr = np.split(delta[inverse], 2)
+    bins = tables.bin_index(v)
+    local_difference = _difference_bounds_on_stencils(
+        model, tables, (v[left], v[centers], v[right]),
+        (bins[left], bins[centers], bins[right]), "local")
+    k[centers, 1, 0] = up(dl + consts.eps_godunov)
+    k[centers, 0, 1] = up(dr + consts.eps_godunov)
+    k[centers, 1, 1] = np.minimum(k[centers, 1, 1], np.minimum(up(dl + dr), local_difference))
 
 
 # ---------------------------------------------------------------------------
@@ -553,7 +595,7 @@ def budget_parameters(tables: CertificateTables, lam, n_cells, steps, total_budg
 
 def certified_rollout_a2(model: CertifiedFlux, tables: CertificateTables, v0, *, steps, lam,
                          total_budget, policy, mode="both", cmin_fraction=0.05,
-                         audit=False, record=True):
+                         audit=False, record=True, refiner=None):
     """Face-selective certified rollout.
 
     Guarantee (Theorem M2): for every n, ||v_n - u_n||_(1,h) <= spent_n <= total_budget,
@@ -588,7 +630,7 @@ def certified_rollout_a2(model: CertifiedFlux, tables: CertificateTables, v0, *,
     timing = {"certificate": 0.0, "frontier": 0.0, "policy": 0.0, "flux_update": 0.0}
     for step in range(steps):
         t0 = time.perf_counter()
-        costs = cell_costs(model, tables, consts, v, mode=mode)
+        costs = cell_costs(model, tables, consts, v, mode=mode, refiner=refiner)
         t1 = time.perf_counter()
         fr = trust_frontier(costs)
         cbar = frontier_upper(fr, lam, n)

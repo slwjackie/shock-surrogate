@@ -83,6 +83,10 @@ Stage A (all claims remain relative to same-grid exact-arithmetic Godunov):
 Proofs: [docs/stage_a2_theory.md](docs/stage_a2_theory.md).
 Measurements: [reports/stage_a2_validation.md](reports/stage_a2_validation.md).
 
+The [selective refinement experiment](reports/selective_refinement/README.md)
+compares two rounds of offline learning with fixed rules for allocating ten
+local checks per step.
+
 ```bash
 python -m stage_ab.experiments_a2 --out outputs/stage_a2      # ~5 min, CPU
 python -m stage_ab.plots_a2 outputs/stage_a2
