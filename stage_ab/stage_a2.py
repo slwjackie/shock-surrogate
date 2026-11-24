@@ -30,7 +30,7 @@ import time
 import numpy as np
 
 from certified_burgers.godunov import godunov_flux
-from .burgers import FrozenFlux, exact_godunov
+from .frozen_flux import FrozenFlux, exact_godunov
 from .interval import Interval as I
 from .vinterval import (VI, U, up, up_float, rigorous_nonneg_sum,
                         network_value_enclosure, network_value_and_gradient,

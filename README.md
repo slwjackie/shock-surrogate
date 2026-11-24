@@ -5,6 +5,8 @@ checks to certify more neural face decisions under a fixed cumulative error
 budget. It compares the number of checks, measured verification time and
 certified coverage. The reference trajectory is same-grid Godunov.
 See the [experiment, results and reproduction commands](reports/verifier_allocation/README.md).
+A separate [direct routing benchmark](reports/cheap_routing/README.md) tests whether
+offline bootstrap learning can make this one-step solver faster than Godunov.
 
 The earlier Stage A/B work on certified Burgers fluxes and 0-D hydrogen
 autoignition is documented below.

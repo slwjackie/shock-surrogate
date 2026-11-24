@@ -14,11 +14,10 @@ from pathlib import Path
 from statistics import median
 
 import numpy as np
-import torch
 
 from certified_burgers.godunov import advance, godunov_step
 from .budget import GreedyPolicy, PacingPolicy
-from .burgers import FrozenFlux
+from .frozen_flux import FrozenFlux
 from .experiments_a2 import LAM, discretize, ic_family
 from .stage_a2 import CertifiedFlux, CertificateTables, FPConstants, cell_costs, certified_rollout_a2
 
@@ -122,6 +121,8 @@ def time_godunov(out, repeats=9):
 
 
 def run(out, repeats):
+    import torch
+
     out.mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(1)
     model = CertifiedFlux(FrozenFlux.load(MODEL_PATH))

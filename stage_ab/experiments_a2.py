@@ -21,16 +21,15 @@ import platform
 import time
 
 import numpy as np
-import torch
 
 from certified_burgers.godunov import godunov_step
 from certified_burgers.initial_conditions import smooth_state, riemann_state
-from .burgers import FrozenFlux
+from .frozen_flux import FrozenFlux
 from .stage_a2 import (CertifiedFlux, CertificateTables, FPConstants, cell_costs, trust_frontier,
                        frontier_upper, rigorous_step_cost, exact_actual_face_error, mixed_step,
                        certified_rollout_a2, train_flux_v2, fit_report, budget_parameters,
                        local_regularity, pairs)
-from .burgers import exact_godunov
+from .frozen_flux import exact_godunov
 from fractions import Fraction as Q
 from .budget import (GreedyPolicy, AllOrNothingPolicy, PacingPolicy, ThresholdPolicy,
                      RobustifiedPolicy, DensityThresholdPolicy, AllOrNothingWrapper,
@@ -319,6 +318,8 @@ def e5_timing(model, tables, ns, reps=15):
 
 # -------------------------------------------------------------------- main
 def run(out, quick=False, seed=0):
+    import torch
+
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(1)
