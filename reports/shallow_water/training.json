@@ -1,0 +1,45 @@
+{
+  "gravity": 9.81,
+  "tolerance_m": 0.01,
+  "architecture": "3 dimensionless inputs, 12 ReLU hidden units, 1 output; multiplicative shock correction to two-rarefaction depth",
+  "training_set": 8192,
+  "mining_pool": 32768,
+  "train_seed": 1391,
+  "iid_pool_seed": 2791,
+  "challenge_pool_seed": 2792,
+  "validation_seed": 7079,
+  "common_pool_iid_rows": 16384,
+  "common_pool_challenge_rows": 16384,
+  "challenge_distribution": "independent depths log-uniform [0.15,9] m, velocity jump/(cL+cR) uniform [-1.85,1.8]; finite wet states",
+  "mining_certificate": "shallow_water/certificate.h sw_certify with the first-pass native proposal",
+  "initial_steps": 3500,
+  "continuation_steps": 3000,
+  "added_rows_each": 4096,
+  "mining_rule": "half the new rows prioritize first-model certificate rejections, then largest offline absolute depth errors; fill remainder uniformly without replacement.",
+  "pool_failures": 1428,
+  "pool_oracle_misses": 1428,
+  "pool_iid_failures": 0,
+  "pool_challenge_failures": 1428,
+  "mined_quota_rows": 2048,
+  "mined_quota_actual_rejections": 1428,
+  "mined_quota_near_misses": 620,
+  "selected_failures_uniform": 183,
+  "selected_failures_bootstrap": 1428,
+  "validation": {
+    "initial": {
+      "mean_abs_m": 0.00010525765341374803,
+      "p95_abs_m": 0.0005553859269653348,
+      "fraction_within_tol": 0.9998779296875
+    },
+    "uniform": {
+      "mean_abs_m": 0.00013616359748994968,
+      "p95_abs_m": 0.0007373427425195084,
+      "fraction_within_tol": 1.0
+    },
+    "bootstrap": {
+      "mean_abs_m": 0.00014847982322957687,
+      "p95_abs_m": 0.0007043532113880201,
+      "fraction_within_tol": 1.0
+    }
+  }
+}

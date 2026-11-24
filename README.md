@@ -10,6 +10,10 @@ offline bootstrap learning can make this one-step solver faster than Godunov.
 The [eight-step benchmark](reports/macro8/README.md) compares direct learned
 updates, fixed-coefficient integration and larger Godunov steps at matched physical times.
 
+The [shallow-water interface experiment](reports/shallow_water/README.md)
+compares neural and classical proposals for the middle water depth with the
+same absolute-error certificate and a safeguarded Newton correction.
+
 The earlier Stage A/B work on certified Burgers fluxes and 0-D hydrogen
 autoignition is documented below.
 

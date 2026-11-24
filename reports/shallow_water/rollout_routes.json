@@ -1,0 +1,190 @@
+{
+  "grid_cells": 256,
+  "duration": 0.045,
+  "local_tolerance_m": 0.01,
+  "definition": "Interior-face events on each mode's own trajectory; bypasses include equal states and unequivocally upwind fluxes.",
+  "provenance": {
+    "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+    "flags": [
+      "-std=c11",
+      "-O3",
+      "-march=native",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-shared"
+    ],
+    "sha256": {
+      "rollout.c": "2c61706c66df784c99eec796da74f7f7121c365ae274d16f6a43fd1cce82f2e2",
+      "solver.c": "07ea1473a88f2fe0fb14377469c7e43bee599b706d51837c8aaf814192e486f7",
+      "model.h": "68685f09cd4cb72a70d9e600d6dcf5f9b225e45ca04c6189221d5975d16cc8d6",
+      "certificate.h": "168822742fd6715781f2aaa9896d3f039f8c370140849f1a57dd38be0c310833"
+    },
+    "grids": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "accuracy_target": "Per-case componentwise terminal mean absolute errors of the filtered Newton N=256 control with 1e-8 m depth tolerance, multiplied by 1.05",
+    "timing_statistic": "Median across seven shuffled single-trajectory calls by default; p25/p75 are within-run interquartiles. C allocation, interface work, cell updates and the Python-to-C call are included. Python input reset and reference are untimed."
+  },
+  "results": [
+    {
+      "case": "wet_dam",
+      "method": "two_rarefaction",
+      "interior_faces": 33150,
+      "equal_or_upwind_bypasses": 18825,
+      "analytic_accepted": 805,
+      "proposed_accepted": 13518,
+      "corrected": 2,
+      "newton_updates": 2,
+      "bisections": 0,
+      "certificate_calls": 14327,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "wet_dam",
+      "method": "nn_initial",
+      "interior_faces": 33150,
+      "equal_or_upwind_bypasses": 18825,
+      "analytic_accepted": 792,
+      "proposed_accepted": 13533,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 14325,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "wet_dam",
+      "method": "nn_uniform",
+      "interior_faces": 33150,
+      "equal_or_upwind_bypasses": 18825,
+      "analytic_accepted": 780,
+      "proposed_accepted": 13545,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 14325,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "wet_dam",
+      "method": "nn_hard",
+      "interior_faces": 33150,
+      "equal_or_upwind_bypasses": 18825,
+      "analytic_accepted": 786,
+      "proposed_accepted": 13539,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 14325,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "colliding",
+      "method": "two_rarefaction",
+      "interior_faces": 21675,
+      "equal_or_upwind_bypasses": 15216,
+      "analytic_accepted": 104,
+      "proposed_accepted": 6355,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6459,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "colliding",
+      "method": "nn_initial",
+      "interior_faces": 21675,
+      "equal_or_upwind_bypasses": 15202,
+      "analytic_accepted": 110,
+      "proposed_accepted": 6363,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6473,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "colliding",
+      "method": "nn_uniform",
+      "interior_faces": 21675,
+      "equal_or_upwind_bypasses": 15216,
+      "analytic_accepted": 104,
+      "proposed_accepted": 6355,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6459,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "colliding",
+      "method": "nn_hard",
+      "interior_faces": 21675,
+      "equal_or_upwind_bypasses": 15206,
+      "analytic_accepted": 104,
+      "proposed_accepted": 6365,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6469,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "separating",
+      "method": "two_rarefaction",
+      "interior_faces": 19890,
+      "equal_or_upwind_bypasses": 13806,
+      "analytic_accepted": 181,
+      "proposed_accepted": 5903,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6084,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "separating",
+      "method": "nn_initial",
+      "interior_faces": 19890,
+      "equal_or_upwind_bypasses": 13806,
+      "analytic_accepted": 171,
+      "proposed_accepted": 5913,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6084,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "separating",
+      "method": "nn_uniform",
+      "interior_faces": 19890,
+      "equal_or_upwind_bypasses": 13806,
+      "analytic_accepted": 171,
+      "proposed_accepted": 5913,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6084,
+      "terminal_bitwise_parity": true
+    },
+    {
+      "case": "separating",
+      "method": "nn_hard",
+      "interior_faces": 19890,
+      "equal_or_upwind_bypasses": 13806,
+      "analytic_accepted": 171,
+      "proposed_accepted": 5913,
+      "corrected": 0,
+      "newton_updates": 0,
+      "bisections": 0,
+      "certificate_calls": 6084,
+      "terminal_bitwise_parity": true
+    }
+  ]
+}
