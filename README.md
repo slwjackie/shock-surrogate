@@ -7,6 +7,8 @@ certified coverage. The reference trajectory is same-grid Godunov.
 See the [experiment, results and reproduction commands](reports/verifier_allocation/README.md).
 A separate [direct routing benchmark](reports/cheap_routing/README.md) tests whether
 offline bootstrap learning can make this one-step solver faster than Godunov.
+The [eight-step benchmark](reports/macro8/README.md) compares direct learned
+updates, fixed-coefficient integration and larger Godunov steps at matched physical times.
 
 The earlier Stage A/B work on certified Burgers fluxes and 0-D hydrogen
 autoignition is documented below.
